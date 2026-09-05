@@ -90,9 +90,45 @@ export const about = {
 
 /** Client-supplied service list, wording unchanged. */
 export const services = [
-  { id: 'business', title: 'Business Finance', icon: 'briefcase' },
-  { id: 'personal', title: 'Personal Finance Assistance', icon: 'person' },
-  { id: 'short-term', title: 'Short-Term Financial Support', icon: 'clock' },
+  {
+    id: 'business',
+    title: 'Business Finance',
+    icon: 'briefcase',
+    /**
+     * Client-supplied on 2026-09-05. Optional — not every product has one.
+     * The intrinsic size travels with the file so the markup can reserve the
+     * right box before it loads; these two are different shapes.
+     */
+    image: { src: '/product-business.webp', width: 1080, height: 960 },
+  },
+  {
+    id: 'personal',
+    title: 'Personal Finance Assistance',
+    icon: 'person',
+    /** Client-supplied on 2026-09-05. */
+    image: { src: '/product-personal.jpg', width: 709, height: 433 },
+  },
+  {
+    id: 'short-term',
+    title: 'Short-Term Financial Support',
+    icon: 'clock',
+    /**
+     * Client-supplied on 2026-09-05. Unlike the other two this is a finished
+     * banner with its own type in it, so it is `wide` — squeezed into the side
+     * column its body text renders at a few pixels and cannot be read. Text
+     * baked into a picture is also invisible to a screen reader, hence `alt`.
+     */
+    image: {
+      src: '/product-short-term.webp',
+      width: 1536,
+      height: 1024,
+      wide: true,
+      alt:
+        'Short Term Financial Support from Kalyan Finance — quick financial ' +
+        'solutions for your immediate needs: quick approval, flexible tenure ' +
+        'and a hassle-free process.',
+    },
+  },
   {
     id: 'customer-focused',
     title: 'Customer-Focused Financial Solutions',
@@ -151,8 +187,10 @@ export const contact = {
   address: null,
   /** Google Maps embed or link for the location block. */
   mapUrl: null,
-  /** Full profile URL, e.g. https://instagram.com/... */
-  instagram: null,
+  /** Full profile URL. Supplied by the client on 2026-09-05. */
+  instagram: 'https://instagram.com/kal_yan_fin_ance',
+  /** The same account as it is written for readers. */
+  instagramHandle: '@kal_yan_fin_ance',
   /**
    * Where the enquiry form POSTs. Null keeps the form visibly disabled rather
    * than silently dropping enquiries — there is no backend in this project.
@@ -337,7 +375,7 @@ export const draft = {
     },
   ],
 
-  differentiatorsTitle: 'What actually differs',
+  differentiatorsTitle: "What's actually different",
 
   trustTitle: 'Trust factors',
   /* This used to be a note to the client about what belonged here, which was

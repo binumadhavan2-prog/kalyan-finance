@@ -6,6 +6,11 @@ import Draft from './Draft'
  *
  * `drafted` is true by default because most page copy still is. Pass false
  * where the wording is client-approved, so it renders without the dotted mark.
+ *
+ * `image` is an optional backdrop, opt-in per page: the banner is plain black
+ * without it. It always renders under a scrim, because the type here is white
+ * and grey on whatever the image happens to be, and the page cannot know that
+ * in advance.
  */
 /* Hoisted, not inlined in the render: a component defined during render is a
    new type every pass, which remounts its subtree. */
@@ -13,11 +18,20 @@ function Plain({ children }) {
   return children
 }
 
-export default function PageHeader({ eyebrow, title, lede, drafted = true }) {
+export default function PageHeader({
+  eyebrow,
+  title,
+  lede,
+  drafted = true,
+  image = null,
+}) {
   const Wrap = drafted ? Draft : Plain
 
   return (
-    <section className="section section--dark page-head">
+    <section
+      className={'section section--dark page-head' + (image ? ' page-head--image' : '')}
+      style={image ? { backgroundImage: `url("${image}")` } : undefined}
+    >
       <div className="shell stack">
         {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
         <h1 className="heading">

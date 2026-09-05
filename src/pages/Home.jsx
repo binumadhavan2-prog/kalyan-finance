@@ -42,10 +42,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section">
+      {/* Gold, the one full band of it on the site. It lands directly under the
+          navy hero, so the two brand colours open the page together before it
+          settles back into the monochrome bands below. */}
+      <section className="section section--gold">
         <div className="shell stack-lg">
           <div className="stack prose">
-            <p className="eyebrow">Products</p>
             <h2 className="heading">
               <Draft>{draft.productPreviewTitle}</Draft>
             </h2>
@@ -80,7 +82,6 @@ export default function Home() {
       <section className="section section--raised">
         <div className="shell stack-lg">
           <div className="stack prose">
-            <p className="eyebrow">Why us</p>
             <h2 className="heading">
               <Draft>{draft.whyTitle}</Draft>
             </h2>
