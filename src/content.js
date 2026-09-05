@@ -133,11 +133,35 @@ export const services = [
     id: 'customer-focused',
     title: 'Customer-Focused Financial Solutions',
     icon: 'heart',
+    /** Client-supplied on 2026-09-05. A finished banner, like short-term. */
+    image: {
+      src: '/product-customer-focused.webp',
+      width: 1536,
+      height: 1024,
+      wide: true,
+      alt:
+        'Customer-Focused Financial Solutions from Kalyan Finance — tailored ' +
+        'financial solutions designed around your needs, helping you manage ' +
+        "today's requirements with confidence and plan for tomorrow: flexible " +
+        'financial options, a quick and simple process, transparent terms, ' +
+        'solutions tailored to your needs, and trusted customer support.',
+    },
   },
   {
     id: 'tailored',
     title: 'Tailored Financial Support for Individuals and Businesses',
     icon: 'sliders',
+    /** Client-supplied on 2026-09-05. A finished banner, 2:1 rather than 3:2. */
+    image: {
+      src: '/product-tailored.webp',
+      width: 1774,
+      height: 887,
+      wide: true,
+      alt:
+        'Tailored Financial Support for Individuals and Businesses from ' +
+        'Kalyan Finance — personalized solutions, flexible financial support, ' +
+        'empowering growth and trusted partnership.',
+    },
   },
 ]
 
