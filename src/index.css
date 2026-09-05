@@ -1,0 +1,90 @@
+/*
+ * Design tokens.
+ *
+ * The page runs on a neutral monochrome scale. --navy is the supplied brand
+ * colour (#1E2C58, sampled from the client swatch) and bookends the page: the
+ * masthead at the top and the footer at the bottom. Keep it out of everything
+ * between them — the page bands and buttons stay monochrome.
+ *
+ * Measured contrast — on --navy: white 13.5:1, --nav-soft 7.4:1.
+ * On --page: --ink 19.3:1, --ink-soft 5.4:1. Keep replacements above 4.5:1.
+ */
+:root {
+  --navy: #1e2c58;
+  --nav-soft: #aab3cd;
+  /* Hairline for dividers on navy: white at 15% over --navy, flattened to an
+     opaque value so it does not shift over whatever sits behind it. */
+  --nav-line: #404c71;
+
+  --black: #0a0a0b;
+  --ink: #0a0a0b;
+  --ink-soft: #6b6b73;
+  --ink-invert: #ffffff;
+  --ink-invert-soft: #a1a1aa;
+  --line: #e4e4e7;
+  --line-invert: #2a2a30;
+  --page: #ffffff;
+  --raised: #f4f4f5;
+  --accent: var(--navy);
+
+  --shell: 1200px;
+  --measure: 60ch;
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+  --step: clamp(4.5rem, 11vw, 9rem);
+  --radius: 14px;
+  --masthead-h: 4.5rem;
+
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  color-scheme: light;
+  color: var(--ink);
+  background: var(--page);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body, h1, h2, h3, h4, p, figure, blockquote, ul, ol, dl, dd {
+  margin: 0;
+}
+
+ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
+
+body {
+  min-height: 100svh;
+  line-height: 1.6;
+  text-wrap: pretty;
+  background: var(--page);
+}
+
+h1, h2, h3, h4 {
+  line-height: 1.05;
+  text-wrap: balance;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+img, picture, svg, video { display: block; max-width: 100%; }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+html { scroll-behavior: smooth; }
+[id] { scroll-margin-top: 6rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
