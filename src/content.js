@@ -62,6 +62,22 @@ export const coreValues = [
   'Excellence',
 ]
 
+/**
+ * Supplied 2026-09-05: the reasons to choose Kalyan Finance, for /why-us and
+ * its preview on the home page.
+ *
+ * Terms only, exactly as `coreValues` is. No explanation is written under any
+ * of them, because none was given — and the four drafted differentiators these
+ * replaced are the reason that rule exists.
+ */
+export const whyPoints = [
+  'Trust',
+  'Transparency',
+  'Customer-focused approach',
+  'Simple process',
+  'Local relationship',
+]
+
 /** Client-supplied About copy, wording unchanged. Leads the About page. */
 export const about = {
   title: 'About Kalyan Finance',
@@ -100,6 +116,29 @@ export const productDetail = {
   'short-term': { amount: null, tenure: null, eligibility: [], documents: [] },
   'customer-focused': { amount: null, tenure: null, eligibility: [], documents: [] },
   tailored: { amount: null, tenure: null, eligibility: [], documents: [] },
+}
+
+/**
+ * Worked examples for /loan-products, shown under a standing "Illustrative
+ * only" notice and with an Illustrative chip on every single one. The marking
+ * is not decoration: an example on a lender's site is read as an offer unless
+ * it is impossible to mistake for one.
+ *
+ * Empty on purpose. These are figures, and the rule at the top of this file
+ * holds for them however they are labelled — an illustrative amount is still a
+ * number a visitor will anchor on, so it comes from the client or not at all.
+ *
+ * Shape, once there is something to show:
+ *   business: [{ id, scenario, amount, tenure, repayment, note }]
+ * `scenario` says who the example is about, `note` anything that qualifies it.
+ * Leave any field out and the row is simply not rendered.
+ */
+export const indicativeExamples = {
+  business: [],
+  personal: [],
+  'short-term': [],
+  'customer-focused': [],
+  tailored: [],
 }
 
 /** Client-supplied where filled in; the rest is not yet confirmed. */
@@ -148,7 +187,7 @@ export const recognition = []
 export const recognitionVideo = '/recognition.mp4'
 
 /**
- * The 6-second brand animation that opens the home page. Unlike the
+ * The 6-second brand animation beside the home hero copy. Unlike the
  * recognition clip this one autoplays, which is only defensible because it is
  * under a megabyte and silent — it carries no audio track at all, so there is
  * nothing to unmute and nothing to interrupt.
@@ -190,7 +229,11 @@ export const draft = {
 
   ctaTitle: 'Talk to us about what you need',
   ctaBody: 'A first conversation costs nothing and commits you to nothing.',
-  ctaButton: 'Get in touch',
+  ctaButton: 'Start a conversation',
+  /* Sits under the buttons. Deliberately about effort and obligation rather
+     than speed: a response time is a promise, and nobody has given us one. */
+  ctaNote:
+    'No documents needed to start — just tell us roughly what you are looking for.',
 
   /* ---------- Loan products ---------- */
   productsTitle: 'Loan products',
@@ -208,6 +251,17 @@ export const draft = {
     tailored:
       'Arrangements built for a specific situation rather than a category.',
   },
+
+  indicativeTitle: 'Indicative examples',
+  indicativeLede:
+    'Worked examples of how an arrangement can be structured, to show the shape of it before you enquire.',
+  /* The standing notice above the examples. Wording is drafted like everything
+     else here, but the substance of it is not optional: whatever the client
+     signs off has to say these are illustrations and not offers. */
+  indicativeNotice:
+    'Illustrative only. These are examples, not offers, and not a quotation. Nothing here is a commitment to lend, and the terms of any arrangement are confirmed for your own circumstances in writing before you sign.',
+  indicativePending:
+    'Examples will be published here once the figures behind them are confirmed. Until then, tell us what you need and we will talk it through.',
 
   termsPending:
     'Amounts, tenure, eligibility and the documents needed are confirmed for your situation before you commit to anything.',
@@ -244,33 +298,20 @@ export const draft = {
      The page intro is client-approved and lives in `about` above; only the
      founder label is still drafted here. */
   founderTitle: 'Founder',
+  /* Sits in the story section's empty-state panel. Says what is missing
+     without pretending to be the history itself — how the business started
+     and what it has done since is the client's to tell, not ours to draft. */
+  storyPending:
+    'How the business started, and what it has taken on since, will be told here once Kalyan Finance has set it down.',
 
   /* ---------- Why us ---------- */
   whyTitle: 'Why Kalyan Finance',
   whyLede:
     'What actually differs when you bring a requirement to us.',
-  differentiators: [
-    {
-      id: 'one-contact',
-      title: 'One point of contact',
-      body: 'The person you speak to first stays with your case to completion.',
-    },
-    {
-      id: 'plain-terms',
-      title: 'Terms in plain language',
-      body: 'Costs, timelines and obligations written out before you sign.',
-    },
-    {
-      id: 'fit-first',
-      title: 'Fit before product',
-      body: 'We establish what the money needs to do before discussing how it is structured.',
-    },
-    {
-      id: 'after',
-      title: 'Available afterwards',
-      body: 'We stay reachable once an arrangement is in place, not just until it completes.',
-    },
-  ],
+  /* The four drafted differentiators that used to sit here (One point of
+     contact, Terms in plain language, Fit before product, Available
+     afterwards) were written to fill the band. Supplied wording replaced
+     them — see `whyPoints` above. */
 
   processTitle: 'How it works',
   steps: [

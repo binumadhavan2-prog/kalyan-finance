@@ -1,4 +1,4 @@
-import { company, draft, founder } from '../content'
+import { company, draft, founder, whyPoints } from '../content'
 import Draft from '../components/Draft'
 import Missing from '../components/Missing'
 import PageHeader from '../components/PageHeader'
@@ -23,17 +23,13 @@ export default function WhyUs() {
               <Draft>{draft.differentiatorsTitle}</Draft>
             </h2>
           </div>
-          {/* Two-up: four cards in the three-column grid left two dead cells,
-              one of them showing the grid gap as a grey block. */}
-          <ul className="grid grid--pair" role="list">
-            {draft.differentiators.map((item) => (
-              <li className="card card--text" key={item.id}>
-                <h3 className="card__title card__title--top">
-                  <Draft>{item.title}</Draft>
-                </h3>
-                <p className="lede">
-                  <Draft>{item.body}</Draft>
-                </p>
+          {/* Supplied as terms with nothing under them, so they take the same
+              divided-row treatment the core values do rather than cards with
+              an empty body. */}
+          <ul className="valuelist" role="list">
+            {whyPoints.map((point) => (
+              <li className="valuelist__item" key={point}>
+                {point}
               </li>
             ))}
           </ul>

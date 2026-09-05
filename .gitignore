@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Secrets. *.local already covers .env.local; this covers the bare .env and
+# any .env.<mode> a license key might land in.
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

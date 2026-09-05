@@ -5,6 +5,7 @@ import Missing from '../components/Missing'
 import PageHeader from '../components/PageHeader'
 import ServiceIcon from '../components/ServiceIcons'
 import StepList from '../components/StepList'
+import IndicativeExamples from '../components/IndicativeExamples'
 import ClosingCta from '../components/ClosingCta'
 
 function Term({ label, value }) {
@@ -149,6 +150,10 @@ export default function LoanProducts() {
           </div>
         </div>
       </section>
+
+      {/* Between eligibility and how to apply: what is offered, who it is for,
+          what it looks like in practice, then what to do about it. */}
+      <IndicativeExamples />
 
       <section className="section">
         <div className="shell stack-lg">
