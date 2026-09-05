@@ -19,6 +19,36 @@
 
 .prose { max-width: var(--measure); }
 
+/* ---------- Reveal on scroll ----------
+   The .reveal class is only ever added by the observer in Layout, so a page
+   with no JavaScript never has anything hidden to un-hide. `will-change` is
+   left off deliberately: promoting every section on the page costs more than
+   the animation saves, and each one runs exactly once. */
+.reveal {
+  opacity: 0;
+  transform: translateY(1.5rem);
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The observer bails out under reduced motion, so nothing here should ever
+   match. It is a second lock on the same door: if the class is somehow on the
+   element, the section still shows. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* ---------- Type scale ---------- */
 .eyebrow {
   font-size: 0.75rem;
@@ -108,14 +138,20 @@
 /* ---------- Masthead ----------
    Navy, matched by the footer at the other end of the page. Kept opaque rather
    than translucent: over a white page the blur would wash the brand colour
-   out, and over the dark hero it would read as a third shade. */
+   out, and over the dark hero it would read as a third shade.
+
+   The bottom rule was navy-on-navy, i.e. invisible, which was fine while the
+   hero was black. Now that the hero is navy too the bar would dissolve into
+   it, so the divider moves to --nav-line — the palette's hairline for this
+   ground, and the same one the footer uses. It still reads as a hairline over
+   the white pages further in. */
 .masthead {
   position: sticky;
   top: 0;
   z-index: 20;
   background: var(--navy);
   color: var(--ink-invert);
-  border-bottom: 1px solid var(--navy);
+  border-bottom: 1px solid var(--nav-line);
 }
 
 .masthead__inner {
@@ -146,10 +182,17 @@
 
    The clamp is not decoration. Below 30rem the header CTA is hidden but the
    Menu button is not, which leaves roughly 150px for the name — and `.wordmark`
-   sets `white-space: nowrap`, so a flat 2rem would push the button off the bar
-   rather than wrap. Full size lands from about 800px up. */
+   sets `white-space: nowrap`, so a flat maximum would push the button off the
+   bar rather than wrap. Only the ceiling and the slope were raised when the
+   name was enlarged; the 1.125rem floor is what keeps a 320px screen intact.
+   Full size lands from about 860px up.
+
+   The ceiling is also capped by the bar itself: at 2.375rem the name and the
+   tagline stack to about 3.5rem, and anything past roughly 2.75rem would push
+   the lockup through the 4.5rem --masthead-h that the scroll progress bar is
+   pinned to. */
 .masthead .wordmark {
-  font-size: clamp(1.125rem, 4vw, 2rem);
+  font-size: clamp(1.125rem, 4.4vw, 2.375rem);
   font-weight: 700;
 }
 
@@ -157,6 +200,37 @@
   width: 2.75rem;
   height: 2.75rem;
   flex: none;
+}
+
+/* Name over tagline, beside the mark. Both line-heights are set explicitly:
+   the inherited 1.6 would take the two lines past the 4.5rem bar, and the bar
+   is what --masthead-h and the scroll progress bar under it are pinned to. */
+.wordmark__lockup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.0625rem;
+}
+
+.wordmark__name { line-height: 1.1; }
+
+/* Hidden below 48rem. The bar is already tight there — the header CTA is
+   dropped entirely at 30rem to leave the name and the Menu button room — and
+   the tagline still appears in the footer of every page. */
+.wordmark__tagline {
+  display: none;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  /* Picks up the gold of the mark it sits beside. 6.3:1 on navy, so it holds
+     at this size despite being the smallest type on the page. */
+  color: var(--gold);
+}
+
+@media (min-width: 48rem) {
+  .wordmark__tagline { display: block; }
 }
 
 /*
@@ -234,9 +308,22 @@
 }
 
 /* ---------- Hero ---------- */
+/* Navy rather than the black the other dark bands take. The hero opens the
+   page directly under the navy masthead, so the brand colour now runs from the
+   top of the viewport through the hero as a single field. */
 .hero {
   padding-block: clamp(5rem, 14vw, 11rem);
+  background: var(--navy);
 }
+
+/* On navy the neutral soft grey goes muddy. The footer hit exactly this and
+   moved to --nav-soft, the palette's measured soft-on-navy at 7.4:1; the hero
+   follows it rather than inventing a second answer. */
+.hero .lede { color: var(--nav-soft); }
+
+/* --line-invert is a near-black hairline built for the black bands, and it
+   vanishes against navy. --nav-line is the palette's divider for this ground. */
+.hero .btn-ghost { border-color: var(--nav-line); }
 
 .hero__actions {
   display: flex;
@@ -246,60 +333,79 @@
 
 .hero__lede { max-width: 46ch; }
 
-/* The animation is behind the copy now, so the hero is a single column and the
-   text sits against the scrim. Measures on .display--statement and .hero__lede
-   keep it from running the full width of a desktop frame. */
+/* The company name leading the hero lockup. Bigger than a plain .eyebrow: with
+   the tagline sitting under it, the base 0.75rem left the name smaller than
+   its own strapline. Keeps the eyebrow's caps and tracking, and takes the full
+   invert so it reads as the name rather than as a label. */
+.hero__name {
+  font-size: clamp(0.9375rem, 1.6vw, 1.25rem);
+  letter-spacing: 0.14em;
+}
+
+/* Scoped to the dark band rather than left on .hero__name: `.section--dark
+   .eyebrow` outranks a lone class, so an unscoped colour here would be
+   ignored and the name would stay at the muted eyebrow grey. */
+.section--dark .hero__name { color: var(--ink-invert); }
+
+/* The brand line, tucked under the company name as the masthead has it. In the
+   mark's gold — 9.2:1 on the black band. */
+.hero__tagline {
+  font-size: clamp(1.125rem, 2.2vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--gold);
+}
+
+/* Both override the flat 1rem from `.stack > * + *`, and both need to match
+   its specificity to do it: the tagline hugs the eyebrow so the two read as
+   one lockup, and the vision statement takes back the air it loses by no
+   longer following the eyebrow directly. */
+.stack > .hero__tagline { margin-block-start: 0.375rem; }
+.stack > .hero__tagline + .display { margin-block-start: 1.75rem; }
+
+/* Copy beside the brand animation. One column until there is room for both:
+   below 62rem the video under the buttons would push the call to action off
+   a phone screen, and it is decoration, not the message. */
 .hero__grid {
   display: grid;
   gap: clamp(2rem, 5vw, 3.5rem);
   align-items: center;
 }
 
-/* The brand animation, in the place the photograph used to hold. `cover` crops
-   the 16/9 render rather than letterboxing it — the hero is far wider than tall
-   on desktop and taller than wide on a phone, and neither matches the clip. */
-.hero__backdrop {
-  position: absolute;
-  inset: 0;
-  z-index: -2;
+/* The animation takes the larger share of the row. The copy can afford it:
+   .display--statement and .hero__lede carry their own measures, so a narrower
+   column changes where the text wraps, not how much of it fits. */
+@media (min-width: 62rem) {
+  .hero__grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
+}
+
+/* 16/9 is the render's own aspect, so `contain` never letterboxes here; it is
+   there to keep the frame honest if the clip is ever re-cut at another size. */
+.hero__video {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background: var(--black);
-  pointer-events: none;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  border: 5px solid var(--gold);
+  background: var(--navy);
+  object-fit: contain;
 }
 
 /* ---------- Card grids ---------- */
+/* Separated rounded cards rather than the old hairline mosaic — that one was a
+   1px grid gap over a --line background, which gave the block one outer radius
+   and square corners on every card inside it. */
 .grid {
   display: grid;
-  gap: 1px;
+  gap: 1rem;
   list-style: none;
   margin: 0;
   padding: 0;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
 }
 
 @media (min-width: 42rem) { .grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 64rem) { .grid { grid-template-columns: repeat(3, 1fr); } }
-
-.section--dark .grid {
-  background: var(--line-invert);
-  border-color: var(--line-invert);
-}
-
-/* Five services never fill a 2- or 3-column row. This blank cell absorbs the
-   remainder so the grid gap does not show through as a grey block. */
-@media (min-width: 42rem) {
-  .grid::after {
-    content: "";
-    background: var(--page);
-  }
-
-  .section--dark .grid::after { background: var(--black); }
-}
 
 .card {
   display: flex;
@@ -307,10 +413,35 @@
   gap: 1rem;
   padding: clamp(1.5rem, 3vw, 2.25rem);
   background: var(--page);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   min-height: 13rem;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
-.section--dark .card { background: var(--black); }
+/* A 2px lift, not a bounce. Enough to say the card is a live thing under the
+   cursor and nothing more; on the dark bands the border does the work instead,
+   where a shadow would be invisible. */
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--ink);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.06);
+}
+
+/* Touch has no hover, so the lift would stick after a tap. */
+@media (hover: none) {
+  .card:hover { transform: none; box-shadow: none; }
+}
+
+.section--dark .card {
+  background: var(--black);
+  border-color: var(--line-invert);
+}
+
+.section--dark .card:hover {
+  border-color: var(--ink-invert);
+  box-shadow: none;
+}
 
 .card__icon {
   width: 1.875rem;
@@ -458,6 +589,10 @@
 .details__value { margin: 0; }
 
 /* Visibly unfinished, so placeholder details cannot ship unnoticed. */
+/* No opacity here. It used to carry 0.75, which dropped --ink-soft from its
+   measured 5.4:1 on the page to about 3.3:1 — under the floor, and the chip
+   read as decoration rather than as a fact that is missing. The dashed border
+   is what marks it as provisional; the text still has to be readable. */
 .todo {
   display: inline-block;
   padding: 0.125rem 0.625rem;
@@ -465,7 +600,6 @@
   border-radius: 100px;
   color: var(--ink-soft);
   font-size: 0.8125rem;
-  opacity: 0.75;
 }
 
 .section--dark .todo { color: var(--ink-invert-soft); }
@@ -484,12 +618,117 @@
   text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
 }
 
-/* ---------- Closing CTA ---------- */
+/* ---------- Closing CTA ----------
+   The one band on the page that has to convert, so it is given more room than
+   a normal section and a gold hairline to lift it off the stats band above. */
+.cta-band {
+  padding-block: clamp(5.5rem, 13vw, 10rem);
+  border-top: 2px solid var(--gold);
+}
+
 .cta {
   text-align: center;
   display: grid;
   justify-items: center;
-  gap: 2rem;
+  gap: 1.25rem;
+}
+
+/* Gold rather than the muted invert grey the other eyebrows use: it ties the
+   label to the primary button and marks this band as the closing one. */
+.section--dark .cta__eyebrow { color: var(--gold); }
+
+/* Above .heading but short of .display: this is the last thing on the page and
+   should land harder than the section headings above it, without reading as a
+   second hero. The measure keeps it to two or three lines on a wide screen. */
+.cta__title {
+  max-width: 18ch;
+  font-size: clamp(2.5rem, 6.5vw, 4.75rem);
+  letter-spacing: -0.03em;
+}
+
+.cta__lede { max-width: 46ch; }
+
+.cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-block-start: 1rem;
+}
+
+/* Sets expectations for the click rather than repeating the lede, so it stays
+   small and quiet directly under the buttons it qualifies. */
+.cta__note {
+  font-size: 0.9375rem;
+  color: var(--ink-invert-soft);
+  max-width: 44ch;
+  margin-block-start: -0.25rem;
+}
+
+/* The details in full, under a hairline: the form suits people describing a
+   requirement, but somebody who just wants to phone should not have to load
+   another page to find the number. */
+.cta__channels {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem clamp(2rem, 6vw, 4.5rem);
+  margin: 0;
+  padding-block-start: clamp(2rem, 4vw, 3rem);
+  padding-inline: 0;
+  list-style: none;
+  border-top: 1px solid var(--line-invert);
+  width: min(100%, 60rem);
+}
+
+.cta__channel {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: center;
+}
+
+.cta__channel-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-invert-soft);
+  font-weight: 500;
+}
+
+.cta__channel-value {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.cta__channel-value a { color: inherit; }
+
+.btn--lg {
+  padding: 1.0625rem 2rem;
+  font-size: 1rem;
+}
+
+/* The only gold button on the site, reserved for the single action the page is
+   asking for. Near-black on --gold measures 9.3:1, so the label holds up. */
+.btn--gold,
+.section--dark .btn--gold {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.btn--gold:hover,
+.section--dark .btn--gold:hover {
+  background: transparent;
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+/* `.btn` sets nowrap, which a long address would ride straight out of the
+   viewport on a narrow screen. Only the mail button opts out. */
+.btn--wrap {
+  white-space: normal;
+  word-break: break-word;
 }
 
 /* ---------- Footer ----------
@@ -603,10 +842,26 @@
   color: var(--ink-invert);
 }
 
+/* The one piece of glass on the site, and the only place it earns its keep:
+   this panel overlays page content, so there is something real behind it to
+   blur. The masthead deliberately stays opaque (see the note up there), and
+   glass over a flat band is just a translucent box.
+
+   Opaque navy is the base, so a browser without backdrop-filter — or one that
+   has it disabled — gets a solid panel rather than page text showing through
+   the links. */
 .mobile-nav {
   border-top: 1px solid color-mix(in srgb, var(--ink-invert) 20%, transparent);
   background: var(--navy);
   padding-block: 1rem 1.5rem;
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .mobile-nav {
+    background: color-mix(in srgb, var(--navy) 82%, transparent);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    backdrop-filter: blur(16px) saturate(1.3);
+  }
 }
 
 .mobile-nav__list {
@@ -698,6 +953,16 @@
   color: var(--ink);
 }
 
+/* Pinned to the palette rather than left to the browser, whose defaults range
+   from a passable grey to something well under the 4.5:1 floor. `opacity: 1`
+   is not redundant: Firefox dims placeholders on its own, which would undo
+   --ink-soft's measured 5.4:1. */
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--ink-soft);
+  opacity: 1;
+}
+
 .field textarea { resize: vertical; }
 
 .field input:focus-visible,
@@ -726,6 +991,25 @@
   aspect-ratio: 16 / 7;
   border: 1px solid var(--line);
   border-radius: var(--radius);
+}
+
+/* The actions row at the top of /contact. Left-aligned rather than centred:
+   it sits under a left-aligned page header, and centring it would read as a
+   second, competing header. */
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* Sits under the town-level map to say plainly what the pin is and is not. */
+.map__note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
 }
 
 .map--empty {
@@ -761,43 +1045,6 @@
   font-size: clamp(2rem, 4.6vw, 3.5rem);
   line-height: 1.05;
   max-width: 20ch;
-}
-
-/* ---------- Hero with brand animation ----------
-   The clip is bright and moving, so the text needs a scrim rather than a tint:
-   near-opaque on the left where the copy sits, thinning to the right so the
-   animation still reads. Without it white type over the frame blows out. */
-.hero--video {
-  position: relative;
-  background: var(--black);
-  isolation: isolate;
-}
-
-.hero--video::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    100deg,
-    rgba(10, 10, 11, 0.96) 0%,
-    rgba(10, 10, 11, 0.9) 32%,
-    rgba(10, 10, 11, 0.62) 58%,
-    rgba(10, 10, 11, 0.42) 100%
-  );
-}
-
-/* Narrow screens put the copy over the middle of the frame, where a directional
-   scrim leaves nothing to sit against, so flatten it to an even wash. */
-@media (max-width: 48rem) {
-  .hero--video::before {
-    background: linear-gradient(
-      180deg,
-      rgba(10, 10, 11, 0.9) 0%,
-      rgba(10, 10, 11, 0.86) 60%,
-      rgba(10, 10, 11, 0.9) 100%
-    );
-  }
 }
 
 /* ---------- About page ---------- */
@@ -897,19 +1144,7 @@
   border: 1px solid var(--line);
   border-radius: 100px;
   font-size: 0.9375rem;
-}
-
-/* Two-up card grid for even counts. The three-column grid plus its filler cell
-   leaves dead cells when the list has four items, so pair grids opt out of the
-   filler entirely and hold two columns at every width above the stack point. */
-.grid--pair::after { content: none; }
-
-@media (min-width: 42rem) {
-  .grid--pair { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 64rem) {
-  .grid--pair { grid-template-columns: repeat(2, 1fr); }
+  transition: border-color 0.18s ease;
 }
 
 /* The placeholder chip inherits the stat figure's display sizing otherwise,
@@ -1002,3 +1237,75 @@
 .valuelist__item:last-child { border-bottom: 1px solid var(--line); }
 
 .section--dark .valuelist__item { border-color: var(--line-invert); }
+
+/* ---------- Indicative examples ----------
+   Everything here exists to keep an illustration from being read as an offer.
+   The notice is a solid block rather than the dashed .panel used for missing
+   facts: this is not a gap waiting to be filled, it is a qualification that
+   stays on the page for good. */
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem;
+  max-width: 60ch;
+  margin: 0;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--raised);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.notice__flag {
+  flex: none;
+  padding: 0.125rem 0.625rem;
+  border-radius: 100px;
+  background: var(--ink);
+  color: var(--ink-invert);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.example-grid {
+  display: grid;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 48rem) {
+  .example-grid { grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+}
+
+.example {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* Repeated on every card, not just in the notice above: a card can be
+   screenshotted or linked to on its own, and the qualifier has to travel with
+   the figures rather than sit three scroll-lengths above them. */
+.example__flag {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.example__scenario { font-weight: 600; }
+
+.example__note {
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}

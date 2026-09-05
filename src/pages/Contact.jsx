@@ -14,6 +14,19 @@ const rows = [
   { key: 'hours', label: 'Hours', href: null },
 ]
 
+/*
+ * No office address has been supplied, so the map falls back to the town that
+ * has been: centred on `contact.location` and captioned as the town, never as
+ * "our office" — the pin is Sivagangai, not a building we cannot name. The
+ * `?output=embed` form needs no API key and no billing account.
+ *
+ * `contact.mapUrl` still wins when it is set; drop the real embed in there and
+ * this fallback stops being used.
+ */
+const townMapUrl = contact.location
+  ? `https://www.google.com/maps?q=${encodeURIComponent(contact.location)}&output=embed`
+  : null
+
 export default function Contact() {
   return (
     <>
@@ -22,6 +35,31 @@ export default function Contact() {
         title={draft.contactTitle}
         lede={draft.contactLede}
       />
+
+      {/* The way through, before the detail below it. Most people arriving on
+          this page want to do one of two things, so both are one tap from the
+          top of it. Anything not yet supplied simply does not render — a Call
+          button with no number behind it is worse than no button. */}
+      <section className="section section--tight">
+        <div className="shell contact-actions">
+          {contact.phone ? (
+            <a className="btn btn--lg" href={`tel:${contact.phone.replace(/\s/g, '')}`}>
+              Call us
+            </a>
+          ) : null}
+          {contact.email ? (
+            <a
+              className={`btn btn--lg${contact.phone ? ' btn-ghost' : ''}`}
+              href={`mailto:${contact.email}`}
+            >
+              Email us
+            </a>
+          ) : null}
+          <a className="btn btn-ghost btn--lg" href="#enquiry">
+            Send an enquiry
+          </a>
+        </div>
+      </section>
 
       <section className="section">
         <div className="shell split">
@@ -72,7 +110,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="stack">
+          <div className="stack" id="enquiry">
             <p className="eyebrow">
               <Draft>{draft.formTitle}</Draft>
             </p>
@@ -86,14 +124,22 @@ export default function Contact() {
           <p className="eyebrow">
             <Draft>{draft.locationTitle}</Draft>
           </p>
-          {contact.mapUrl ? (
-            <iframe
-              className="map"
-              src={contact.mapUrl}
-              title="Office location"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+          {contact.mapUrl || townMapUrl ? (
+            <>
+              <iframe
+                className="map"
+                src={contact.mapUrl ?? townMapUrl}
+                title={contact.mapUrl ? 'Office location' : contact.location}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              {contact.mapUrl ? null : (
+                <p className="map__note">
+                  <Missing>Full address not supplied</Missing> The map shows{' '}
+                  {contact.location}, not a specific office.
+                </p>
+              )}
+            </>
           ) : (
             <div className="map map--empty">
               <Missing>Location not supplied</Missing>

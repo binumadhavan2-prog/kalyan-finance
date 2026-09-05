@@ -57,6 +57,12 @@ export default function EnquiryForm() {
     }
   }
 
+  /* Every field carries a placeholder as a hint, never as a label substitute:
+     the labels above them all stay, because a placeholder vanishes the moment
+     someone types and takes its guidance with it. Format examples where the
+     format is the question (email, phone), plain guidance where it is not.
+     example.com is the reserved example domain, so nothing here points at a
+     real address. */
   return (
     <form className="form stack" onSubmit={onSubmit} noValidate>
       <div className="field">
@@ -64,6 +70,7 @@ export default function EnquiryForm() {
         <input
           id="f-name"
           name="name"
+          placeholder="Your name"
           value={values.name}
           onChange={update('name')}
           aria-invalid={!!errors.name}
@@ -83,6 +90,7 @@ export default function EnquiryForm() {
           name="email"
           type="email"
           inputMode="email"
+          placeholder="e.g. name@example.com"
           value={values.email}
           onChange={update('email')}
           aria-invalid={!!errors.email}
@@ -102,6 +110,7 @@ export default function EnquiryForm() {
           name="phone"
           type="tel"
           inputMode="tel"
+          placeholder="e.g. +91 98765 43210"
           value={values.phone}
           onChange={update('phone')}
         />
@@ -113,6 +122,7 @@ export default function EnquiryForm() {
           id="f-message"
           name="message"
           rows="5"
+          placeholder="What you need, and roughly when"
           value={values.message}
           onChange={update('message')}
           aria-invalid={!!errors.message}

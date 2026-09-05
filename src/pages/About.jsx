@@ -17,6 +17,49 @@ export default function About() {
         drafted={false}
       />
 
+      {/* The story, first thing after the intro. The heading is the founding
+          year straight out of `company` rather than drafted wording, and the
+          rows beside it are the four facts we actually hold. Nobody has written
+          us a history, so that shows as a gap instead of invented narrative.
+
+          This replaces the old "At a glance" band: same facts, but framed as
+          the story the page was missing rather than as a spec sheet. */}
+      <section className="section section--tight">
+        <div className="shell split">
+          <div className="stack">
+            <p className="eyebrow">Our story</p>
+            <h2 className="heading">Founded in {company.established}</h2>
+          </div>
+          <div className="stack-lg">
+            <dl className="details">
+              <div className="details__row">
+                <dt className="details__label">Established</dt>
+                <dd className="details__value">{company.established}</dd>
+              </div>
+              <div className="details__row">
+                <dt className="details__label">Business type</dt>
+                <dd className="details__value">{company.type}</dd>
+              </div>
+              <div className="details__row">
+                <dt className="details__label">Location</dt>
+                <dd className="details__value">{company.location}</dd>
+              </div>
+              <div className="details__row">
+                <dt className="details__label">Founder</dt>
+                <dd className="details__value">{founder.name}</dd>
+              </div>
+            </dl>
+
+            <div className="panel">
+              <Missing>Company history not supplied</Missing>
+              <p className="lede">
+                <Draft>{draft.storyPending}</Draft>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Vision and tagline are both client-approved, so they carry a band of
           their own. The drafted "Our story" section that used to sit here was
           saying the same thing as the approved intro above, in worse words. */}
@@ -77,32 +120,6 @@ export default function About() {
         </div>
       </section>
 
-      <section className="section section--tight">
-        <div className="shell split">
-          <div className="stack">
-            <p className="eyebrow">At a glance</p>
-          </div>
-          <dl className="details">
-            <div className="details__row">
-              <dt className="details__label">Established</dt>
-              <dd className="details__value">{company.established}</dd>
-            </div>
-            <div className="details__row">
-              <dt className="details__label">Business type</dt>
-              <dd className="details__value">{company.type}</dd>
-            </div>
-            <div className="details__row">
-              <dt className="details__label">Location</dt>
-              <dd className="details__value">{company.location}</dd>
-            </div>
-            <div className="details__row">
-              <dt className="details__label">Founder</dt>
-              <dd className="details__value">{founder.name}</dd>
-            </div>
-          </dl>
-        </div>
-      </section>
-
       {/* Pulls the approved service names onto the page and gives the section
           somewhere to send people, rather than ending on a full stop. */}
       <section className="section section--raised section--tight">
@@ -127,9 +144,9 @@ export default function About() {
         </div>
       </section>
 
-      <Recognition />
-
       <CoreValues />
+
+      <Recognition />
 
       <ClosingCta />
     </>

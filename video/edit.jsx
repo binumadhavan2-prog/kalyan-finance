@@ -20,6 +20,12 @@ const SY = 150;
 const SHIELD_D =
   "M 235 9 L 461 96 L 461 286 C 461 411 371 493 235 531 C 99 493 9 411 9 286 L 9 96 Z";
 
+// The supplied brand mark — crowned shield with the KF monogram. The opening
+// beat still draws SHIELD_D as an outline; this is what that outline resolves
+// into once the animation lands, so the sign-off carries the real logo rather
+// than a bare shield silhouette.
+const LOGO_SRC = "logo.png";
+
 const PILLARS = [
   { icon: "users",       label: "FAMILY" },
   { icon: "briefcase",   label: "BUSINESS" },
@@ -46,6 +52,11 @@ const bg = () => (
 const shieldCore = () => (
   <path name="shield-core" x={0} y={0} width={SW} height={SH} d={SHIELD_D} fill={null}
         stroke={{ color: GOLD_HI, width: 7, cap: "round" }} />
+);
+
+const logoMark = () => (
+  <image name="logo-mark" src={LOGO_SRC}
+         x={0} y={0} width={SW} height={SH} fit="contain" />
 );
 
 const shieldGlow = () => (
@@ -96,13 +107,13 @@ const beat1 = (icon, t0) => [
 
 const beat2 = (icon, t0) => [
   bg(),
-  <group name="shield-out" x={SX} y={SY} width={SW} height={SH} origin="center"
+  <group name="logo-out" x={SX} y={SY} width={SW} height={SH} origin="center"
          at={t0 + 0} duration={3.0}
          animate={[
            { property: "scale",   from: 1, to: 0.30, at: 0.05, duration: 0.55, easing: "house" },
            { property: "offsetY", from: 0, to: -230, at: 0.05, duration: 0.55, easing: "house" },
          ]}>
-    {shieldCore()}
+    {logoMark()}
   </group>,
   <column name="card" x={CARD_X} y={CARD_Y} width={CARD_W} padding={48} gap={28}
           fill={CARD_BG} radius={28}

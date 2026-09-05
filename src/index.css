@@ -2,11 +2,12 @@
  * Design tokens.
  *
  * The page runs on a neutral monochrome scale. --navy is the supplied brand
- * colour (#1E2C58, sampled from the client swatch) and bookends the page: the
- * masthead at the top and the footer at the bottom. Keep it out of everything
- * between them — the page bands and buttons stay monochrome.
+ * colour (#1E2C58, sampled from the client swatch). It carries the masthead,
+ * the hero directly beneath it, and the footer; the bands between them stay
+ * monochrome, so the brand colour still opens and closes the page rather than
+ * being sprayed through it.
  *
- * Measured contrast — on --navy: white 13.5:1, --nav-soft 7.4:1.
+ * Measured contrast — on --navy: white 13.5:1, --nav-soft 7.4:1, --gold 6.3:1.
  * On --page: --ink 19.3:1, --ink-soft 5.4:1. Keep replacements above 4.5:1.
  */
 :root {
@@ -15,6 +16,13 @@
   /* Hairline for dividers on navy: white at 15% over --navy, flattened to an
      opaque value so it does not shift over whatever sits behind it. */
   --nav-line: #404c71;
+  /* Sampled from the mark itself: the mean of every gold pixel in
+     public/logo.png, which runs from #b57616 in the shadows to #fcf6af on the
+     highlights. Client-approved for three places and no more: the masthead and
+     hero taglines, the frame around the hero clip, and the single primary
+     button in the closing CTA. It earns its weight by being rare — do not
+     reach for it elsewhere without asking. */
+  --gold: #d7ab48;
 
   --black: #0a0a0b;
   --ink: #0a0a0b;

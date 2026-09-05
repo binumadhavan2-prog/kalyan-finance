@@ -13,7 +13,16 @@ export default function SiteHeader() {
       <div className="shell masthead__inner">
         <Link className="wordmark" to="/" onClick={close}>
           <Wordmark />
-          {company.name}
+          {/* Name and tagline stack into one lockup beside the mark. The
+              tagline is aria-hidden so the link keeps "Kalyan Finance" as its
+              accessible name — it is a repeat of the footer's, and reading it
+              out on every page's first link is noise. */}
+          <span className="wordmark__lockup">
+            <span className="wordmark__name">{company.name}</span>
+            <span className="wordmark__tagline" aria-hidden="true">
+              {company.tagline}
+            </span>
+          </span>
         </Link>
 
         <nav className="masthead__nav" aria-label="Primary">
