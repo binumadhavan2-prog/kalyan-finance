@@ -6,7 +6,11 @@ const GOLD      = "#d4af37";
 const GOLD_HI   = "#f2dc94";
 const SOFT      = "#aab3cd";
 const WHITE     = "#ffffff";
-const CARD_BG   = "#101a3d";
+// Lighter than the ground it sits on, not darker. At #101a3d the card was
+// below even the brightest point of the radial background (#16224d), so it
+// receded instead of lifting and the contact rows read as floating loose on
+// the backdrop. White on this is about 11:1.
+const CARD_BG   = "#212f63";
 
 // Client facts. Anything not supplied stays visibly pending — never invented.
 const CONTACT = {
@@ -115,8 +119,11 @@ const beat2 = (icon, t0) => [
          ]}>
     {logoMark()}
   </group>,
+  // The stroke object mirrors the shape `path` takes above. The column owns
+  // the card's computed height, so the edge has to be drawn by that same node
+  // rather than by a rect sized behind it.
   <column name="card" x={CARD_X} y={CARD_Y} width={CARD_W} padding={48} gap={28}
-          fill={CARD_BG} radius={28}
+          fill={CARD_BG} radius={28} stroke={{ color: GOLD, width: 3 }}
           at={t0 + 0.30} duration={2.69}
           animate={[
             { property: "opacity", from: 0,  to: 1, at: 0, duration: 0.35 },
