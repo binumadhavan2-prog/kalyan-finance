@@ -49,6 +49,7 @@ export default function LoanProducts() {
         eyebrow="Loan products"
         title={draft.productsTitle}
         lede={draft.productsLede}
+        image="/loan-products-header.png"
       />
 
       {/* Five products is enough that a reader arriving for one of them should
@@ -83,7 +84,11 @@ export default function LoanProducts() {
             const detail = productDetail[service.id] ?? {}
             return (
               <article
-                className={anyTerms ? 'product' : 'product product--brief'}
+                className={
+                  (anyTerms ? 'product' : 'product product--brief') +
+                  (service.image ? ' product--media' : '') +
+                  (service.image?.wide ? ' product--wide' : '')
+                }
                 key={service.id}
                 id={service.id}
               >
@@ -99,6 +104,25 @@ export default function LoanProducts() {
                     </Link>
                   </p>
                 </div>
+
+                {/* alt="" where the picture only illustrates: it says nothing
+                    the title and blurb do not, and narrating a stock photo
+                    helps nobody. Art with its own type in it carries wording
+                    that exists nowhere else on the page, so it supplies `alt`
+                    and gets described. */}
+                {service.image ? (
+                  <img
+                    className={
+                      'product__image' +
+                      (service.image.wide ? ' product__image--wide' : '')
+                    }
+                    src={service.image.src}
+                    alt={service.image.alt ?? ''}
+                    loading="lazy"
+                    width={service.image.width}
+                    height={service.image.height}
+                  />
+                ) : null}
 
                 {hasTerms(detail) ? (
                   <dl className="terms">

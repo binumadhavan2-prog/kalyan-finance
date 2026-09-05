@@ -48,7 +48,7 @@ export default function SiteFooter() {
               <li>
                 {contact.instagram ? (
                   <a href={contact.instagram} rel="noreferrer noopener" target="_blank">
-                    Instagram
+                    {contact.instagramHandle ?? 'Instagram'}
                   </a>
                 ) : (
                   <Missing>Instagram not supplied</Missing>

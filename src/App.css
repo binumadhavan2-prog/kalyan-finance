@@ -14,6 +14,37 @@
 
 .section--raised { background: var(--raised); }
 
+/* Full-bleed brand gold, carrying the "What we do" products band. The neutral
+   soft greys are unreadable on it (--ink-soft lands at 2.5:1), so everything
+   muted inside moves to --gold-ink-soft at 5.1:1, the same move the footer
+   makes on navy with --nav-soft. Headings and icons stay on --ink at 9.3:1. */
+.section--gold {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.section--gold .eyebrow,
+.section--gold .lede { color: var(--gold-ink-soft); }
+
+/* White cards on gold rather than tinted ones: the card interiors keep the
+   contrast they were measured for on the white pages, and the band reads as a
+   gold ground holding white tiles rather than a wash of near-golds. */
+.section--gold .card {
+  background: var(--page);
+  border-color: var(--gold-line);
+}
+
+.section--gold .card:hover { border-color: var(--ink); }
+
+/* --line is a pale grey built for white pages and disappears on gold. */
+.section--gold .btn-ghost { border-color: var(--gold-line); }
+
+.section--gold .btn-ghost:hover {
+  background: var(--ink);
+  color: var(--ink-invert);
+  border-color: var(--ink);
+}
+
 .stack > * + * { margin-block-start: 1rem; }
 .stack-lg > * + * { margin-block-start: clamp(2rem, 5vw, 3.5rem); }
 
@@ -312,8 +343,40 @@
    page directly under the navy masthead, so the brand colour now runs from the
    top of the viewport through the hero as a single field. */
 .hero {
+  position: relative;
+  isolation: isolate;
   padding-block: clamp(5rem, 14vw, 11rem);
-  background: var(--navy);
+  background:
+    var(--navy) url("/hero.webp") center / cover no-repeat;
+}
+
+/*
+ * A directional scrim over the photograph. Near-solid navy on the left where
+ * the copy sits, thinning to the right so the picture is legible behind the
+ * clip — measured against the lightest part of the image (the white desk), the
+ * copy column still clears 4.5:1.
+ *
+ * Navy is still painted underneath as the background colour, so a failed or
+ * slow image load leaves the hero exactly as it was rather than dropping white
+ * text onto nothing.
+ */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to right,
+    rgb(30 44 88 / 0.97) 0%,
+    rgb(30 44 88 / 0.92) 45%,
+    rgb(30 44 88 / 0.74) 100%
+  );
+}
+
+/* One column below 62rem, where the copy sits over the middle of the picture
+   rather than beside it — the gradient has no weak side to exploit there. */
+@media (max-width: 61.999rem) {
+  .hero::before { background: rgb(30 44 88 / 0.95); }
 }
 
 /* On navy the neutral soft grey goes muddy. The footer hit exactly this and
@@ -893,6 +956,44 @@
 .page-head { padding-block: clamp(3.5rem, 9vw, 6.5rem); }
 .page-head__lede { max-width: 52ch; }
 
+/* Optional per-page backdrop (see PageHeader's `image`). A scrim is unavoidable
+   — white on this banner's gold core is 1.6:1 bare — but it is kept light so the
+   colour survives, and the type is lifted to pay for it (below). Weighted left,
+   where the copy sits, leaving the glow strongest on the right. */
+.page-head--image {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  isolation: isolate;
+}
+
+.page-head--image::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    rgba(10, 10, 11, 0.75) 0%,
+    rgba(10, 10, 11, 0.62) 45%,
+    rgba(10, 10, 11, 0.4) 100%
+  );
+}
+
+/* The default soft grey is --ink-invert-soft; over the lit centre at this
+   lighter scrim it falls to 2.4:1. White clears 6:1, and the near-white lede
+   still keeps a step of hierarchy under the heading at 5.5:1. */
+.page-head--image .eyebrow { color: var(--ink-invert); }
+.page-head--image .lede { color: #e8e8ec; }
+
+/* Narrow screens put the copy across the middle of the frame, where a
+   directional scrim leaves nothing to sit against. Flatten it to an even wash. */
+@media (max-width: 48rem) {
+  .page-head--image::before {
+    background: rgba(10, 10, 11, 0.7);
+  }
+}
+
 /* ---------- Product entries ---------- */
 .product {
   display: grid;
@@ -1176,6 +1277,30 @@
 @media (min-width: 56rem) {
   .product--brief { grid-template-columns: minmax(0, 1fr); }
   .product--brief .product__head { max-width: 46rem; }
+
+  /* Unless the product carries a picture, which needs the second column back
+     and the copy measure released to pay for it. */
+  .product--brief.product--media { grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); }
+  .product--brief.product--media .product__head { max-width: none; }
+
+  /* A finished banner is not a side illustration: it holds its own headline and
+     body text, which at side-column width is a few pixels tall. Give it the
+     whole row under the copy so it stays readable. */
+  .product--brief.product--wide { grid-template-columns: minmax(0, 1fr); }
+  .product--brief.product--wide .product__head { max-width: 46rem; }
+}
+
+.product__image--wide { max-width: 46rem; }
+
+/* Capped rather than full-bleed: the supplied art is a square-ish graphic, and
+   at column width it would tower over the two lines of copy beside it. */
+.product__image {
+  display: block;
+  width: 100%;
+  max-width: 26rem;
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
 }
 
 /* ---------- Video ---------- */

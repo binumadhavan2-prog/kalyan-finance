@@ -100,7 +100,7 @@ export default function Contact() {
                   rel="noreferrer noopener"
                   target="_blank"
                 >
-                  Instagram
+                  {contact.instagramHandle ?? 'Instagram'}
                 </a>
               ) : (
                 <p>

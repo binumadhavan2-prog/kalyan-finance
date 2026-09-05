@@ -18,11 +18,19 @@
   --nav-line: #404c71;
   /* Sampled from the mark itself: the mean of every gold pixel in
      public/logo.png, which runs from #b57616 in the shadows to #fcf6af on the
-     highlights. Client-approved for three places and no more: the masthead and
-     hero taglines, the frame around the hero clip, and the single primary
-     button in the closing CTA. It earns its weight by being rare — do not
-     reach for it elsewhere without asking. */
+     highlights. Client-approved as an accent on the masthead and hero
+     taglines, the animated frame around the hero clip, and the primary button
+     in the closing CTA — and as a full band behind the "What we do" products
+     section, the one place it carries a whole block rather than a detail.
+     Anywhere else still needs asking first. */
   --gold: #d7ab48;
+  /* Soft text on the gold band. The neutral greys all fail there — --ink-soft
+     manages only 2.5:1 on gold — so this is a darkened gold instead, measured
+     at 5.1:1. Headings and icons on gold use plain --ink at 9.3:1. */
+  --gold-ink-soft: #4a3c14;
+  /* Hairline and ghost-button edge on gold: black at 22%, flattened so it does
+     not shift over whatever sits behind the band. */
+  --gold-line: #a8842f;
 
   --black: #0a0a0b;
   --ink: #0a0a0b;
