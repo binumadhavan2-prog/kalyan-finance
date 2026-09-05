@@ -42,10 +42,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Gold, the one full band of it on the site. It lands directly under the
-          navy hero, so the two brand colours open the page together before it
-          settles back into the monochrome bands below. */}
-      <section className="section section--gold">
+      <section className="section section--dark">
         <div className="shell stack-lg">
           <div className="stack prose">
             <h2 className="heading">

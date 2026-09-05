@@ -3,6 +3,7 @@ import { company, contact } from '../content'
 import Wordmark from './Wordmark'
 import Missing from './Missing'
 import { navLinks } from '../nav'
+import InstagramIcon from './InstagramIcon'
 
 export default function SiteFooter() {
   return (
@@ -10,11 +11,18 @@ export default function SiteFooter() {
       <div className="shell">
         <div className="footer__top">
           <div className="footer__col">
+            {/* The same lockup the masthead uses — mark, name, gold tagline
+                stacked under it. Not aria-hidden here, unlike the masthead's:
+                that one is suppressed so the home link reads as just the
+                company name, which leaves this as the one place the tagline
+                is actually announced. */}
             <span className="wordmark">
               <Wordmark />
-              {company.name}
+              <span className="wordmark__lockup">
+                <span className="wordmark__name">{company.name}</span>
+                <span className="wordmark__tagline">{company.tagline}</span>
+              </span>
             </span>
-            <p className="footer__tagline">{company.tagline}</p>
           </div>
 
           <div className="footer__col">
@@ -47,7 +55,13 @@ export default function SiteFooter() {
               </li>
               <li>
                 {contact.instagram ? (
-                  <a href={contact.instagram} rel="noreferrer noopener" target="_blank">
+                  <a
+                    className="social"
+                    href={contact.instagram}
+                    rel="noreferrer noopener"
+                    target="_blank"
+                  >
+                    <InstagramIcon />
                     {contact.instagramHandle ?? 'Instagram'}
                   </a>
                 ) : (

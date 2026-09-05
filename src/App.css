@@ -14,37 +14,6 @@
 
 .section--raised { background: var(--raised); }
 
-/* Full-bleed brand gold, carrying the "What we do" products band. The neutral
-   soft greys are unreadable on it (--ink-soft lands at 2.5:1), so everything
-   muted inside moves to --gold-ink-soft at 5.1:1, the same move the footer
-   makes on navy with --nav-soft. Headings and icons stay on --ink at 9.3:1. */
-.section--gold {
-  background: var(--gold);
-  color: var(--ink);
-}
-
-.section--gold .eyebrow,
-.section--gold .lede { color: var(--gold-ink-soft); }
-
-/* White cards on gold rather than tinted ones: the card interiors keep the
-   contrast they were measured for on the white pages, and the band reads as a
-   gold ground holding white tiles rather than a wash of near-golds. */
-.section--gold .card {
-  background: var(--page);
-  border-color: var(--gold-line);
-}
-
-.section--gold .card:hover { border-color: var(--ink); }
-
-/* --line is a pale grey built for white pages and disappears on gold. */
-.section--gold .btn-ghost { border-color: var(--gold-line); }
-
-.section--gold .btn-ghost:hover {
-  background: var(--ink);
-  color: var(--ink-invert);
-  border-color: var(--ink);
-}
-
 .stack > * + * { margin-block-start: 1rem; }
 .stack-lg > * + * { margin-block-start: clamp(2rem, 5vw, 3.5rem); }
 
@@ -521,6 +490,27 @@
   margin-block-start: auto;
 }
 
+/* ---------- Social ----------
+   The glyph sits on the text baseline-ish rather than being centred on the
+   line box, and takes its colour from the link, so it dims and highlights with
+   the handle instead of floating free of it. Inside a .btn the button's own
+   inline-flex and gap already handle the spacing, so only the size applies. */
+.social__icon {
+  /* A shade larger than a monochrome glyph would need: this is the full
+     gradient mark with a camera outline inside it, and below about 20px the
+     lens and the flash start to merge. */
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+  border-radius: 6px;
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 /* ---------- Process ---------- */
 .steps {
   display: grid;
@@ -825,15 +815,10 @@
   margin-block-end: 1rem;
 }
 
-/* The same string sets at display scale in the About band. Here it is a
-   sign-off under the wordmark rather than a statement, so it takes the muted
-   footer voice — `.tagline` would shout over the column headings beside it. */
-.footer__tagline {
-  margin-block-start: 0.75rem;
-  max-width: 26ch;
-  font-size: 0.9375rem;
-  color: var(--nav-soft);
-}
+/* The masthead hides its tagline below 48rem, where the bar has no room for
+   it. The footer has the whole column, and this is the only place the tagline
+   is announced, so it stays on at every width. */
+.footer .wordmark__tagline { display: block; }
 
 .footer__links {
   display: grid;
@@ -1320,7 +1305,8 @@
    Sits on the underside of the sticky masthead rather than at the very top
    of the viewport: over the navy it would be a second stripe of brand
    colour, and the home page opens on the black hero, where an inked bar
-   would vanish. Navy track, white fill — it reads as the header's own edge. */
+   would vanish. Navy track, gold fill at 6.3:1 — it reads as the header's
+   own edge, and the read position is the one moving thing on the page. */
 .scroll-progress {
   position: fixed;
   top: calc(var(--masthead-h) + 1px);
@@ -1334,7 +1320,7 @@
 .scroll-progress__fill {
   display: block;
   height: 100%;
-  background: var(--ink-invert);
+  background: var(--gold);
   transform: scaleX(0);
   transform-origin: left center;
 }

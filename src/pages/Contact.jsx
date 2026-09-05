@@ -3,6 +3,7 @@ import Draft from '../components/Draft'
 import Missing from '../components/Missing'
 import PageHeader from '../components/PageHeader'
 import EnquiryForm from '../components/EnquiryForm'
+import InstagramIcon from '../components/InstagramIcon'
 
 const rows = [
   { key: 'phone', label: 'Phone', href: (v) => `tel:${v.replace(/\s/g, '')}` },
@@ -100,6 +101,7 @@ export default function Contact() {
                   rel="noreferrer noopener"
                   target="_blank"
                 >
+                  <InstagramIcon />
                   {contact.instagramHandle ?? 'Instagram'}
                 </a>
               ) : (
