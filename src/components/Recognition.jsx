@@ -1,4 +1,4 @@
-import { draft, recognition, recognitionVideo } from '../content'
+import { useCopy } from '../i18n'
 import Draft from './Draft'
 import Missing from './Missing'
 
@@ -11,6 +11,7 @@ import Missing from './Missing'
  * weight on a mobile connection.
  */
 export default function Recognition() {
+  const { draft, recognition, recognitionVideo } = useCopy()
   return (
     <section className="section">
       <div className="shell stack-lg">

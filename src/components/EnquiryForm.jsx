@@ -1,17 +1,19 @@
 import { useState } from 'react'
-import { contact } from '../content'
+import { useCopy } from '../i18n'
 
 const EMPTY = { name: '', email: '', phone: '', message: '' }
 
-function validate(values) {
+/* Takes the messages rather than owning them. They are language state now,
+   and this runs outside the component where the hook cannot reach. */
+function validate(values, ui) {
   const errors = {}
-  if (!values.name.trim()) errors.name = 'Please tell us your name.'
+  if (!values.name.trim()) errors.name = ui.errName
   if (!values.email.trim() && !values.phone.trim()) {
-    errors.email = 'Please give us either an email address or a phone number.'
+    errors.email = ui.errContact
   } else if (values.email.trim() && !/^\S+@\S+\.\S+$/.test(values.email.trim())) {
-    errors.email = 'That does not look like an email address.'
+    errors.email = ui.errEmail
   }
-  if (!values.message.trim()) errors.message = 'Please tell us roughly what you need.'
+  if (!values.message.trim()) errors.message = ui.errMessage
   return errors
 }
 
@@ -21,6 +23,7 @@ function validate(values) {
  * then blocks submission and says so. Set the endpoint in content.js to enable.
  */
 export default function EnquiryForm() {
+  const { contact, ui } = useCopy()
   const [values, setValues] = useState(EMPTY)
   const [errors, setErrors] = useState({})
   const [state, setState] = useState('idle')
@@ -33,7 +36,7 @@ export default function EnquiryForm() {
 
   async function onSubmit(event) {
     event.preventDefault()
-    const found = validate(values)
+    const found = validate(values, ui)
     setErrors(found)
     if (Object.keys(found).length > 0) return
 
@@ -66,11 +69,11 @@ export default function EnquiryForm() {
   return (
     <form className="form stack" onSubmit={onSubmit} noValidate>
       <div className="field">
-        <label htmlFor="f-name">Name</label>
+        <label htmlFor="f-name">{ui.formName}</label>
         <input
           id="f-name"
           name="name"
-          placeholder="Your name"
+          placeholder={ui.formNamePlaceholder}
           value={values.name}
           onChange={update('name')}
           aria-invalid={!!errors.name}
@@ -84,13 +87,13 @@ export default function EnquiryForm() {
       </div>
 
       <div className="field">
-        <label htmlFor="f-email">Email</label>
+        <label htmlFor="f-email">{ui.formEmail}</label>
         <input
           id="f-email"
           name="email"
           type="email"
           inputMode="email"
-          placeholder="e.g. name@example.com"
+          placeholder={ui.formEmailPlaceholder}
           value={values.email}
           onChange={update('email')}
           aria-invalid={!!errors.email}
@@ -104,25 +107,25 @@ export default function EnquiryForm() {
       </div>
 
       <div className="field">
-        <label htmlFor="f-phone">Phone</label>
+        <label htmlFor="f-phone">{ui.formPhone}</label>
         <input
           id="f-phone"
           name="phone"
           type="tel"
           inputMode="tel"
-          placeholder="e.g. +91 98765 43210"
+          placeholder={ui.formPhonePlaceholder}
           value={values.phone}
           onChange={update('phone')}
         />
       </div>
 
       <div className="field">
-        <label htmlFor="f-message">What do you need?</label>
+        <label htmlFor="f-message">{ui.formMessage}</label>
         <textarea
           id="f-message"
           name="message"
           rows="5"
-          placeholder="What you need, and roughly when"
+          placeholder={ui.formMessagePlaceholder}
           value={values.message}
           onChange={update('message')}
           aria-invalid={!!errors.message}
@@ -137,15 +140,15 @@ export default function EnquiryForm() {
 
       <div className="form__foot">
         <button className="btn" type="submit" disabled={state === 'sending'}>
-          {state === 'sending' ? 'Sending…' : 'Send enquiry'}
+          {state === 'sending' ? ui.formSending : ui.formSend}
         </button>
 
         <p aria-live="polite" className="form__status">
-          {state === 'sent' ? 'Thank you — we will come back to you.' : null}
-          {state === 'failed' ? 'That did not send. Please try again or call us.' : null}
+          {state === 'sent' ? ui.formSent : null}
+          {state === 'failed' ? ui.formFailed : null}
           {state === 'no-endpoint' ? (
             <span className="todo">
-              Form is not connected yet — no destination configured
+              {ui.formNoEndpoint}
             </span>
           ) : null}
         </p>

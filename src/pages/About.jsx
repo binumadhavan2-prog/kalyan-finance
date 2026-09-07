@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { about, company, draft, founder, mission, services, vision } from '../content'
+import { fill, useCopy } from '../i18n'
 import Draft from '../components/Draft'
 import Missing from '../components/Missing'
 import PageHeader from '../components/PageHeader'
@@ -8,13 +8,16 @@ import Recognition from '../components/Recognition'
 import ClosingCta from '../components/ClosingCta'
 
 export default function About() {
+  const { about, company, draft, founder, mission, services, ui, vision } = useCopy()
   return (
     <>
+      {/* No eyebrow: "About us" above an h1 reading "About Kalyan Finance" is
+          the same label twice, the second time with the company's name in it. */}
       <PageHeader
-        eyebrow="About us"
         title={about.title}
         lede={about.body}
         drafted={false}
+        image="/page-header.webp"
       />
 
       {/* The story, first thing after the intro. The heading is the founding
@@ -27,25 +30,25 @@ export default function About() {
       <section className="section section--tight">
         <div className="shell split">
           <div className="stack">
-            <p className="eyebrow">Our story</p>
-            <h2 className="heading">Founded in {company.established}</h2>
+            <p className="eyebrow">{ui.ourStory}</p>
+            <h2 className="heading">{fill(ui.foundedIn, { year: company.established })}</h2>
           </div>
           <div className="stack-lg">
             <dl className="details">
               <div className="details__row">
-                <dt className="details__label">Established</dt>
+                <dt className="details__label">{ui.established}</dt>
                 <dd className="details__value">{company.established}</dd>
               </div>
               <div className="details__row">
-                <dt className="details__label">Business type</dt>
+                <dt className="details__label">{ui.businessType}</dt>
                 <dd className="details__value">{company.type}</dd>
               </div>
               <div className="details__row">
-                <dt className="details__label">Location</dt>
+                <dt className="details__label">{ui.location}</dt>
                 <dd className="details__value">{company.location}</dd>
               </div>
               <div className="details__row">
-                <dt className="details__label">Founder</dt>
+                <dt className="details__label">{ui.founder}</dt>
                 <dd className="details__value">{founder.name}</dd>
               </div>
             </dl>
@@ -65,7 +68,7 @@ export default function About() {
           saying the same thing as the approved intro above, in worse words. */}
       <section className="section section--dark section--tight">
         <div className="shell quote">
-          <p className="eyebrow">Our vision</p>
+          <p className="eyebrow">{ui.ourVision}</p>
           <blockquote className="quote__text">{vision}</blockquote>
           <p className="tagline">{company.tagline}</p>
         </div>
@@ -76,15 +79,16 @@ export default function About() {
           above: it is a sentence, not a slogan, and needs the room. */}
       <section className="section section--tight">
         <div className="shell quote">
-          <p className="eyebrow">Our mission</p>
+          <p className="eyebrow">{ui.ourMission}</p>
           <p className="quote__text quote__text--sm">{mission}</p>
         </div>
       </section>
 
       <section className="section">
         <div className="shell stack-lg">
+          {/* draft.founderTitle is itself 'Founder', so the eyebrow that used to
+              sit here printed the same word twice in a row. The h2 keeps it. */}
           <div className="stack prose">
-            <p className="eyebrow">Founder</p>
             <h2 className="heading">
               <Draft>{draft.founderTitle}</Draft>
             </h2>
@@ -97,7 +101,7 @@ export default function About() {
                    with no text alternative tells a screen reader nothing. */
                 <img
                   src={founder.photo}
-                  alt={founder.name ?? `Founder of ${company.name}`}
+                  alt={founder.name ?? fill(ui.founderOf, { company: company.name })}
                   width="427"
                   height="533"
                 />
@@ -125,7 +129,7 @@ export default function About() {
       <section className="section section--raised section--tight">
         <div className="shell split">
           <div className="stack">
-            <p className="eyebrow">What we do</p>
+            <p className="eyebrow">{ui.whatWeDo}</p>
           </div>
           <div className="stack">
             <ul className="taglist" role="list">
@@ -137,7 +141,7 @@ export default function About() {
             </ul>
             <p>
               <Link className="btn btn-ghost" to="/loan-products">
-                See all loan products
+                {ui.seeAllProducts}
               </Link>
             </p>
           </div>

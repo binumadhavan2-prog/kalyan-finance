@@ -1,4 +1,4 @@
-import { company, draft, founder, whyPoints } from '../content'
+import { useCopy } from '../i18n'
 import Draft from '../components/Draft'
 import Missing from '../components/Missing'
 import PageHeader from '../components/PageHeader'
@@ -8,18 +8,21 @@ import Stats from '../components/Stats'
 import ClosingCta from '../components/ClosingCta'
 
 export default function WhyUs() {
+  const { company, draft, founder, ui, whyPoints } = useCopy()
   return (
     <>
+      {/* No eyebrow: draft.whyTitle is itself 'Why Kalyan Finance', so it was
+          the same three words twice, in caps above the h1 that already said
+          them. Same duplication About, Contact and Loan Products all had. */}
       <PageHeader
-        eyebrow="Why Kalyan Finance"
         title={draft.whyTitle}
         lede={draft.whyLede}
+        image="/page-header.webp"
       />
 
       <section className="section">
         <div className="shell stack-lg">
           <div className="stack prose">
-            <p className="eyebrow">Differentiators</p>
             <h2 className="heading">
               <Draft>{draft.differentiatorsTitle}</Draft>
             </h2>
@@ -35,7 +38,6 @@ export default function WhyUs() {
       <section className="section section--dark">
         <div className="shell stack-lg">
           <div className="stack prose">
-            <p className="eyebrow">Process</p>
             <h2 className="heading">
               <Draft>{draft.processTitle}</Draft>
             </h2>
@@ -47,7 +49,6 @@ export default function WhyUs() {
       <section className="section">
         <div className="shell split">
           <div className="stack">
-            <p className="eyebrow">Trust</p>
             <h2 className="heading">
               <Draft>{draft.trustTitle}</Draft>
             </h2>
@@ -60,19 +61,19 @@ export default function WhyUs() {
             {/* The checkable facts we actually have. */}
             <dl className="details">
               <div className="details__row">
-                <dt className="details__label">Established</dt>
+                <dt className="details__label">{ui.established}</dt>
                 <dd className="details__value">{company.established}</dd>
               </div>
               <div className="details__row">
-                <dt className="details__label">Business type</dt>
+                <dt className="details__label">{ui.businessType}</dt>
                 <dd className="details__value">{company.type}</dd>
               </div>
               <div className="details__row">
-                <dt className="details__label">Location</dt>
+                <dt className="details__label">{ui.location}</dt>
                 <dd className="details__value">{company.location}</dd>
               </div>
               <div className="details__row">
-                <dt className="details__label">Founder</dt>
+                <dt className="details__label">{ui.founder}</dt>
                 <dd className="details__value">{founder.name}</dd>
               </div>
             </dl>
@@ -87,7 +88,10 @@ export default function WhyUs() {
         </div>
       </section>
 
-      <Stats />
+      {/* labelled={false} rather than deleting the eyebrow from Stats: that
+          component also renders on the home page, where 'By the numbers' is the
+          only thing naming the band. */}
+      <Stats labelled={false} />
       <ClosingCta />
     </>
   )

@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { company } from '../content'
-import { navLinks } from '../nav'
+import { useCopy } from '../i18n'
 import Wordmark from './Wordmark'
+import LanguageToggle from './LanguageToggle'
 
 export default function SiteHeader() {
+  const { company, navLinks, ui } = useCopy()
   const [open, setOpen] = useState(false)
   const close = () => setOpen(false)
 
@@ -25,7 +26,7 @@ export default function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="masthead__nav" aria-label="Primary">
+        <nav className="masthead__nav" aria-label={ui.navPrimary}>
           <ul className="navlist" role="list">
             {navLinks.map(({ to, label, end }) => (
               <li key={to}>
@@ -37,8 +38,10 @@ export default function SiteHeader() {
           </ul>
         </nav>
 
+        <LanguageToggle className="lang-link" />
+
         <Link className="btn btn--sm masthead__cta" to="/contact" onClick={close}>
-          Get in touch
+          {ui.getInTouch}
         </Link>
 
         <button
@@ -48,14 +51,14 @@ export default function SiteHeader() {
           aria-controls="mobile-nav"
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? 'Close' : 'Menu'}
+          {open ? ui.close : ui.menu}
         </button>
       </div>
 
       {/* Closed on link click rather than on route change: navigating to the
           current route fires no location change, and the panel would stick. */}
       <div className="mobile-nav" id="mobile-nav" hidden={!open}>
-        <nav className="shell" aria-label="Primary, mobile">
+        <nav className="shell" aria-label={ui.navPrimaryMobile}>
           <ul className="mobile-nav__list" role="list">
             {navLinks.map(({ to, label, end }) => (
               <li key={to}>
@@ -65,6 +68,12 @@ export default function SiteHeader() {
               </li>
             ))}
           </ul>
+
+          {/* Under a rule rather than as a sixth item in the list: it leaves
+              the site, and it is not a page. */}
+          <p className="mobile-nav__foot">
+            <LanguageToggle className="lang-link" onClick={close} />
+          </p>
         </nav>
       </div>
     </header>

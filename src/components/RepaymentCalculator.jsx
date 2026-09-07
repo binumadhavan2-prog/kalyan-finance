@@ -1,5 +1,5 @@
 import { useId, useState } from 'react'
-import { draft } from '../content'
+import { fill, useCopy } from '../i18n'
 import Draft from './Draft'
 
 /**
@@ -139,6 +139,7 @@ function CalcField({
 }
 
 export default function RepaymentCalculator() {
+  const { draft, ui } = useCopy()
   const [values, setValues] = useState(EMPTY)
   const id = useId()
 
@@ -176,7 +177,7 @@ export default function RepaymentCalculator() {
     <section className="section" id="calculator">
       <div className="shell stack-lg">
         <div className="stack prose">
-          <p className="eyebrow">Calculator</p>
+          <p className="eyebrow">{ui.calculator}</p>
           <h2 className="heading">
             <Draft>{draft.calculatorTitle}</Draft>
           </h2>
@@ -200,7 +201,7 @@ export default function RepaymentCalculator() {
           <div className="calc__fields">
             <CalcField
               id={`${id}-amount`}
-              label="Amount you need (₹)"
+              label={ui.calcAmount}
               value={values.amount}
               onChange={update('amount')}
               bounds={BOUNDS.amount}
@@ -211,7 +212,7 @@ export default function RepaymentCalculator() {
 
             <CalcField
               id={`${id}-rate`}
-              label="Annual interest rate (%)"
+              label={ui.calcRate}
               value={values.rate}
               onChange={update('rate')}
               bounds={BOUNDS.rate}
@@ -225,7 +226,7 @@ export default function RepaymentCalculator() {
 
             <CalcField
               id={`${id}-years`}
-              label="Over how many years"
+              label={ui.calcYears}
               value={values.years}
               onChange={update('years')}
               bounds={BOUNDS.years}
@@ -245,19 +246,19 @@ export default function RepaymentCalculator() {
               <>
                 <p className="calc__headline">
                   <span className="calc__value">{rupees.format(monthly)}</span>
-                  <span className="calc__label">a month, for {months} months</span>
+                  <span className="calc__label">{fill(ui.calcPerMonth, { months })}</span>
                 </p>
                 <dl className="terms">
                   <div className="terms__row">
-                    <dt className="terms__label">Borrowed</dt>
+                    <dt className="terms__label">{ui.calcBorrowed}</dt>
                     <dd className="terms__value">{rupees.format(amount)}</dd>
                   </div>
                   <div className="terms__row">
-                    <dt className="terms__label">Interest</dt>
+                    <dt className="terms__label">{ui.calcInterest}</dt>
                     <dd className="terms__value">{rupees.format(interest)}</dd>
                   </div>
                   <div className="terms__row">
-                    <dt className="terms__label">Total repayable</dt>
+                    <dt className="terms__label">{ui.calcTotal}</dt>
                     <dd className="terms__value">{rupees.format(total)}</dd>
                   </div>
                 </dl>
