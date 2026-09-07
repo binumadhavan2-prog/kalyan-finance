@@ -7,10 +7,10 @@ import Draft from './Draft'
  * `drafted` is true by default because most page copy still is. Pass false
  * where the wording is client-approved, so it renders without the dotted mark.
  *
- * `image` is an optional backdrop, opt-in per page: the banner is plain black
- * without it. It always renders under a scrim, because the type here is white
- * and grey on whatever the image happens to be, and the page cannot know that
- * in advance.
+ * `image` is an optional backdrop, opt-in per page: the banner is plain
+ * --navy-deep without it. It always renders under a scrim, because the type
+ * here is white and soft-blue on whatever the image happens to be, and the
+ * page cannot know that in advance.
  */
 /* Hoisted, not inlined in the render: a component defined during render is a
    new type every pass, which remounts its subtree. */

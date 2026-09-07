@@ -6,9 +6,12 @@
 
 .section { padding-block: var(--step); }
 
-/* Full-bleed inverted band. Alternating these carries the page rhythm. */
+/* Full-bleed inverted band. Alternating these carries the page rhythm. On a
+   navy page "inverted" means deeper, not lighter: --navy-deep sits a step
+   below --page where this used to be black under white. The colour below is
+   unchanged — both grounds want the same white. */
 .section--dark {
-  background: var(--black);
+  background: var(--navy-deep);
   color: var(--ink-invert);
 }
 
@@ -86,7 +89,7 @@
   border: 1px solid var(--ink);
   border-radius: 100px;
   background: var(--ink);
-  color: var(--ink-invert);
+  color: var(--on-light);
   font-weight: 500;
   font-size: 0.9375rem;
   text-decoration: none;
@@ -105,14 +108,14 @@
 
 .btn-ghost:hover {
   background: var(--ink);
-  color: var(--ink-invert);
+  color: var(--on-light);
   border-color: var(--ink);
 }
 
 /* On dark bands the two variants swap polarity. */
 .section--dark .btn {
   background: var(--ink-invert);
-  color: var(--ink);
+  color: var(--on-light);
   border-color: var(--ink-invert);
 }
 
@@ -129,7 +132,7 @@
 
 .section--dark .btn-ghost:hover {
   background: var(--ink-invert);
-  color: var(--ink);
+  color: var(--on-light);
   border-color: var(--ink-invert);
 }
 
@@ -137,14 +140,13 @@
 
 /* ---------- Masthead ----------
    Navy, matched by the footer at the other end of the page. Kept opaque rather
-   than translucent: over a white page the blur would wash the brand colour
-   out, and over the dark hero it would read as a third shade.
+   than translucent: the blur would wash the brand colour out, and over the
+   hero it would read as a third shade.
 
    The bottom rule was navy-on-navy, i.e. invisible, which was fine while the
-   hero was black. Now that the hero is navy too the bar would dissolve into
-   it, so the divider moves to --nav-line — the palette's hairline for this
-   ground, and the same one the footer uses. It still reads as a hairline over
-   the white pages further in. */
+   hero was black. Now that the hero — and every page under it — is navy too,
+   the bar would dissolve into the page, so the divider moves to --nav-line:
+   the palette's hairline for this ground, and the same one the footer uses. */
 .masthead {
   position: sticky;
   top: 0;
@@ -299,7 +301,8 @@
   transition: color 0.15s ease;
 }
 
-.navlist a:hover { color: var(--ink-invert); }
+/* Gold on hover, matching the active link below. 6.3:1 on the navy bar. */
+.navlist a:hover { color: var(--gold); }
 
 .masthead__nav { display: none; }
 
@@ -314,9 +317,34 @@
 .hero {
   position: relative;
   isolation: isolate;
-  padding-block: clamp(5rem, 14vw, 11rem);
+  /* One screen, and no more.
+
+     Height is still what makes this read as the opening rather than as the
+     first of several equal navy bands — that part of the old note stands. But
+     it was bought with padding alone, 13rem top and bottom around a copy block
+     that is already about 575px tall, and padding does not know how tall the
+     window is. On a 1535x726 viewport that put the hero at roughly 1.4 screens
+     and left a third of a screen of empty navy under the buttons.
+
+     Measured against the viewport instead: fill exactly what is left under the
+     sticky masthead, its 1px bottom border included, and centre the row in it.
+     min-height rather than height, so a narrow screen — where the clip stacks
+     under the copy and the content genuinely is taller than the window — grows
+     past it instead of clipping the buttons off the bottom. */
+  display: grid;
+  align-content: center;
+  min-height: calc(100svh - var(--masthead-h) - 1px);
+
+  /* Only a floor now, for the screens where content does outgrow the window.
+     Keyed to svh rather than vw for the same reason the height is: it is the
+     short window, not the narrow one, that cannot afford the padding. */
+  padding-block: clamp(2rem, 6svh, 5rem);
+  /* Held at 58% down rather than centred. The band is far wider than the
+     picture's 2:1, so `cover` fills the width and throws away height — and the
+     currency, which is the subject worth seeing, sits below the middle. Dead
+     centre crops the notes; this keeps the portrait in the surviving strip. */
   background:
-    var(--navy) url("/hero.webp") center / cover no-repeat;
+    var(--navy) url("/hero.webp") center 58% / cover no-repeat;
 }
 
 /*
@@ -334,11 +362,21 @@
   position: absolute;
   inset: 0;
   z-index: -1;
+  /* Thinned so the picture actually reads. Measured against the lightest part
+     of the image, a white desk, which is the worst case:
+
+       0.95 -> white 11.1:1, --nav-soft 5.3:1
+       0.90 -> white 10.0:1, --nav-soft 4.8:1   (the copy column ends here)
+       0.88 -> --nav-soft 4.46:1, which is why 0.90 is the floor and not lower
+
+     The last stop carries no text at all — the clip sits in that column and
+     paints its own background — so it is free to go much thinner than the two
+     behind the copy. */
   background: linear-gradient(
     to right,
-    rgb(30 44 88 / 0.97) 0%,
-    rgb(30 44 88 / 0.92) 45%,
-    rgb(30 44 88 / 0.74) 100%
+    rgb(30 44 88 / 0.95) 0%,
+    rgb(30 44 88 / 0.90) 45%,
+    rgb(30 44 88 / 0.55) 100%
   );
 }
 
@@ -353,8 +391,10 @@
    follows it rather than inventing a second answer. */
 .hero .lede { color: var(--nav-soft); }
 
-/* --line-invert is a near-black hairline built for the black bands, and it
-   vanishes against navy. --nav-line is the palette's divider for this ground. */
+/* --line-invert is the hairline for the deeper band, and it is a shade too
+   quiet against --navy. --nav-line is the palette's divider for this ground.
+   (Since the page went navy --line is --nav-line, so this now restates the
+   default; it is kept because the hero would still need it if --line moved.) */
 .hero .btn-ghost { border-color: var(--nav-line); }
 
 .hero__actions {
@@ -380,7 +420,7 @@
 .section--dark .hero__name { color: var(--ink-invert); }
 
 /* The brand line, tucked under the company name as the masthead has it. In the
-   mark's gold — 9.2:1 on the black band. */
+   mark's gold — 6.3:1 on the navy the hero sits on. */
 .hero__tagline {
   font-size: clamp(1.125rem, 2.2vw, 1.5rem);
   font-weight: 600;
@@ -405,11 +445,22 @@
   align-items: center;
 }
 
-/* The animation takes the larger share of the row. The copy can afford it:
-   .display--statement and .hero__lede carry their own measures, so a narrower
-   column changes where the text wraps, not how much of it fits. */
+/* An even split rather than the 0.8/1.2 this used to run.
+
+   The old comment claimed the copy could afford the smaller share because it
+   carried its own measures — but that was the argument backwards. At 0.8fr the
+   copy column is about 419px on a 1200px viewport, and .display--statement's
+   measure is 20ch, which at its clamped 3.5rem is roughly 600px. The column
+   was the binding constraint, not the measure, so the vision statement never
+   reached the width it was cut for and broke into six short lines of very
+   large type.
+
+   1fr each puts the copy column at 524px there and 572px once the shell caps,
+   which is within a character or two of the 20ch the statement wants. The clip
+   loses about 60px and is still the wider element on the row once its own
+   margins are counted. */
 @media (min-width: 62rem) {
-  .hero__grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
+  .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
 /* 16/9 is the render's own aspect, so `contain` never letterboxes here; it is
@@ -457,7 +508,7 @@
 .card:hover {
   transform: translateY(-2px);
   border-color: var(--ink);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.06);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.32);
 }
 
 /* Touch has no hover, so the lift would stick after a tap. */
@@ -466,7 +517,7 @@
 }
 
 .section--dark .card {
-  background: var(--black);
+  background: var(--navy-deep);
   border-color: var(--line-invert);
 }
 
@@ -762,12 +813,13 @@
 }
 
 /* The only gold button on the site, reserved for the single action the page is
-   asking for. Near-black on --gold measures 9.3:1, so the label holds up. */
+   asking for. The label is pinned to --black rather than --ink: --ink is white
+   on the navy page, and white on --gold is 2.1:1. Near-black measures 9.2:1. */
 .btn--gold,
 .section--dark .btn--gold {
   background: var(--gold);
   border-color: var(--gold);
-  color: var(--ink);
+  color: var(--black);
 }
 
 .btn--gold:hover,
@@ -806,12 +858,16 @@
   .footer__top { grid-template-columns: 1.4fr repeat(2, 1fr); }
 }
 
+/* Heavier and a step larger than the 0.75rem/500 eyebrow these started as, so
+   the column heads read as headings rather than as labels on the lists.
+   Tracking comes down as the size and weight go up: 0.16em was set for small
+   light caps, and at this weight it pulls the words apart. */
 .footer__col h2 {
-  font-size: 0.75rem;
-  letter-spacing: 0.16em;
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--nav-soft);
-  font-weight: 500;
+  font-weight: 700;
   margin-block-end: 1rem;
 }
 
@@ -855,15 +911,25 @@
   z-index: 50;
   padding: 0.75rem 1.25rem;
   background: var(--ink);
-  color: var(--ink-invert);
-  border-radius: 0 0 var(--radius) 0;
+  color: var(--on-light);
+  /* Chip, not a card: --radius-sm keeps this a tab tucked under the header
+     edge rather than a quarter-circle scooped out of a 46px box. */
+  border-radius: 0 0 var(--radius-sm) 0;
 }
 
 .skip-link:focus { left: 0; }
 
-/* ---------- Active nav state ---------- */
+/* ---------- Active nav state ----------
+   Gold rather than the white it was. Hover is gold too, so colour alone no
+   longer separates the current page from the one under the cursor: the
+   weight bump is what carries that distinction, which is why it stays here
+   and why the links around it are left at the inherited 400.
+
+   6.3:1 on the navy bar, 7.6:1 on the mobile panel's --navy. Both rules sit
+   after `.navlist a:hover` at equal specificity, so the current page holds
+   its weight when you hover it. */
 .navlist a.active,
-.mobile-nav__list a.active { color: var(--ink-invert); font-weight: 500; }
+.mobile-nav__list a.active { color: var(--gold); font-weight: 500; }
 
 /* ---------- Mobile nav ---------- */
 .menu-toggle {
@@ -878,7 +944,10 @@
   cursor: pointer;
 }
 
-/* The generic .btn is near-black, which disappears on the navy bar. */
+/* Written when the generic .btn was near-black and disappeared on the navy
+   bar. The base is a white pill with a navy label now, so this restates it;
+   kept because the header CTA is the one button guaranteed to sit on --navy
+   whatever the page bands do. */
 .masthead .btn {
   background: var(--ink-invert);
   color: var(--navy);
@@ -944,7 +1013,13 @@
 /* Optional per-page backdrop (see PageHeader's `image`). A scrim is unavoidable
    — white on this banner's gold core is 1.6:1 bare — but it is kept light so the
    colour survives, and the type is lifted to pay for it (below). Weighted left,
-   where the copy sits, leaving the glow strongest on the right. */
+   where the copy sits, leaving the glow strongest on the right.
+
+   Navy rather than the near-black it was under the white page, so the banner
+   sits in the page's own colour instead of introducing a third one. Navy is
+   the lighter scrim of the two at equal alpha, so each stop is raised to hold
+   what the black one measured: over the gold core white is 10.3:1 at the left
+   stop and 5.2:1 at the right, against 13.9:1 and 5.1:1 before. */
 .page-head--image {
   position: relative;
   background-size: cover;
@@ -959,9 +1034,9 @@
   z-index: -1;
   background: linear-gradient(
     100deg,
-    rgba(10, 10, 11, 0.75) 0%,
-    rgba(10, 10, 11, 0.62) 45%,
-    rgba(10, 10, 11, 0.4) 100%
+    rgb(30 44 88 / 0.85) 0%,
+    rgb(30 44 88 / 0.7) 45%,
+    rgb(30 44 88 / 0.5) 100%
   );
 }
 
@@ -975,7 +1050,7 @@
    directional scrim leaves nothing to sit against. Flatten it to an even wash. */
 @media (max-width: 48rem) {
   .page-head--image::before {
-    background: rgba(10, 10, 11, 0.7);
+    background: rgb(30 44 88 / 0.8);
   }
 }
 
@@ -1034,7 +1109,9 @@
   width: 100%;
   padding: 0.75rem 0.875rem;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  /* Not the card corner: a single-line input is barely twice --radius tall, so
+     the card radius would round it into a pill and stop it reading as a field. */
+  border-radius: var(--radius-sm);
   background: var(--page);
   color: var(--ink);
 }
@@ -1088,16 +1165,6 @@
   gap: 0.75rem;
 }
 
-/* Sits under the town-level map to say plainly what the pin is and is not. */
-.map__note {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9375rem;
-  color: var(--ink-soft);
-}
-
 .map--empty {
   display: grid;
   place-items: center;
@@ -1127,10 +1194,22 @@
 
 /* A full sentence, not a two-word headline: it needs a lower ceiling than
    .display or it swallows the viewport, and a measure so it breaks sensibly. */
+/*
+ * The vision statement, and the largest type on the site.
+ *
+ * The measure moves with the size on purpose. `ch` is relative to font-size,
+ * so the 20ch cut for 3.5rem would be about 640px at 4rem — past the ~572px
+ * the copy column actually offers, which is the exact failure the grid comment
+ * above describes: the column becomes the binding constraint and the statement
+ * breaks into more, shorter lines of very large type.
+ *
+ * 20 x 3.5 = 17.5 x 4, so the line length in px is unchanged and the statement
+ * wraps where it did before. Only the type got bigger.
+ */
 .display--statement {
-  font-size: clamp(2rem, 4.6vw, 3.5rem);
-  line-height: 1.05;
-  max-width: 20ch;
+  font-size: clamp(2.25rem, 5.3vw, 4rem);
+  line-height: 1.02;
+  max-width: 17.5ch;
 }
 
 /* ---------- About page ---------- */
@@ -1250,7 +1329,7 @@
 
 .tag--link:hover {
   background: var(--ink);
-  color: var(--ink-invert);
+  color: var(--on-light);
   border-color: var(--ink);
 }
 
@@ -1295,7 +1374,7 @@
   aspect-ratio: 16 / 9;
   border-radius: var(--radius);
   border: 1px solid var(--line);
-  background: var(--black);
+  background: var(--navy-deep);
   object-fit: contain;
 }
 
@@ -1304,7 +1383,7 @@
 /* ---------- Scroll progress ----------
    Sits on the underside of the sticky masthead rather than at the very top
    of the viewport: over the navy it would be a second stripe of brand
-   colour, and the home page opens on the black hero, where an inked bar
+   colour, and the home page opens on the hero, where an inked bar
    would vanish. Navy track, gold fill at 6.3:1 — it reads as the header's
    own edge, and the read position is the one moving thing on the page. */
 .scroll-progress {
@@ -1375,7 +1454,7 @@
   padding: 0.125rem 0.625rem;
   border-radius: 100px;
   background: var(--ink);
-  color: var(--ink-invert);
+  color: var(--on-light);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -1420,3 +1499,239 @@
   font-size: 0.875rem;
   color: var(--ink-soft);
 }
+
+/* ---------- Parallax pills ----------
+   The differentiators on /why-us. Monochrome and navy only: --gold is
+   approved as an accent in four named places and "anywhere else still needs
+   asking first", so these stay off it until someone says otherwise. */
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  /* Wider than a chip row needs at rest, because the drift moves neighbouring
+     pills by different amounts and this is the clearance that stops them
+     crossing at full lean.
+
+     Sized against the worst adjacent pair in DEPTHS, 0.55 beside 1.15, which
+     close by 0.6 x STRENGTH: 28.8px across at STRENGTH 48, and 13px down once
+     VERTICAL_DAMPING is applied. Then the tilt, which is the part that is easy
+     to miss — a rotated pill's box grows by its own WIDTH x sin(angle), so the
+     widest label adds roughly 6px of height, given up by the row above and the
+     row below at the same time.
+
+     So: 44px across against 28.8 + ~2, and 36px down against 13 + ~6. Raising
+     STRENGTH or the TILTS without raising these is what makes them touch. */
+  gap: 2.25rem 2.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The slot carries the cursor drift and nothing else. Keeping it off the pill
+   means the JS transform never has to know about the tilt or the entry
+   animation, and neither of those has to preserve the drift. */
+.pills__slot {
+  /* Only the transform is animated, and only ever from JS. Declaring it here
+     would fight the per-frame writes; the easing lives in the rAF loop. */
+  will-change: transform;
+}
+
+.pills__pill {
+  display: inline-block;
+  padding: 0.6875rem 1.375rem;
+  border: 1px solid var(--line);
+  /* Fully round rather than --radius: that token is the page's card corner,
+     and a pill is the one shape on the site that is meant to read as round. */
+  border-radius: 999px;
+  background: var(--raised);
+  color: var(--ink);
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  white-space: nowrap;
+  transform: rotate(var(--tilt, 0deg));
+}
+
+/* Every third pill inverts, so the row has some weight in it rather than
+   reading as five identical chips. The inversion used to be a navy pill on the
+   white page; on the navy page that is the pill disappearing, so it flips to
+   the light chip — navy on white, 13.5:1, measured in the token block. */
+.pills__slot:nth-child(3n - 1) .pills__pill {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--on-light);
+}
+
+/* Long terms are allowed to wrap on a narrow screen — "Customer-focused
+   approach" on one unbroken line pushes the row wider than a phone. */
+@media (max-width: 30rem) {
+  .pills__pill { white-space: normal; }
+}
+
+/*
+ * Entry. `.is-entering` is added by the component once the row scrolls into
+ * view, never by this stylesheet, so a pill with no JavaScript is simply a
+ * pill — it is never left hidden waiting for a class that may not arrive.
+ *
+ * The overshoot in the middle is the bounce: it passes the resting tilt and
+ * comes back to it, rather than easing politely into place.
+ */
+.pills.is-entering .pills__pill {
+  animation: pill-in 0.62s cubic-bezier(0.34, 1.56, 0.64, 1) var(--delay, 0ms) both;
+}
+
+@keyframes pill-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem) rotate(calc(var(--tilt, 0deg) * 3.5)) scale(0.9);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-0.1875rem) rotate(calc(var(--tilt, 0deg) * 0.4)) scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(var(--tilt, 0deg)) scale(1);
+  }
+}
+
+/* The component bails out before adding the class or binding the pointer, so
+   nothing here should ever match. Second lock on the same door, as .reveal
+   has: if the class somehow lands, the pills still sit still and visible. */
+@media (prefers-reduced-motion: reduce) {
+  .pills.is-entering .pills__pill { animation: none; }
+  .pills__slot { will-change: auto; }
+}
+
+/* ---------- Repayment calculator ----------
+   Inputs beside their result. Below 52rem they stack, with the figures under
+   the fields rather than beside them — the result has to stay visible while
+   the numbers above it are being typed. */
+.calc {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+}
+
+@media (min-width: 52rem) {
+  .calc { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+.calc__fields { display: grid; gap: 1.25rem; }
+
+/* Reuses .field for the inputs themselves; this is only the note under the
+   rate, which the others do not have. */
+.field__hint {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+/* ---------- Slider half of a calculator field ----------
+   The track paints its own fill from --fill, written inline by CalcField from
+   the current value: the filled part is what has been chosen, the rest is the
+   span still available. An untouched field sends 0%, so the track is bare and
+   the thumb sits at the left rather than implying a figure.
+
+   Gold, asked for on 2026-09-07 and measured for it: the fill reads 3.9:1
+   against the --nav-line track it sits in and the thumb 6.3:1 against the
+   navy behind it, both clear of the 3:1 floor for a control you have to see
+   to operate. It is the same idiom as the scroll progress bar — gold marking
+   a position along a navy track.
+
+   Outranks `.field input` on class count, which would otherwise hand the
+   slider the number box's padding, border and radius. */
+.field .field__slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1.5rem;
+  /* .field's own 0.375rem gap puts the thumb almost against the box above it;
+     this is the rest of the clearance the round thumb needs. */
+  margin-block-start: 0.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Both engines need the track and thumb spelled out separately, and neither
+   accepts the other's selector in a shared rule — one unknown pseudo-element
+   drops the whole block, so these stay split. */
+.field__slider::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--gold) var(--fill, 0%),
+    var(--nav-line) var(--fill, 0%)
+  );
+}
+
+.field__slider::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--gold) var(--fill, 0%),
+    var(--nav-line) var(--fill, 0%)
+  );
+}
+
+/* Chrome centres nothing for you: the thumb hangs off the top of the track
+   unless it is pulled up by half its own height less half the track's,
+   (4px - 18px) / 2. Firefox does this itself, so --moz has no margin. */
+.field__slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-block-start: -0.4375rem;
+  border-radius: 50%;
+  border: 2px solid var(--navy);
+  background: var(--gold);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.45);
+}
+
+.field__slider::-moz-range-thumb {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  border: 2px solid var(--navy);
+  background: var(--gold);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.45);
+}
+
+/* The panel the answer lands in. Bordered rather than filled, matching the
+   indicative examples: a fill here would make the result read as a third band
+   inside a section that already alternates against its neighbours. */
+.calc__out {
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+  padding: clamp(1.25rem, 3.5vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  /* Holds its height between the empty and filled states, so typing the last
+     field does not make the section jump. */
+  min-height: 13rem;
+}
+
+.calc__headline { display: grid; gap: 0.25rem; margin: 0; }
+
+/* The one big number on the page. tabular-nums so it does not jitter sideways
+   as the digits change under the keyboard. */
+.calc__value {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.calc__label { font-size: 0.9375rem; color: var(--ink-soft); }
+
+.calc__empty { margin: 0; font-size: 0.9375rem; color: var(--ink-soft); }
+
+.calc__out .terms__value { font-variant-numeric: tabular-nums; }

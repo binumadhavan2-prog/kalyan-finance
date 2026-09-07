@@ -1,17 +1,25 @@
 /*
  * Design tokens.
  *
- * The page runs on a neutral monochrome scale. --navy is the supplied brand
- * colour (#1E2C58, sampled from the client swatch). It carries the masthead,
- * the hero directly beneath it, and the footer; the bands between them stay
- * monochrome, so the brand colour still opens and closes the page rather than
- * being sprayed through it.
+ * The page runs on navy. --navy is the supplied brand colour (#1E2C58,
+ * sampled from the client swatch); it used to carry only the masthead, the
+ * hero and the footer, bracketing a white page, and it is now the ground for
+ * every page top to bottom.
  *
- * Measured contrast — on --navy: white 13.5:1, --nav-soft 7.4:1, --gold 6.3:1.
- * On --page: --ink 19.3:1, --ink-soft 5.4:1. Keep replacements above 4.5:1.
+ * The rhythm the light page got from white / grey / black comes from three
+ * shades of the one colour instead: --raised a step up from --page for the
+ * alternating bands, --navy-deep a step down for the inverted ones.
+ *
+ * Measured contrast — on --navy: white 13.5:1, --nav-soft 6.5:1, --gold 6.3:1.
+ * On --raised: white 11.6:1, --nav-soft 5.6:1. On --navy-deep: white 15.8:1,
+ * --nav-soft 7.6:1, --gold 7.4:1. Keep replacements above 4.5:1.
  */
 :root {
   --navy: #1e2c58;
+  /* The two neighbours of --navy, same hue, kept as their own tokens so the
+     bands are named rather than being one-off hex values in App.css.
+     --raised is white at 5% over --navy, --navy-deep is --navy at 75%. */
+  --navy-deep: #162142;
   --nav-soft: #aab3cd;
   /* Hairline for dividers on navy: white at 15% over --navy, flattened to an
      opaque value so it does not shift over whatever sits behind it. */
@@ -20,32 +28,51 @@
      public/logo.png, which runs from #b57616 in the shadows to #fcf6af on the
      highlights. Client-approved as an accent and never as a ground: the
      masthead and hero taglines, the animated frame around the hero clip, the
-     primary button in the closing CTA, and the scroll progress fill. The
-     "What we do" band was gold briefly and is black again as of 2026-09-05.
-     Anywhere else still needs asking first. */
+     primary button in the closing CTA, the scroll progress fill, the active
+     nav link and the calculator sliders (both asked for on 2026-09-07). The
+     "What we do" band was gold briefly and went back to the plain dark band on
+     2026-09-05. Anywhere else still needs asking first. */
   --gold: #d7ab48;
 
+  /* Kept as a real black for one job: the label on the gold button, where
+     white measures 2.1:1 and this measures 9.2:1. Nothing else grounds on it
+     any more — the dark bands moved to --navy-deep. */
   --black: #0a0a0b;
-  --ink: #0a0a0b;
-  --ink-soft: #6b6b73;
+
+  --ink: #ffffff;
+  --ink-soft: var(--nav-soft);
+  /* The invert pair is the same light-on-dark as the base pair now, because
+     both grounds are navy: every `.section--dark` colour rule restates the
+     base instead of flipping it. The other half of what --ink-invert used to
+     mean — the label on a white or gold chip — moved to --on-light. */
   --ink-invert: #ffffff;
-  --ink-invert-soft: #a1a1aa;
-  --line: #e4e4e7;
-  --line-invert: #2a2a30;
-  --page: #ffffff;
-  --raised: #f4f4f5;
+  --ink-invert-soft: var(--nav-soft);
+  /* Text and glyphs sitting on a light chip: the filled button, the skip
+     link, the notice flag, the hovered tag. Navy on white is 13.5:1. */
+  --on-light: var(--navy);
+  --line: var(--nav-line);
+  /* --nav-line's counterpart on the deeper band: white at 13% over
+     --navy-deep, flattened the same way. */
+  --line-invert: #343f62;
+  --page: var(--navy);
+  --raised: #29375f;
   --accent: var(--navy);
 
   --shell: 1200px;
   --measure: 60ch;
   --gutter: clamp(1.25rem, 5vw, 3rem);
   --step: clamp(4.5rem, 11vw, 9rem);
-  --radius: 14px;
+  /* The page's card corner. Raised from 14px so a card reads as a rounded
+     block in its own right rather than a rectangle with the edge taken off.
+     Anything that is not a card takes --radius-sm: at 22px a 48px-tall
+     input is a lozenge, not a field. */
+  --radius: 22px;
+  --radius-sm: 12px;
   --masthead-h: 4.5rem;
 
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
-  color-scheme: light;
+  color-scheme: dark;
   color: var(--ink);
   background: var(--page);
   font-family: var(--sans);

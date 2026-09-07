@@ -5,9 +5,9 @@
  *   - `company` / `services`  — supplied by the client, wording unchanged.
  *   - `contact` / `founder` /
  *     `recognition` / product
- *     eligibility              — FACTS nobody has given us. Left null so the
- *                                page renders a visible "Not supplied yet"
- *                                chip instead of an invented value.
+ *     eligibility              — FACTS nobody has given us. Left null rather
+ *                                than invented; the page renders the slot
+ *                                empty (see components/Missing.jsx).
  *   - `draft`                  — wording written to fill out the layout.
  *                                NOT approved by anyone.
  *
@@ -324,6 +324,20 @@ export const draft = {
     'Illustrative only. These are examples, not offers, and not a quotation. Nothing here is a commitment to lend, and the terms of any arrangement are confirmed for your own circumstances in writing before you sign.',
   indicativePending:
     'Examples will be published here once the figures behind them are confirmed. Until then, tell us what you need and we will talk it through.',
+
+  /* ---------- Repayment calculator ---------- */
+  calculatorTitle: 'Work out a repayment',
+  calculatorLede:
+    'Put in an amount, a rate and a term, and see what the monthly repayment and the total cost would come to.',
+  /* Drafted like everything else here, but as with `indicativeNotice` the
+     substance is not optional: the rate is the visitor's own figure, and the
+     result has to be marked as arithmetic rather than as a quotation. */
+  calculatorNotice:
+    'Illustrative only. This works out the arithmetic on the figures you enter — it is not a quotation, not an offer, and not a decision. Kalyan Finance has not published rates, so the rate here is yours to supply. Any actual terms are confirmed for your circumstances in writing.',
+  calculatorRateHint:
+    'We have not published rates, so enter the one you want to test.',
+  calculatorEmpty:
+    'Fill in all three and the figures appear here.',
 
   termsPending:
     'Amounts, tenure, eligibility and the documents needed are confirmed for your situation before you commit to anything.',

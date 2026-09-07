@@ -2,6 +2,7 @@ import { company, draft, founder, whyPoints } from '../content'
 import Draft from '../components/Draft'
 import Missing from '../components/Missing'
 import PageHeader from '../components/PageHeader'
+import ParallaxPills from '../components/ParallaxPills'
 import StepList from '../components/StepList'
 import Stats from '../components/Stats'
 import ClosingCta from '../components/ClosingCta'
@@ -23,16 +24,11 @@ export default function WhyUs() {
               <Draft>{draft.differentiatorsTitle}</Draft>
             </h2>
           </div>
-          {/* Supplied as terms with nothing under them, so they take the same
-              divided-row treatment the core values do rather than cards with
-              an empty body. */}
-          <ul className="valuelist" role="list">
-            {whyPoints.map((point) => (
-              <li className="valuelist__item" key={point}>
-                {point}
-              </li>
-            ))}
-          </ul>
+          {/* Supplied as terms with nothing under them. The core values take
+              the divided-row treatment for the same reason; these get the
+              pills instead, so the two bands of bare terms do not read as the
+              same list printed twice on different pages. */}
+          <ParallaxPills items={whyPoints} />
         </div>
       </section>
 
