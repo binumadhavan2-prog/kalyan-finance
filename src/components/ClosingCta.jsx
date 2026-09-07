@@ -1,16 +1,11 @@
 import { Link } from 'react-router-dom'
-import { contact, draft } from '../content'
+import { useCopy } from '../i18n'
 import Draft from './Draft'
 import Missing from './Missing'
 
 /* The direct-contact strip under the buttons. Phone is the one route most
    people reach for first, so it is listed even though the number is missing —
    a visible gap here is a prompt to the client, not a finished design. */
-const channels = [
-  { key: 'phone', label: 'Phone', href: (v) => `tel:${v.replace(/\s/g, '')}` },
-  { key: 'email', label: 'Email', href: (v) => `mailto:${v}` },
-  { key: 'location', label: 'Where we are', href: null },
-]
 
 /**
  * The closing call to action, on every page but /contact.
@@ -27,10 +22,18 @@ const channels = [
  * worse than no button.
  */
 export default function ClosingCta() {
+  const { contact, draft, ui } = useCopy()
+
+  /* Built here rather than at module load: the labels are language state. */
+  const channels = [
+    { key: 'phone', label: ui.phone, href: (v) => `tel:${v.replace(/\s/g, '')}` },
+    { key: 'email', label: ui.email, href: (v) => `mailto:${v}` },
+    { key: 'location', label: ui.whereWeAre, href: null },
+  ]
   return (
     <section className="section section--dark cta-band">
       <div className="shell cta">
-        <p className="eyebrow cta__eyebrow">Contact</p>
+        <p className="eyebrow cta__eyebrow">{ui.contact}</p>
         <h2 className="cta__title">
           <Draft>{draft.ctaTitle}</Draft>
         </h2>

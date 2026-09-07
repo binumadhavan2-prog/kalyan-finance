@@ -1,40 +1,48 @@
-import { contact, draft } from '../content'
+import { useCopy } from '../i18n'
 import Draft from '../components/Draft'
 import Missing from '../components/Missing'
 import PageHeader from '../components/PageHeader'
 import EnquiryForm from '../components/EnquiryForm'
 import InstagramIcon from '../components/InstagramIcon'
 
-const rows = [
-  { key: 'phone', label: 'Phone', href: (v) => `tel:${v.replace(/\s/g, '')}` },
-  { key: 'email', label: 'Email', href: (v) => `mailto:${v}` },
-  /* Location is the town; address is the full postal one. Only the first is
-     known, so they stay separate rows rather than one half-true line. */
-  { key: 'location', label: 'Location', href: null },
-  { key: 'address', label: 'Address', href: null },
-  { key: 'hours', label: 'Hours', href: null },
-]
-
-/*
- * No office address has been supplied, so the map falls back to the town that
- * has been: centred on `contact.location` and captioned as the town, never as
- * "our office" — the pin is Sivagangai, not a building we cannot name. The
- * `?output=embed` form needs no API key and no billing account.
- *
- * `contact.mapUrl` still wins when it is set; drop the real embed in there and
- * this fallback stops being used.
- */
-const townMapUrl = contact.location
-  ? `https://www.google.com/maps?q=${encodeURIComponent(contact.location)}&output=embed`
-  : null
 
 export default function Contact() {
+  const { contact, draft, ui } = useCopy()
+
+  /* Both of these read `contact`, which is per-language state now rather
+     than a module import, so they are built here instead of at module
+     load — where `contact` no longer exists. */
+  const rows = [
+    { key: 'phone', label: ui.phone, href: (v) => `tel:${v.replace(/\s/g, '')}` },
+    { key: 'email', label: ui.email, href: (v) => `mailto:${v}` },
+    /* Location is the town; address is the full postal one. Only the first
+       is known, so they stay separate rows rather than one half-true line. */
+    { key: 'location', label: ui.location, href: null },
+    { key: 'address', label: ui.address, href: null },
+    { key: 'hours', label: ui.hours, href: null },
+  ]
+
+  /*
+   * No office address has been supplied, so the map falls back to the town that
+   * has been: centred on `contact.location` and captioned as the town, never as
+   * "our office" — the pin is Sivagangai, not a building we cannot name. The
+   * `?output=embed` form needs no API key and no billing account.
+   *
+   * `contact.mapUrl` still wins when it is set; drop the real embed in there and
+   * this fallback stops being used.
+   */
+  const townMapUrl = contact.location
+    ? `https://www.google.com/maps?q=${encodeURIComponent(contact.location)}&output=embed`
+    : null
   return (
     <>
+      {/* No eyebrow: draft.contactTitle is itself 'Contact us', so passing one
+          printed the same two words twice, once in caps above the h1 that
+          already said them. PageHeader renders nothing when it is omitted. */}
       <PageHeader
-        eyebrow="Contact us"
         title={draft.contactTitle}
         lede={draft.contactLede}
+        image="/page-header.webp"
       />
 
       {/* The way through, before the detail below it. Most people arriving on
@@ -45,7 +53,7 @@ export default function Contact() {
         <div className="shell contact-actions">
           {contact.phone ? (
             <a className="btn btn--lg" href={`tel:${contact.phone.replace(/\s/g, '')}`}>
-              Call us
+              {ui.callUs}
             </a>
           ) : null}
           {contact.email ? (
@@ -53,11 +61,11 @@ export default function Contact() {
               className={`btn btn--lg${contact.phone ? ' btn-ghost' : ''}`}
               href={`mailto:${contact.email}`}
             >
-              Email us
+              {ui.emailUs}
             </a>
           ) : null}
           <a className="btn btn-ghost btn--lg" href="#enquiry">
-            Send an enquiry
+            {ui.sendAnEnquiry}
           </a>
         </div>
       </section>
@@ -66,7 +74,7 @@ export default function Contact() {
         <div className="shell split">
           <div className="stack-lg">
             <div className="stack">
-              <p className="eyebrow">Details</p>
+              <p className="eyebrow">{ui.details}</p>
               <dl className="details">
                 {rows.map(({ key, label, href }) => {
                   const value = contact[key]
@@ -102,7 +110,7 @@ export default function Contact() {
                   target="_blank"
                 >
                   <InstagramIcon />
-                  {contact.instagramHandle ?? 'Instagram'}
+                  {contact.instagramHandle ?? ui.instagram}
                 </a>
               ) : (
                 <p>

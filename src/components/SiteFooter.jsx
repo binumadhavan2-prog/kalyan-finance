@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
-import { company, contact } from '../content'
+import { useCopy } from '../i18n'
 import Wordmark from './Wordmark'
 import Missing from './Missing'
-import { navLinks } from '../nav'
 import InstagramIcon from './InstagramIcon'
 
 export default function SiteFooter() {
+  const { company, contact, navLinks, ui } = useCopy()
   return (
     <footer className="footer">
       <div className="shell">
@@ -26,7 +26,7 @@ export default function SiteFooter() {
           </div>
 
           <div className="footer__col">
-            <h2>Discover</h2>
+            <h2>{ui.discover}</h2>
             <ul className="footer__links" role="list">
               {navLinks.map(({ to, label }) => (
                 <li key={to}>
@@ -37,7 +37,7 @@ export default function SiteFooter() {
           </div>
 
           <div className="footer__col">
-            <h2>Contact</h2>
+            <h2>{ui.contact}</h2>
             <ul className="footer__links" role="list">
               <li>
                 {contact.email ? (
@@ -62,7 +62,7 @@ export default function SiteFooter() {
                     target="_blank"
                   >
                     <InstagramIcon />
-                    {contact.instagramHandle ?? 'Instagram'}
+                    {contact.instagramHandle ?? ui.instagram}
                   </a>
                 ) : (
                   <Missing>Instagram not supplied</Missing>

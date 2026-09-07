@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { draft, productDetail, services } from '../content'
+import { useCopy } from '../i18n'
 import Draft from '../components/Draft'
 import Missing from '../components/Missing'
 import PageHeader from '../components/PageHeader'
@@ -38,6 +38,7 @@ function List({ items }) {
 }
 
 export default function LoanProducts() {
+  const { draft, productDetail, services, ui } = useCopy()
   /* Until any product has terms, the right-hand column would repeat the same
      "not published" note five times. Say it once and let the products read as
      a clean list; the two-column form returns as soon as terms are supplied. */
@@ -45,18 +46,24 @@ export default function LoanProducts() {
 
   return (
     <>
+      {/* No eyebrow: draft.productsTitle is itself 'Loan products', so passing
+          one printed the same two words twice, once in caps above the h1 that
+          already said them. Contact had the same duplication and lost it too.
+
+          Same backdrop as About, Why Kalyan Finance and Contact. This page used
+          to carry /loan-products-header.png, the bright original of the same
+          artwork, which left it the one inner page on a different asset — and a
+          much lighter one, under a scrim measured against the darker file. */}
       <PageHeader
-        eyebrow="Loan products"
         title={draft.productsTitle}
         lede={draft.productsLede}
-        image="/loan-products-header.png"
+        image="/page-header.webp"
       />
 
       {/* Five products is enough that a reader arriving for one of them should
           not have to scroll the other four to find it. */}
       <section className="section section--tight">
         <div className="shell stack">
-          <p className="eyebrow">Jump to</p>
           <ul className="taglist" role="list">
             {services.map((service) => (
               <li key={service.id}>
@@ -100,7 +107,7 @@ export default function LoanProducts() {
                   </p>
                   <p>
                     <Link className="btn btn-ghost btn--sm" to="/contact">
-                      Enquire about this
+                      {ui.enquireAboutThis}
                     </Link>
                   </p>
                 </div>
@@ -126,10 +133,10 @@ export default function LoanProducts() {
 
                 {hasTerms(detail) ? (
                   <dl className="terms">
-                    <Term label="Amount" value={detail.amount ?? <Missing />} />
-                    <Term label="Tenure" value={detail.tenure ?? <Missing />} />
+                    <Term label={ui.amount} value={detail.amount ?? <Missing />} />
+                    <Term label={ui.tenure} value={detail.tenure ?? <Missing />} />
                     <Term
-                      label="Eligibility"
+                      label={ui.eligibility}
                       value={
                         detail.eligibility?.length ? (
                           <List items={detail.eligibility} />
@@ -139,7 +146,7 @@ export default function LoanProducts() {
                       }
                     />
                     <Term
-                      label="Documents"
+                      label={ui.documents}
                       value={
                         detail.documents?.length ? (
                           <List items={detail.documents} />
@@ -156,10 +163,12 @@ export default function LoanProducts() {
         </div>
       </section>
 
+      {/* Back on .split now that the heading is back: the grid exists to stand
+          the heading in its own column beside the copy, which is also where the
+          copy gets its measure from, so .prose comes off with it. */}
       <section className="section section--raised section--tight">
         <div className="shell split">
           <div className="stack">
-            <p className="eyebrow">Eligibility</p>
             <h2 className="heading">
               <Draft>{draft.eligibilityTitle}</Draft>
             </h2>
@@ -179,14 +188,10 @@ export default function LoanProducts() {
           what it looks like in practice, then what to do about it. */}
       <IndicativeExamples />
 
+      {/* The steps stand alone now. .stack-lg went with the heading it was
+          spacing away from them — one child has nothing to be spaced from. */}
       <section className="section">
-        <div className="shell stack-lg">
-          <div className="stack prose">
-            <p className="eyebrow">Applying</p>
-            <h2 className="heading">
-              <Draft>{draft.howToApplyTitle}</Draft>
-            </h2>
-          </div>
+        <div className="shell">
           <StepList items={draft.applySteps} />
         </div>
       </section>

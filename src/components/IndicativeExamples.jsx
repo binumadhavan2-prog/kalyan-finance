@@ -1,13 +1,7 @@
-import { draft, indicativeExamples, services } from '../content'
+import { useCopy } from '../i18n'
 import Draft from './Draft'
 import Missing from './Missing'
 
-/** The rows of one example, in the order they read best. */
-const rows = [
-  { key: 'amount', label: 'Amount' },
-  { key: 'tenure', label: 'Tenure' },
-  { key: 'repayment', label: 'Repayment' },
-]
 
 /**
  * Worked examples for the loan products page.
@@ -22,6 +16,14 @@ const rows = [
  * an illustrative number is still a number a visitor anchors on.
  */
 export default function IndicativeExamples() {
+  const { draft, indicativeExamples, services, ui } = useCopy()
+
+  /** The rows of one example, in the order they read best. */
+  const rows = [
+    { key: 'amount', label: ui.amount },
+    { key: 'tenure', label: ui.tenure },
+    { key: 'repayment', label: ui.repayment },
+  ]
   const withExamples = services.filter(
     (service) => indicativeExamples[service.id]?.length,
   )
@@ -30,7 +32,6 @@ export default function IndicativeExamples() {
     <section className="section section--tight" id="indicative-examples">
       <div className="shell stack-lg">
         <div className="stack prose">
-          <p className="eyebrow">Examples</p>
           <h2 className="heading">
             <Draft>{draft.indicativeTitle}</Draft>
           </h2>
@@ -42,7 +43,7 @@ export default function IndicativeExamples() {
         {/* The notice sits above the examples and stays in the flow whether or
             not there are any, so the framing is read before the figures. */}
         <p className="notice notice--illustrative">
-          <span className="notice__flag">Illustrative</span>
+          <span className="notice__flag">{ui.illustrative}</span>
           <span>
             <Draft>{draft.indicativeNotice}</Draft>
           </span>
@@ -55,7 +56,7 @@ export default function IndicativeExamples() {
               <ul className="example-grid" role="list">
                 {indicativeExamples[service.id].map((example) => (
                   <li className="example" key={example.id}>
-                    <p className="example__flag">Illustrative example</p>
+                    <p className="example__flag">{ui.illustrativeExample}</p>
                     {example.scenario ? (
                       <p className="example__scenario">{example.scenario}</p>
                     ) : null}

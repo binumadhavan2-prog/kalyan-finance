@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { company, draft, services, vision, whyPoints } from '../content'
+import { useCopy } from '../i18n'
 import Draft from '../components/Draft'
 import ServiceIcon from '../components/ServiceIcons'
 import CoreValues from '../components/CoreValues'
@@ -12,6 +12,7 @@ import ScrollProgress from '../components/ScrollProgress'
 import RepaymentCalculator from '../components/RepaymentCalculator'
 
 export default function Home() {
+  const { company, draft, services, ui, vision, whyPoints } = useCopy()
   return (
     <>
       <ScrollProgress />
@@ -31,10 +32,10 @@ export default function Home() {
             </div>
             <p className="hero__actions">
               <Link className="btn" to="/contact">
-                Get in touch
+                {ui.getInTouch}
               </Link>
               <Link className="btn btn-ghost" to="/loan-products">
-                Loan products
+                {ui.pageProducts}
               </Link>
             </p>
           </div>
@@ -65,7 +66,7 @@ export default function Home() {
 
           <p>
             <Link className="btn btn-ghost" to="/loan-products">
-              See eligibility and how to apply
+              {ui.seeEligibility}
             </Link>
           </p>
         </div>
@@ -103,7 +104,7 @@ export default function Home() {
 
           <p>
             <Link className="btn btn-ghost" to="/why-us">
-              How we work, and what you can check
+              {ui.howWeWork}
             </Link>
           </p>
         </div>
@@ -117,7 +118,7 @@ export default function Home() {
       <section className="section section--raised">
         <div className="shell stack-lg">
           <div className="stack prose">
-            <p className="eyebrow">Process</p>
+            <p className="eyebrow">{ui.process}</p>
             <h2 className="heading">
               <Draft>{draft.processTitle}</Draft>
             </h2>

@@ -1,27 +1,35 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
-import { company } from '../content'
+import { useCopy } from '../i18n'
 import SiteHeader from './SiteHeader'
 import SiteFooter from './SiteFooter'
 
-/**
- * A single-page app keeps one <title> for every route unless something updates
- * it. Titles matter here: they are what shows in tabs, bookmarks and results.
- */
-const titles = {
-  '/': company.name,
-  '/loan-products': `Loan Products — ${company.name}`,
-  '/about': `About Us — ${company.name}`,
-  '/why-us': `Why ${company.name}`,
-  '/contact': `Contact Us — ${company.name}`,
-}
-
 export default function Layout() {
+  const { company, ui } = useCopy()
   const { pathname } = useLocation()
 
+  /*
+   * A single-page app keeps one <title> for every route unless something
+   * updates it. Titles matter here: they are what shows in tabs, bookmarks
+   * and results.
+   *
+   * Built inside the component rather than at module load, because the
+   * words in it change with the language while the paths do not.
+   */
+  const titles = useMemo(
+    () => ({
+      '/': company.name,
+      '/loan-products': `${ui.titleLoanProducts} — ${company.name}`,
+      '/about': `${ui.titleAbout} — ${company.name}`,
+      '/why-us': `${ui.titleWhy} ${company.name}`,
+      '/contact': `${ui.titleContact} — ${company.name}`,
+    }),
+    [company, ui],
+  )
+
   useEffect(() => {
-    document.title = titles[pathname] ?? `Page not found — ${company.name}`
-  }, [pathname])
+    document.title = titles[pathname] ?? `${ui.titleNotFound} — ${company.name}`
+  }, [pathname, titles, ui, company])
 
   // Client-side navigation keeps the previous scroll position otherwise.
   useEffect(() => {
@@ -70,7 +78,7 @@ export default function Layout() {
   return (
     <>
       <a className="skip-link" href="#main">
-        Skip to content
+        {ui.skipToContent}
       </a>
       <SiteHeader />
       <main id="main">

@@ -1,14 +1,22 @@
-import { draft, stats } from '../content'
+import { useCopy } from '../i18n'
 import Draft from './Draft'
 import Missing from './Missing'
 
-export default function Stats() {
+/**
+ * `labelled` is true by default: on the home page this eyebrow is the only
+ * thing naming the band. /why-us passes false, where the page has had its
+ * section labels taken off.
+ */
+export default function Stats({ labelled = true }) {
+  const { draft, stats } = useCopy()
   return (
     <section className="section section--raised">
       <div className="shell stack-lg">
-        <p className="eyebrow">
-          <Draft>{draft.statsTitle}</Draft>
-        </p>
+        {labelled ? (
+          <p className="eyebrow">
+            <Draft>{draft.statsTitle}</Draft>
+          </p>
+        ) : null}
         <dl className="stats">
           {/* dt precedes dd for valid markup; the pair is flipped visually. */}
           {stats.map((stat) => (

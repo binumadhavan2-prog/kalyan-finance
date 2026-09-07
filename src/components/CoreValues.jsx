@@ -1,4 +1,4 @@
-import { coreValues } from '../content'
+import { useCopy } from '../i18n'
 
 /**
  * The five core values from the company profile, as supplied.
@@ -8,11 +8,12 @@ import { coreValues } from '../content'
  * the band. Nothing here is underlined — it is approved copy.
  */
 export default function CoreValues() {
+  const { coreValues, ui } = useCopy()
   return (
     <section className="section section--dark">
       <div className="shell split">
         <div className="stack">
-          <h2 className="heading">Core Values</h2>
+          <h2 className="heading">{ui.coreValues}</h2>
         </div>
         <ul className="valuelist" role="list">
           {coreValues.map((value) => (

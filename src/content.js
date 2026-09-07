@@ -337,7 +337,7 @@ export const draft = {
   calculatorRateHint:
     'We have not published rates, so enter the one you want to test.',
   calculatorEmpty:
-    'Fill in all three and the figures appear here.',
+    'Enter your details to see your estimated repayments.',
 
   termsPending:
     'Amounts, tenure, eligibility and the documents needed are confirmed for your situation before you commit to anything.',
@@ -432,13 +432,133 @@ export const draft = {
   locationTitle: 'Where to find us',
   followTitle: 'Follow',
 
-  /* ---------- 404 ---------- */
-  notFoundTitle: 'That page has moved or never existed',
+  /* ---------- 404 ----------
+     Kept short on purpose. A 404 is a dead end, and the useful thing on it is
+     the way out, not an explanation of what went wrong. */
+  notFoundTitle: 'Page Not Found',
   notFoundBody:
-    'The link may be out of date. The pages below cover everything on the site.',
+    "The page you're looking for may have moved or doesn't exist.",
 
   /* ---------- Generic error ---------- */
   errorTitle: 'Something went wrong at our end',
   errorBody:
     'The page failed to load. Reloading usually clears it; if not, get in touch and we will look into it.',
+}
+
+/**
+ * Interface strings — everything that is wording rather than content.
+ *
+ * These were literals in the JSX until the site went bilingual on 2026-09-07.
+ * They live here now for one reason: a language layer can only translate what
+ * it can see, and a string baked into a component is invisible to it.
+ *
+ * This table is not `draft`. The English here is the interface as it already
+ * shipped and read fine; it is the Tamil in content.ta.js that is unreviewed.
+ *
+ * {n} in a value is substituted at the call site. There are no functions in
+ * here on purpose — the language overlay merges plain data, and a function
+ * would have to be special-cased in it.
+ */
+export const ui = {
+  /* Chrome */
+  skipToContent: 'Skip to content',
+  navPrimary: 'Primary',
+  navPrimaryMobile: 'Primary, mobile',
+  menu: 'Menu',
+  close: 'Close',
+  getInTouch: 'Get in touch',
+  discover: 'Discover',
+  contact: 'Contact',
+  instagram: 'Instagram',
+  switchLanguage: 'Switch to {language}',
+
+  /* Page-banner eyebrows */
+  pageAbout: 'About us',
+  pageContact: 'Contact us',
+  pageProducts: 'Loan products',
+  pageWhy: 'Why Kalyan Finance',
+
+  /* Section eyebrows */
+  ourStory: 'Our story',
+  ourVision: 'Our vision',
+  ourMission: 'Our mission',
+  whatWeDo: 'What we do',
+  founder: 'Founder',
+  differentiators: 'Differentiators',
+  process: 'Process',
+  trust: 'Trust',
+  eligibility: 'Eligibility',
+  applying: 'Applying',
+  details: 'Details',
+  jumpTo: 'Jump to',
+  examples: 'Examples',
+  calculator: 'Calculator',
+  error: 'Error',
+  coreValues: 'Core Values',
+  foundedIn: 'Founded in {year}',
+  founderOf: 'Founder of {company}',
+
+  /* Links and buttons */
+  seeEligibility: 'See eligibility and how to apply',
+  howWeWork: 'How we work, and what you can check',
+  seeAllProducts: 'See all loan products',
+  enquireAboutThis: 'Enquire about this',
+  callUs: 'Call us',
+  emailUs: 'Email us',
+  sendAnEnquiry: 'Send an enquiry',
+  reloadPage: 'Reload the page',
+  backToHome: 'Back to home',
+
+  /* Fact-row labels */
+  established: 'Established',
+  businessType: 'Business type',
+  location: 'Location',
+  phone: 'Phone',
+  email: 'Email',
+  address: 'Address',
+  hours: 'Hours',
+  whereWeAre: 'Where we are',
+  amount: 'Amount',
+  tenure: 'Tenure',
+  repayment: 'Repayment',
+  documents: 'Documents',
+
+  /* Indicative examples */
+  illustrative: 'Illustrative',
+  illustrativeExample: 'Illustrative example',
+
+  /* Calculator */
+  calcAmount: 'Amount you need (₹)',
+  calcRate: 'Annual interest rate (%)',
+  calcYears: 'Over how many years',
+  calcPerMonth: 'a month, for {months} months',
+  calcBorrowed: 'Borrowed',
+  calcInterest: 'Interest',
+  calcTotal: 'Total repayable',
+
+  /* Enquiry form */
+  formName: 'Name',
+  formNamePlaceholder: 'Your name',
+  formEmail: 'Email',
+  formEmailPlaceholder: 'e.g. name@example.com',
+  formPhone: 'Phone',
+  formPhonePlaceholder: 'e.g. +91 98765 43210',
+  formMessage: 'What do you need?',
+  formMessagePlaceholder: 'What you need, and roughly when',
+  formSend: 'Send enquiry',
+  formSending: 'Sending…',
+  formSent: 'Thank you — we will come back to you.',
+  formFailed: 'That did not send. Please try again or call us.',
+  formNoEndpoint: 'Form is not connected yet — no destination configured',
+  errName: 'Please tell us your name.',
+  errContact: 'Please give us either an email address or a phone number.',
+  errEmail: 'That does not look like an email address.',
+  errMessage: 'Please tell us roughly what you need.',
+
+  /* Document titles */
+  titleLoanProducts: 'Loan Products',
+  titleAbout: 'About Us',
+  titleWhy: 'Why',
+  titleContact: 'Contact Us',
+  titleNotFound: 'Page not found',
 }

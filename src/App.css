@@ -100,6 +100,15 @@
 
 .btn:hover { background: transparent; color: var(--ink); }
 
+/* The global :focus-visible ring is `2px solid currentColor` at a 3px offset.
+   On a ghost button currentColor is white and that is fine, but on the filled
+   button it is --on-light, i.e. navy — and the offset puts the ring outside the
+   white pill, on the navy page. Navy on navy: the keyboard focus indicator was
+   invisible on every primary button on the site, not only the ones here. White
+   sits at 13.5:1 on --navy and is already the ring the ghost button gets, so
+   both variants now show the same one. */
+.btn:focus-visible { outline-color: var(--ink-invert); }
+
 .btn-ghost {
   background: transparent;
   color: var(--ink);
@@ -160,7 +169,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
+  /* 2rem is right once there is a nav to space out, but at 320px the bar holds
+     the wordmark — which is nowrap, so about 186px it cannot give back — and
+     the Menu button, and 32px between them put the pair over the 280px of
+     usable width. The gap is the only part of that able to yield. */
+  gap: clamp(0.75rem, 4vw, 2rem);
   min-height: var(--masthead-h);
 }
 
@@ -362,20 +375,33 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  /* Thinned so the picture actually reads. Measured against the lightest part
-     of the image, a white desk, which is the worst case:
+  /* Thinned to the floor, so the picture reads as far as it is allowed to.
+     Measured against the lightest part of the image — the white desk, which is
+     pure rgb(255 255 255) and so the worst case there is:
 
-       0.95 -> white 11.1:1, --nav-soft 5.3:1
-       0.90 -> white 10.0:1, --nav-soft 4.8:1   (the copy column ends here)
-       0.88 -> --nav-soft 4.46:1, which is why 0.90 is the floor and not lower
+       alpha   white     --nav-soft   --gold
+       0.95    11.60:1     5.55:1      5.42:1
+       0.90     9.97:1     4.77:1      4.66:1
+       0.89     9.66:1     4.62:1      4.51:1   <- both stops behind the copy
+       0.885                4.50:1      4.47:1
+       0.88     9.35:1     4.46:1      4.35:1
+
+     0.89 is the floor and there is nothing under it: --gold clears by 0.01.
+     The old note put the floor at 0.90 having checked --nav-soft only; the
+     tagline is the tighter of the two and moves first. So this is not a dial to
+     turn by eye — anything that touches --gold, --nav-soft or the photograph
+     itself has to be re-measured against this table.
+
+     Both stops behind the copy are held at 0.89 rather than kept apart: the
+     copy column is now half the row, so 45% is still behind text and cannot be
+     the lighter of the two any more.
 
      The last stop carries no text at all — the clip sits in that column and
-     paints its own background — so it is free to go much thinner than the two
-     behind the copy. */
+     paints its own background — so it stays free to go much thinner. */
   background: linear-gradient(
     to right,
-    rgb(30 44 88 / 0.95) 0%,
-    rgb(30 44 88 / 0.90) 45%,
+    rgb(30 44 88 / 0.89) 0%,
+    rgb(30 44 88 / 0.89) 45%,
     rgb(30 44 88 / 0.55) 100%
   );
 }
@@ -383,7 +409,7 @@
 /* One column below 62rem, where the copy sits over the middle of the picture
    rather than beside it — the gradient has no weak side to exploit there. */
 @media (max-width: 61.999rem) {
-  .hero::before { background: rgb(30 44 88 / 0.95); }
+  .hero::before { background: rgb(30 44 88 / 0.89); }
 }
 
 /* On navy the neutral soft grey goes muddy. The footer hit exactly this and
@@ -670,9 +696,15 @@
   max-width: 40rem;
 }
 
+/* minmax(0, 1fr) on the value, not a bare 1fr. A bare `1fr` is
+   minmax(auto, 1fr), and `auto` will not shrink below the content's min-content
+   width — which for contact.email, 29 characters with no space or hyphen in it,
+   is the whole string. At 320px that column demanded about 232px beside a 96px
+   label and a 16px gap, against 280px of usable width, and the overflow scrolled
+   the entire page sideways. */
 .details__row {
   display: grid;
-  grid-template-columns: minmax(6rem, 9rem) 1fr;
+  grid-template-columns: minmax(6rem, 9rem) minmax(0, 1fr);
   gap: 1rem;
   padding-block: 1.25rem;
   border-top: 1px solid var(--line);
@@ -690,7 +722,14 @@
 
 .section--dark .details__label { color: var(--ink-invert-soft); }
 
-.details__value { margin: 0; }
+/* The track can shrink now, so the address has to be breakable or it simply
+   overflows its own cell instead of the page. `anywhere` rather than
+   `break-word`: only `anywhere` also lets the break count toward min-content,
+   which is what stops the track forcing the row wide in the first place. */
+.details__value {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
 
 /* Visibly unfinished, so placeholder details cannot ship unnoticed. */
 /* No opacity here. It used to carry 0.75, which dropped --ink-soft from its
@@ -724,7 +763,12 @@
 
 /* ---------- Closing CTA ----------
    The one band on the page that has to convert, so it is given more room than
-   a normal section and a gold hairline to lift it off the stats band above. */
+   a normal section and a gold hairline to lift it off the band above.
+
+   The rule belongs to this band alone. It was briefly put on .section, which
+   gave every band on the site one and left this one with nothing the others
+   lacked — the line only marks the closing CTA out while it is the only place
+   the line appears. */
 .cta-band {
   padding-block: clamp(5.5rem, 13vw, 10rem);
   border-top: 2px solid var(--gold);
@@ -854,8 +898,12 @@
   border-bottom: 1px solid var(--nav-line);
 }
 
+/* Same minmax(0, …) fix as .details__row, and for the same address: at 48rem
+   a 1fr column here is about 203px, narrower than the email's min-content. */
 @media (min-width: 48rem) {
-  .footer__top { grid-template-columns: 1.4fr repeat(2, 1fr); }
+  .footer__top {
+    grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* Heavier and a step larger than the 0.75rem/500 eyebrow these started as, so
@@ -889,6 +937,8 @@
   text-decoration: none;
   color: var(--nav-soft);
   transition: color 0.15s ease;
+  /* The contact column holds the email address; see .details__value. */
+  overflow-wrap: anywhere;
 }
 
 .footer__links a:hover { color: var(--ink-invert); }
@@ -959,6 +1009,61 @@
   color: var(--ink-invert);
 }
 
+/* ---------- Tamil link ----------
+   An outlined pill, not the filled .btn the CTA takes: this is a reading aid
+   and the CTA is the action the bar is asking for, so two filled pills side
+   by side would have them competing. It carries its own class rather than
+   .btn-ghost because `.masthead .btn` fills every button on this bar and
+   would flatten a ghost into the same white pill as the CTA.
+
+   Gold on hover, matching what the nav links do either side of it. 6.3:1 on
+   navy for the label, and the border clears the 3:1 floor for a control's
+   own edge. */
+.lang-link {
+  display: inline-flex;
+  align-items: center;
+  /* A <button> now rather than the <a> this was written for, so the three
+     things a button brings of its own have to be undone: the UA background,
+     its own font stack, and the default cursor. */
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--nav-line);
+  border-radius: 100px;
+  color: var(--nav-soft);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.lang-link:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+/* Hidden from the bar on narrow screens and shown in the mobile panel
+   instead. Below 48rem the bar is already down to the name and the Menu
+   button — the CTA itself is dropped at 30rem for the same reason — and a
+   third pill there is what pushes the lockup off the edge. Scoped to
+   __inner so it does not also hide the copy inside the panel, which lives
+   in the same .masthead. */
+.masthead__inner .lang-link { display: none; }
+
+@media (min-width: 48rem) {
+  .masthead__inner .lang-link { display: inline-flex; }
+}
+
+/* Separated from the link list above it: everything in that list is a page on
+   this site, and this one is not. */
+.mobile-nav__foot {
+  margin: 1.25rem 0 0;
+  padding-block-start: 1.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--ink-invert) 20%, transparent);
+}
+
 /* The one piece of glass on the site, and the only place it earns its keep:
    this panel overlays page content, so there is something real behind it to
    blur. The masthead deliberately stays opaque (see the note up there), and
@@ -1010,20 +1115,44 @@
 .page-head { padding-block: clamp(3.5rem, 9vw, 6.5rem); }
 .page-head__lede { max-width: 52ch; }
 
-/* Optional per-page backdrop (see PageHeader's `image`). A scrim is unavoidable
-   — white on this banner's gold core is 1.6:1 bare — but it is kept light so the
-   colour survives, and the type is lifted to pay for it (below). Weighted left,
-   where the copy sits, leaving the glow strongest on the right.
+/* Optional per-page backdrop (see PageHeader's `image`). Navy rather than the
+   near-black it was under the white page, so the banner sits in the page's own
+   colour instead of introducing a third one. Weighted left, where the copy
+   sits, leaving the pattern strongest on the right.
 
-   Navy rather than the near-black it was under the white page, so the banner
-   sits in the page's own colour instead of introducing a third one. Navy is
-   the lighter scrim of the two at equal alpha, so each stop is raised to hold
-   what the black one measured: over the gold core white is 10.3:1 at the left
-   stop and 5.2:1 at the right, against 13.9:1 and 5.1:1 before. */
+   These stops were lightened to 0.4/0.3/0.22 and put back. The arithmetic that
+   argued for lightening them was sound and is not the reason: /page-header.webp
+   is already a scrimmed image, its brightest pixel is rgb(137 117 80), and white
+   measures 4.45:1 on that bare — so 0.85 is darkening something already dark and
+   the gold does not survive it. The judgement went the other way regardless, and
+   a banner that reads as navy is the intended result rather than a cost.
+
+   Measured against that brightest pixel, the worst case anywhere in the frame:
+
+     stop        white      lede #e8e8ec
+     0%   0.85   11.66:1     9.55:1
+     45%  0.70    9.91:1     8.11:1
+     100% 0.50    7.92:1     6.48:1
+
+   So if these are ever revisited, contrast is not the constraint — there is
+   headroom down to about 0.2 before the lede reaches 4.5:1. What is at stake is
+   only how much of the pattern shows through. */
+/* Stretched to the box rather than covered by it.
+
+   The banner is far wider than the asset is: /page-header.webp is 1448x609, or
+   2.38:1, and the header runs about 3.5:1 on a 1535px viewport. `cover` scales
+   to the width and throws the surplus height away, which here was 103px off the
+   top and 103px off the bottom — over a third of the source rows, and precisely
+   the rows carrying the pattern's own framing. What survived was the middle
+   band of glow with its frame cropped off.
+
+   `100% 100%` maps the whole pattern onto the whole header instead. It is a
+   distortion, and on a photograph it would be the wrong answer; on an abstract
+   gradient with no edges, no type and nothing recognisable in it, there is
+   nothing in the picture for the eye to measure the stretch against. */
 .page-head--image {
   position: relative;
-  background-size: cover;
-  background-position: center;
+  background-size: 100% 100%;
   isolation: isolate;
 }
 
@@ -1173,7 +1302,53 @@
 }
 
 /* ---------- Message pages (404, error) ---------- */
+/* ---------- Message pages ----------
+   The 404, and anything else that is one short block and a way onward. */
 .message { min-height: 62svh; display: grid; align-content: center; }
+
+/* Same row as .hero__actions and .contact-actions. Left as its own selector
+   rather than folded in with them: they are three unrelated places that happen
+   to want the same three declarations, and grouping them would tie a change in
+   one page's button row to the other two. */
+.message__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/*
+ * A short entrance, because a 404 arrives with no warning and landing the block
+ * rather than snapping it in takes the edge off. Two steps only — the words,
+ * then the way out — which is enough to read as intent and not as a flourish.
+ *
+ * Declared in CSS with no class to wait for, unlike .reveal and .pills. Those
+ * two are switched on from JavaScript because their resting state is hidden and
+ * something has to come along and un-hide them. Nothing here is hidden at rest:
+ * with no animation the block simply renders, so it is safe to run unattended.
+ */
+@keyframes message-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.625rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.message .stack {
+  animation: message-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.message__actions {
+  animation: message-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) 110ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .message .stack,
+  .message__actions { animation: none; }
+}
 
 /* ---------- Person ---------- */
 .person__name { font-size: 1.25rem; font-weight: 600; margin: 0; }
@@ -1181,17 +1356,6 @@
 
 /* Standalone link list (404). Not .footer__links: that sets margin:0, which
    wins on equal specificity and collapses the .stack-lg gap above it. */
-.link-list {
-  display: grid;
-  gap: 0.625rem;
-  list-style: none;
-  padding: 0;
-  font-size: 1.0625rem;
-}
-
-.link-list a { text-decoration: none; color: var(--ink-invert-soft); }
-.link-list a:hover { color: var(--ink-invert); }
-
 /* A full sentence, not a two-word headline: it needs a lower ceiling than
    .display or it swallows the viewport, and a measure so it breaks sensibly. */
 /*
@@ -1339,29 +1503,30 @@
 .product--brief { grid-template-columns: minmax(0, 1fr); }
 
 @media (min-width: 56rem) {
-  .product--brief { grid-template-columns: minmax(0, 1fr); }
-  .product--brief .product__head { max-width: 46rem; }
+  /* Copy left, picture right, one split for all five.
 
-  /* Unless the product carries a picture, which needs the second column back
-     and the copy measure released to pay for it. */
-  .product--brief.product--media { grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); }
-  .product--brief.product--media .product__head { max-width: none; }
+     The list used to run two layouts at once: two products with the art in a
+     26rem side column and three dropped full width underneath the copy, which
+     put the pictures on three different left edges and three different right
+     edges going down the page. An even split is what lines them up — the same
+     1fr/1fr the hero row uses, so the column edge is in the same place on both
+     pages.
 
-  /* A finished banner is not a side illustration: it holds its own headline and
-     body text, which at side-column width is a few pixels tall. Give it the
-     whole row under the copy so it stays readable. */
-  .product--brief.product--wide { grid-template-columns: minmax(0, 1fr); }
-  .product--brief.product--wide .product__head { max-width: 46rem; }
+     No cap on the image any more: it fills its column, which is what puts every
+     right edge on the shell's right edge rather than at whatever width each
+     picture happened to be capped to. */
+  .product--brief { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
-.product__image--wide { max-width: 46rem; }
+/* Sized by the column, not by a number of its own. The two classes used to
+   carry different caps for the side-column and full-width forms; there is only
+   one form now, so there is only one rule. */
+.product__image,
+.product__image--wide { max-width: none; }
 
-/* Capped rather than full-bleed: the supplied art is a square-ish graphic, and
-   at column width it would tower over the two lines of copy beside it. */
 .product__image {
   display: block;
   width: 100%;
-  max-width: 26rem;
   height: auto;
   border-radius: var(--radius);
   border: 1px solid var(--line);
@@ -1521,7 +1686,25 @@
      So: 44px across against 28.8 + ~2, and 36px down against 13 + ~6. Raising
      STRENGTH or the TILTS without raising these is what makes them touch. */
   gap: 2.25rem 2.75rem;
-  margin: 0;
+
+  /* Headroom above the row, and it has to be declared here rather than left to
+     the stack that wraps it.
+
+     This was `margin: 0` — the usual list reset — which also zeroed
+     margin-block-start. `.stack-lg > * + *` had already set that to
+     clamp(2rem, 5vw, 3.5rem), but the two selectors have the same specificity
+     (a class either side of a universal) and this rule is 1500 lines further
+     down the file, so the reset won and the row sat flush against the heading.
+     Then the first upward lean carried the pills over the type.
+
+     The number is the row's own, not the stack's, because the stack knows
+     nothing about the lean: a pill travels up to 28px up — STRENGTH 48 x the
+     deepest depth 1.3 x VERTICAL_DAMPING 0.45 — and its tilt adds about 6px on
+     top, so 34px of any gap is spent before the row looks like it has moved at
+     all. 2.75rem clears that with a little to spare. max() keeps the stack's
+     figure wherever it is the larger of the two, which is every viewport above
+     about 880px, so the rhythm of the page is unchanged there. */
+  margin: max(clamp(2rem, 5vw, 3.5rem), 2.75rem) 0 0;
   padding: 0;
   list-style: none;
 }
