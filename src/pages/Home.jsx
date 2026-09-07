@@ -9,6 +9,7 @@ import Recognition from '../components/Recognition'
 import ClosingCta from '../components/ClosingCta'
 import HeroVideo from '../components/HeroVideo'
 import ScrollProgress from '../components/ScrollProgress'
+import RepaymentCalculator from '../components/RepaymentCalculator'
 
 export default function Home() {
   return (
@@ -70,11 +71,15 @@ export default function Home() {
         </div>
       </section>
 
+      {/* After the products and before the reasons: someone who has just seen
+          what is offered can put numbers to it, then read why us. */}
+      <RepaymentCalculator />
+
       {/* A short read of /why-us: the supplied reasons and a way through to
           the full page, which carries the process and trust sections too.
 
           Raised rather than plain, because the products band above it and the
-          recognition band below are both on --page, and three white sections
+          recognition band below are both on --page, and three plain sections
           in a row lose the alternation the page rhythm runs on. */}
       <section className="section section--raised">
         <div className="shell stack-lg">
@@ -107,7 +112,7 @@ export default function Home() {
       <CoreValues />
 
       {/* The process, as /why-us carries it. Raised rather than plain: it sits
-          between the dark core values band and the white recognition band, and
+          between the dark core values band and the plain recognition band, and
           plain would run straight into the latter. */}
       <section className="section section--raised">
         <div className="shell stack-lg">

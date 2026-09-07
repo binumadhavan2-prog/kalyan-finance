@@ -9,7 +9,7 @@ import { useId } from 'react'
  * warm yellow through orange and magenta into purple and indigo.
  *
  * Unlike the rest of the site's icons this one does NOT take currentColor —
- * it is fixed brand artwork, so it looks the same on the white Contact page
+ * it is fixed brand artwork, so it looks the same on the navy Contact page
  * and on the navy footer. `useId` keeps the gradient id unique because the
  * Contact page renders this twice, once in the Follow button and once in the
  * footer, and duplicate SVG ids would collide.

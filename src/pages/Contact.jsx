@@ -127,21 +127,13 @@ export default function Contact() {
             <Draft>{draft.locationTitle}</Draft>
           </p>
           {contact.mapUrl || townMapUrl ? (
-            <>
-              <iframe
-                className="map"
-                src={contact.mapUrl ?? townMapUrl}
-                title={contact.mapUrl ? 'Office location' : contact.location}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-              {contact.mapUrl ? null : (
-                <p className="map__note">
-                  <Missing>Full address not supplied</Missing> The map shows{' '}
-                  {contact.location}, not a specific office.
-                </p>
-              )}
-            </>
+            <iframe
+              className="map"
+              src={contact.mapUrl ?? townMapUrl}
+              title={contact.mapUrl ? 'Office location' : contact.location}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
           ) : (
             <div className="map map--empty">
               <Missing>Location not supplied</Missing>
