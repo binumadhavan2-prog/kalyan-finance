@@ -1112,13 +1112,27 @@
 }
 
 /* ---------- Page header ---------- */
-.page-head { padding-block: clamp(3.5rem, 9vw, 6.5rem); }
+/* A step below --page rather than level with it. The banner and the first
+   section under it were the same navy, so the two bands ran together and the
+   header had no bottom edge — the masthead's hairline was the only division
+   anywhere near the top of an inner page. --navy-deep is the step the palette
+   already keeps for exactly this, so the band is named rather than nudged.
+
+   This is the second answer to the question. The banner sat on --page because
+   Loan Products had no banner at all and opened in plain --page, and two
+   different opening colours across four inner pages was worse than a flat one.
+   All four carry /page-header.webp now, so that reason has lapsed. */
+.page-head {
+  padding-block: clamp(3.5rem, 9vw, 6.5rem);
+  background: var(--navy-deep);
+}
 .page-head__lede { max-width: 52ch; }
 
-/* Optional per-page backdrop (see PageHeader's `image`). Navy rather than the
-   near-black it was under the white page, so the banner sits in the page's own
-   colour instead of introducing a third one. Weighted left, where the copy
-   sits, leaving the pattern strongest on the right.
+/* Optional per-page backdrop (see PageHeader's `image`). The scrim is the
+   band's own --navy-deep, not --page: an image covers the whole header, so the
+   background-color above it barely shows and the scrim is what the step is
+   actually made of. Weighted left, where the copy sits, leaving the pattern
+   strongest on the right.
 
    These stops were lightened to 0.4/0.3/0.22 and put back. The arithmetic that
    argued for lightening them was sound and is not the reason: /page-header.webp
@@ -1127,16 +1141,18 @@
    the gold does not survive it. The judgement went the other way regardless, and
    a banner that reads as navy is the intended result rather than a cost.
 
-   Measured against that brightest pixel, the worst case anywhere in the frame:
+   Measured against that brightest pixel, the worst case anywhere in the frame.
+   Every figure went up when the scrim moved from --navy to the deeper
+   --navy-deep, so the step cost nothing here:
 
      stop        white      lede #e8e8ec
-     0%   0.85   11.66:1     9.55:1
-     45%  0.70    9.91:1     8.11:1
-     100% 0.50    7.92:1     6.48:1
+     0%   0.85   13.5:1      11.0:1
+     45%  0.70   11.2:1       9.2:1
+     100% 0.50    8.6:1       7.0:1
 
    So if these are ever revisited, contrast is not the constraint — there is
-   headroom down to about 0.2 before the lede reaches 4.5:1. What is at stake is
-   only how much of the pattern shows through. */
+   headroom down to about 0.15 before the lede reaches 4.5:1. What is at stake
+   is only how much of the pattern shows through. */
 /* Stretched to the box rather than covered by it.
 
    The banner is far wider than the asset is: /page-header.webp is 1448x609, or
@@ -1163,9 +1179,9 @@
   z-index: -1;
   background: linear-gradient(
     100deg,
-    rgb(30 44 88 / 0.85) 0%,
-    rgb(30 44 88 / 0.7) 45%,
-    rgb(30 44 88 / 0.5) 100%
+    rgb(22 33 66 / 0.85) 0%,
+    rgb(22 33 66 / 0.7) 45%,
+    rgb(22 33 66 / 0.5) 100%
   );
 }
 
@@ -1179,7 +1195,7 @@
    directional scrim leaves nothing to sit against. Flatten it to an even wash. */
 @media (max-width: 48rem) {
   .page-head--image::before {
-    background: rgb(30 44 88 / 0.8);
+    background: rgb(22 33 66 / 0.8);
   }
 }
 
