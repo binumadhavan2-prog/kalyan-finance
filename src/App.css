@@ -1484,19 +1484,6 @@
   letter-spacing: normal;
 }
 
-/* Anchor chips in a taglist. The li carries no border, the link does. */
-.taglist a.tag {
-  display: inline-block;
-  text-decoration: none;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
-
-.tag--link:hover {
-  background: var(--ink);
-  color: var(--on-light);
-  border-color: var(--ink);
-}
-
 .product__head { gap: 1rem; }
 
 /* Single column while no product has published terms. */
