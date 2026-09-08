@@ -92,7 +92,6 @@
   color: var(--on-light);
   font-weight: 500;
   font-size: 0.9375rem;
-  text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
   transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
@@ -184,7 +183,6 @@
   font-weight: 700;
   font-size: 1.375rem;
   letter-spacing: -0.02em;
-  text-decoration: none;
   white-space: nowrap;
 }
 
@@ -308,7 +306,6 @@
 }
 
 .navlist a {
-  text-decoration: none;
   white-space: nowrap;
   color: var(--nav-soft);
   transition: color 0.15s ease;
@@ -1039,7 +1036,6 @@
 }
 
 .footer__links a {
-  text-decoration: none;
   color: var(--nav-soft);
   transition: color 0.15s ease;
   /* The contact column holds the email address; see .details__value. */
@@ -1139,7 +1135,6 @@
   color: var(--nav-soft);
   font-size: 0.875rem;
   font-weight: 500;
-  text-decoration: none;
   white-space: nowrap;
   transition: color 0.15s ease, border-color 0.15s ease;
 }
@@ -1200,7 +1195,7 @@
   font-size: 1.0625rem;
 }
 
-.mobile-nav__list a { text-decoration: none; color: var(--nav-soft); }
+.mobile-nav__list a { color: var(--nav-soft); }
 
 @media (min-width: 68rem) {
   .menu-toggle, .mobile-nav { display: none; }
@@ -1232,6 +1227,46 @@
   background: var(--navy-deep);
 }
 .page-head__lede { max-width: 52ch; }
+
+/* The home hero's opening, borrowed for a page whose banner is the arrival
+   rather than a heading over what follows (see PageHeader's `fill`).
+
+   Same measurement as .hero, and for the same reason: fill exactly what is left
+   under the sticky masthead, its 1px bottom border included, and centre the row
+   in that. min-height rather than height, so a short window or the taller Tamil
+   setting grows past one screen instead of clipping the lede off the bottom.
+
+   The band keeps .page-head's own padding-block, which stops being what makes
+   the height and becomes only the floor for the case where it does outgrow the
+   window. */
+.page-head--fill {
+  display: grid;
+  align-content: center;
+  min-height: calc(100svh - var(--masthead-h) - 1px);
+}
+
+/* Two columns inside a banner that has something to put beside its copy (see
+   PageHeader's `aside`). Same breakpoint and the same even split as
+   .hero__grid, and for the same reasons — below 62rem a second column stacks
+   under the buttons, which on a phone is below the fold and no longer part of
+   the opening at all.
+
+   Kept as its own selector rather than folded in with .hero__grid, the way
+   .message__actions is kept apart from .hero__actions: the home hero's column
+   holds a 16/9 clip and a banner's holds text, so the two will not want the
+   same answer for long.
+
+   The shell carries this only when an aside is passed; the three banners
+   without one keep the plain full-width shell. */
+.page-head__grid {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: center;
+}
+
+@media (min-width: 62rem) {
+  .page-head__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
 
 /* Optional per-page backdrop (see PageHeader's `image`). The scrim is the
    band's own --navy-deep, not --page: an image covers the whole header, so the
@@ -1406,13 +1441,22 @@
   border-radius: var(--radius);
 }
 
-/* The actions row at the top of /contact. Left-aligned rather than centred:
-   it sits under a left-aligned page header, and centring it would read as a
-   second, competing header. */
+/* The actions row at the top of /contact, now inside the banner rather than in
+   a band under it. Left-aligned rather than centred: it sits under a
+   left-aligned heading and lede, and centring it would read as a second,
+   competing header. */
 .contact-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+}
+
+/* The banner's shell is a .stack, whose 1rem step is the gap between lines of
+   copy and is too close to read as the break between the heading and the way
+   onward. This is .stack-lg's step, the same separation the home hero puts
+   between its copy and .hero__actions. */
+.page-head .contact-actions {
+  margin-block-start: clamp(2rem, 5vw, 3.5rem);
 }
 
 .map--empty {
@@ -1772,6 +1816,196 @@
   font-size: 0.875rem;
   color: var(--ink-soft);
 }
+
+/* ---------- Tamil ----------
+ * LanguageProvider writes `document.documentElement.lang`, so :lang(ta) is live
+ * the moment the toggle is used and needs nothing else to hook onto.
+ *
+ * Everything here is leading and tracking, because that is what actually
+ * breaks. The Latin scale this page is cut to is very tight — h1-h4 at 1.05,
+ * .display at 0.95, negative tracking on every large heading — and it can be,
+ * because a Latin line's ink sits between the baseline and the cap height.
+ * Tamil does not: vowel signs hang above (ெ ே ை) and below (ு ூ) the base
+ * glyph, and conjuncts stack. At 0.95 those marks reach into the line above,
+ * which is the "not aligned" the Tamil pages show — the lines are not sitting
+ * on their own rows.
+ *
+ * Nothing here changes a size, a colour or a position. The English pages are
+ * untouched: no rule in this block matches unless lang="ta".
+ */
+
+/* Leading first. 1.3 across the heading scale rather than a value per class:
+   the marks need a fixed share of the em, and that share does not vary with
+   the font size the way the Latin optical tightening does. */
+:lang(ta) h1,
+:lang(ta) h2,
+:lang(ta) h3,
+:lang(ta) h4,
+:lang(ta) .display,
+:lang(ta) .display--statement,
+:lang(ta) .heading,
+:lang(ta) .cta__title,
+:lang(ta) .quote__text,
+:lang(ta) .hero__tagline,
+:lang(ta) .tagline,
+:lang(ta) .valuelist__item,
+:lang(ta) .product__title,
+:lang(ta) .step__title {
+  line-height: 1.3;
+}
+
+/* Then tracking, in both directions.
+
+   The headings carry -0.02em to -0.03em, which on Tamil pulls a vowel sign
+   toward the glyph it does not belong to. The labels carry the opposite
+   problem: +0.12em to +0.16em with text-transform: uppercase, which is a no-op
+   on a script with no cases but still spaces the letters — and Tamil conjuncts
+   have to touch to be read as one letter. Both go to normal. */
+:lang(ta) .display,
+:lang(ta) .display--statement,
+:lang(ta) .heading,
+:lang(ta) .cta__title,
+:lang(ta) .quote__text,
+:lang(ta) .hero__tagline,
+:lang(ta) .tagline,
+:lang(ta) .valuelist__item,
+:lang(ta) .wordmark,
+:lang(ta) .eyebrow,
+:lang(ta) .hero__name,
+:lang(ta) .stat__label,
+:lang(ta) .cta__channel-label,
+:lang(ta) .footer__col h2,
+:lang(ta) .wordmark__tagline,
+:lang(ta) .example__flag,
+:lang(ta) .notice__flag,
+:lang(ta) .step__num {
+  letter-spacing: normal;
+}
+
+/* The masthead bar is the one fixed-width row on the site, and the Tamil labels
+   are the longer set — "ஏன் கல்யாண் ஃபைனான்ஸ்" against "Why Kalyan Finance",
+   five of them, every one nowrap, beside a nowrap wordmark and a nowrap button.
+   The gap is the only part of that row able to give, so it gives. */
+/*
+ * The masthead is where Tamil actually runs out of room, and it does so at
+ * every desktop width — not just narrow ones — because --shell caps at 1200px,
+ * so widening the window past about 1300 stops adding usable space. Measured
+ * across the bar at that cap: the lockup about 336px (the Tamil strapline is
+ * 40 characters against the English 32, and .wordmark is nowrap, so the tagline
+ * and not the name is what sets the lockup's width), the five nav labels about
+ * 610px with their gaps, the CTA about 202px, and 64px of flex gap. That is
+ * roughly 1210px asked of 1200, and it only gets worse below the cap. The
+ * overflow is what scrolls the page sideways.
+ *
+ * Three things give it back, none of which drops anything a reader needs:
+ */
+
+/* 1. The strapline comes out of the bar. It is the widest thing in the lockup
+      and the only part of it that is not the company's name — and it still
+      appears in the footer of every page, where it has a line to itself. */
+:lang(ta) .masthead .wordmark__tagline { display: none; }
+
+/* 2. The row closes up: a smaller gap between the links, and the label size
+      steps down to the size the Menu button and the bar's other controls
+      already use. */
+:lang(ta) .navlist {
+  gap: clamp(0.875rem, 2vw, 1.5rem);
+  font-size: 0.875rem;
+}
+
+/* 3. The desktop nav waits for a wider window. 68rem gives a 992px shell, and
+      the five Tamil labels cannot sit in that beside a lockup and a button at
+      any size worth reading. 80rem gives 1184px, which they can. Below it the
+      bar uses the mobile menu that is already built — the same one every phone
+      gets, so this needs no new markup and loses no link. */
+@media (max-width: 79.99rem) {
+  :lang(ta) .masthead__nav { display: none; }
+  :lang(ta) .menu-toggle { display: inline-flex; }
+  :lang(ta) .masthead__cta { margin-inline-start: auto; }
+
+  /* The 68rem rule hides the toggle and the panel together, so bringing the
+     button back without the panel would have left it opening nothing between
+     68 and 80rem.
+
+     Written as :not([hidden]) rather than a plain `display: block`, because the
+     panel is always in the DOM and SiteHeader closes it with the `hidden`
+     attribute — and any author `display` beats the UA rule that `hidden` relies
+     on. A plain block here would have pinned the menu open. */
+  :lang(ta) .mobile-nav:not([hidden]) { display: block; }
+}
+
+/* And above it, the bar still cannot hold both the nav and the button.
+
+   Budget at the 1200px cap, which is the widest the shell ever gets, so no
+   window size escapes this: lockup 322 + five labels 583 + their gaps 96 +
+   button 229 + 64 of flex gap = 1318 against 1200. Moving the breakpoint does
+   not help — past about 1300px the viewport grows and the shell does not.
+
+   So the button goes, and it is the right thing to lose: it reads "தொடர்பு
+   கொள்ளுங்கள்" and the nav two items along reads "தொடர்பு கொள்ள", the same
+   destination in the same bar. Without it the row asks for 1057. The English
+   bar keeps its button — the English labels are short enough to leave room. */
+@media (min-width: 80rem) {
+  :lang(ta) .masthead__cta { display: none; }
+}
+
+/* Long labels are allowed to wrap here rather than ride out of the row. The
+   English set fits on one line at every width, which is why nowrap was safe. */
+:lang(ta) .pills__pill {
+  white-space: normal;
+  line-height: 1.4;
+}
+
+/* Same reasoning, and the more serious of the two. .btn is nowrap, and the
+   longest Tamil label on the site is a button: "அனைத்துக் கடன் திட்டங்களையும்
+   பாருங்கள்" runs to about 300px of text inside 52px of padding. On a 320px
+   screen there are 280px to put it in, so the pill did not wrap — it left the
+   window, and took the page's horizontal scroll with it. Wrapping makes a
+   two-line button, which is the correct trade against a scrollbar. */
+:lang(ta) .btn { white-space: normal; }
+
+/*
+ * The hero, cut to fit the screen the way the English one does.
+ *
+ * .hero is min-height: 100svh minus the masthead and centres its row, so it can
+ * only stay one screen while the copy column fits inside it. On a 1535x726
+ * viewport that column has 653px. English asks for 628 and fits. Tamil asked
+ * for 809 and did not, and the statement was 173px of the 181px difference:
+ *
+ *              lines   line box   height
+ *   EN           5      65.3px    326px     4rem / 1.02 / 17.5ch
+ *   TA           6      83.2px    499px     same size, 1.3 leading, wider glyphs
+ *   TA now       5      62.4px    312px     3rem / 1.3 / 12em
+ *
+ * Two things were wrong, and the size is only one of them.
+ *
+ * The other is the measure. 17.5ch and 46ch are ch units, and ch is the advance
+ * of "0" in the first font in the stack — Inter, which has no Tamil in it at
+ * all. So the caps stayed at their English pixel width while the glyphs filling
+ * them got about a quarter wider, and the line count went up for a reason that
+ * has nothing to do with how wide the column is. In em the cap still scales with
+ * the type, which is what ch was there for, but it is calibrated against the
+ * script actually being set: 12em at 3rem is 576px, which is the column.
+ *
+ * The tagline drops a step for its own reason — 40 Tamil characters against the
+ * English 32, which was wrapping it to two lines inside the lockup.
+ */
+:lang(ta) .hero__tagline { font-size: clamp(1rem, 1.9vw, 1.375rem); }
+
+:lang(ta) .hero .display--statement {
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  max-width: 12em;
+}
+
+:lang(ta) .hero__lede {
+  font-size: clamp(1rem, 1.35vw, 1.25rem);
+  max-width: 28em;
+}
+
+/* A last resort against a word wider than its column, not a wrapping style:
+   break-word only breaks a word that cannot fit on a line of its own, so
+   ordinary Tamil still breaks at spaces. */
+:lang(ta) body { overflow-wrap: break-word; }
 
 /* ---------- Parallax pills ----------
    The differentiators on /why-us. Monochrome and navy only: --gold is

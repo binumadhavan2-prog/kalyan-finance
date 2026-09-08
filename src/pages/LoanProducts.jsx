@@ -58,6 +58,7 @@ export default function LoanProducts() {
         title={draft.productsTitle}
         lede={draft.productsLede}
         image="/page-header.webp"
+        fill
       />
 
       <section className="section section--tight">

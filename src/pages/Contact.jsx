@@ -39,62 +39,45 @@ export default function Contact() {
       {/* No eyebrow: draft.contactTitle is itself 'Contact us', so passing one
           printed the same two words twice, once in caps above the h1 that
           already said them. PageHeader renders nothing when it is omitted. */}
+      {/* The way through, in the banner rather than in a band under it. Most
+          people arriving on this page want to do one of two things, so both sit
+          in the opening screen instead of below the fold. Anything not yet
+          supplied simply does not render — a Call button with no number behind
+          it is worse than no button. */}
       <PageHeader
         title={draft.contactTitle}
         lede={draft.contactLede}
         image="/page-header.webp"
-      />
-
-      {/* The way through, before the detail below it. Most people arriving on
-          this page want to do one of two things, so both are one tap from the
-          top of it. Anything not yet supplied simply does not render — a Call
-          button with no number behind it is worse than no button. */}
-      <section className="section section--tight">
-        <div className="shell contact-actions">
-          {contact.phone ? (
-            <a className="btn btn--lg" href={`tel:${contact.phone.replace(/\s/g, '')}`}>
-              {ui.callUs}
-            </a>
-          ) : null}
-          {contact.email ? (
-            <a
-              className={`btn btn--lg${contact.phone ? ' btn-ghost' : ''}`}
-              href={`mailto:${contact.email}`}
-            >
-              {ui.emailUs}
-            </a>
-          ) : null}
-          <a className="btn btn-ghost btn--lg" href="#enquiry">
-            {ui.sendAnEnquiry}
-          </a>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="shell split">
+        fill
+        aside={
+          /* The details beside the copy rather than in the band below it, the
+             way the home hero puts the clip beside its lockup. They are what
+             the rest of this page is about, and a screen-tall banner carrying
+             a heading and two buttons left two thirds of the opening empty. */
           <div className="stack-lg">
             <div className="stack">
               <p className="eyebrow">{ui.details}</p>
               <dl className="details">
-                {rows.map(({ key, label, href }) => {
-                  const value = contact[key]
-                  return (
-                    <div className="details__row" key={key}>
-                      <dt className="details__label">{label}</dt>
-                      <dd className="details__value">
-                        {value ? (
-                          href ? (
-                            <a href={href(value)}>{value}</a>
-                          ) : (
-                            value
-                          )
-                        ) : (
-                          <Missing />
-                        )}
-                      </dd>
-                    </div>
-                  )
-                })}
+                {/* A row with nothing to put in it is dropped rather than
+                    printed. <Missing /> renders nothing since 2026-09-07, and
+                    unlike the dashed .panel and .map--empty boxes a two-column
+                    list has no container to show that a gap is a gap — so an
+                    unsupplied row came out as a label against blank space,
+                    which reads as broken rather than as pending. What is still
+                    missing is recorded on `contact` in content.js. */}
+                {rows
+                  .filter(({ key }) => contact[key])
+                  .map(({ key, label, href }) => {
+                    const value = contact[key]
+                    return (
+                      <div className="details__row" key={key}>
+                        <dt className="details__label">{label}</dt>
+                        <dd className="details__value">
+                          {href ? <a href={href(value)}>{value}</a> : value}
+                        </dd>
+                      </div>
+                    )
+                  })}
               </dl>
             </div>
 
@@ -119,13 +102,37 @@ export default function Contact() {
               )}
             </div>
           </div>
+        }
+      >
+        <p className="contact-actions">
+          {contact.phone ? (
+            <a className="btn btn--lg" href={`tel:${contact.phone.replace(/\s/g, '')}`}>
+              {ui.callUs}
+            </a>
+          ) : null}
+          {contact.email ? (
+            <a
+              className={`btn btn--lg${contact.phone ? ' btn-ghost' : ''}`}
+              href={`mailto:${contact.email}`}
+            >
+              {ui.emailUs}
+            </a>
+          ) : null}
+          <a className="btn btn-ghost btn--lg" href="#enquiry">
+            {ui.sendAnEnquiry}
+          </a>
+        </p>
+      </PageHeader>
 
-          <div className="stack" id="enquiry">
-            <p className="eyebrow">
-              <Draft>{draft.formTitle}</Draft>
-            </p>
-            <EnquiryForm />
-          </div>
+      {/* The form on its own now that the details sit in the banner. .form caps
+          at 34rem, so a full-width section is the same field width the split
+          gave it, without a half-empty column beside it. */}
+      <section className="section">
+        <div className="shell stack" id="enquiry">
+          <p className="eyebrow">
+            <Draft>{draft.formTitle}</Draft>
+          </p>
+          <EnquiryForm />
         </div>
       </section>
 
