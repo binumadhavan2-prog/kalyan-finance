@@ -4,14 +4,16 @@ import Draft from './Draft'
  * The banner the inner pages open with, so they share a silhouette with the
  * home hero without repeating its scale.
  *
- * On --page, not --navy-deep. It used to carry `section--dark`, which put
- * About, Why Kalyan Finance and Contact a step below the ground their own
- * content sits on, while Loan Products — which has no banner — opened in plain
- * --page. Four inner pages, two different opening colours. This is the one they
- * now agree on. Nothing else moves with it: --ink-soft and --ink-invert-soft
- * are both --nav-soft, and --ink and --ink-invert are both white, so the
- * eyebrow, heading and lede render identically either side of the change
- * (white 13.5:1 and --nav-soft 6.5:1 on --navy, both clear).
+ * On --navy-deep, a step below the ground the sections under it sit on, so the
+ * banner reads as its own band and the page has an edge under its heading.
+ *
+ * It sat on --page for a while, and the reason was Loan Products: that page had
+ * no banner and opened in plain --page, so putting the other three a step down
+ * left four inner pages with two different opening colours. All four carry
+ * /page-header.webp now, so they step together and the flat version has nothing
+ * left to argue for it. Nothing else moves with the ground: --ink-soft and
+ * --ink-invert-soft are both --nav-soft, --ink and --ink-invert are both white,
+ * and both clear easily on the deeper band (white 15.8:1, --nav-soft 7.6:1).
  *
  * `drafted` is true by default because most page copy still is. Pass false
  * where the wording is client-approved, so it renders without the dotted mark.
@@ -19,8 +21,8 @@ import Draft from './Draft'
  * `image` is an optional backdrop, opt-in per page: the banner is plain --page
  * without it. It always renders under a scrim, because the type here is white
  * and soft-blue on whatever the image happens to be, and the page cannot know
- * that in advance. About, Why Kalyan Finance and Contact all pass the same
- * /page-header.webp; Loan Products is the one inner page with no banner at all.
+ * that in advance. All four inner pages pass the same /page-header.webp; a page
+ * that passes none gets the band flat, which is the same step either way.
  */
 /* Hoisted, not inlined in the render: a component defined during render is a
    new type every pass, which remounts its subtree. */
