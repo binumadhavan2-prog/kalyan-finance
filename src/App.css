@@ -567,6 +567,111 @@
   margin-block-start: auto;
 }
 
+/* ---------- Scroll stack ----------
+   The products on the home page, pinned and stacking as the page scrolls.
+   ScrollStack.jsx adds the scale, turn and fade on top; everything that makes
+   the cards stack at all is here, so the effect degrades to a working stack
+   rather than to nothing when the script does not run.
+
+   The slot and the card are two elements on purpose. A sticky element's own
+   box stops moving the moment it pins, so it cannot report how far you have
+   scrolled since — the slot keeps moving and is what the component measures. */
+.stack-cards {
+  display: grid;
+  gap: clamp(1.5rem, 5vh, 3rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* Room to keep scrolling while the last card is still pinned, or it unpins
+     the instant it arrives and the stack never reads as a stack. */
+  padding-block-end: clamp(4rem, 18vh, 10rem);
+}
+
+.stack-card {
+  position: sticky;
+  /* Under the masthead, then a step lower per card so the stack shows its own
+     depth instead of hiding every card behind the newest. --i is set by the
+     component. The component also reads this value back rather than repeating
+     it, so the stagger is decided here and only here. */
+  top: calc(var(--masthead-h) + 1.5rem + var(--i, 0) * 0.75rem);
+
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: center;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  min-height: clamp(15rem, 38vh, 21rem);
+
+  background: var(--page);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  /* Opaque, and it has to be: the whole effect is cards passing behind cards. */
+  box-shadow: 0 -1px 0 0 var(--page), 0 24px 48px -32px rgb(0 0 0 / 0.55);
+
+  /* Only ever written from the rAF loop. Declaring a transition here would
+     fight the per-frame writes. */
+  transform-origin: 50% 0%;
+  will-change: transform, opacity;
+}
+
+@media (min-width: 48rem) {
+  .stack-card { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+/* `contain`, not `cover`. The five pictures arrive at three different shapes:
+
+     short-term         1536x1024   1.50
+     customer-focused   1536x1024   1.50
+     business           1024x559    1.83
+     personal           1024x559    1.83
+     tailored           1774x887    2.00
+
+   and three of them are finished banners with their own headline and body text
+   baked into the pixels. `cover` on any single ratio slices through that type on
+   at least two of them — 16/9 takes 16% off the sides of both 1.50 banners — and
+   a half-cut word reads as a broken image, where a letterbox reads as a choice.
+   3/2 is the ratio because two of the five match it exactly; the other three are
+   wider, so they letterbox rather than crop — 18% of the box height at 1.83 and
+   25% at 2.00. Worth revisiting if the 1.50 pair is ever re-supplied: with three
+   of the five now at 1.83 or wider, the bars are no longer the small ones this
+   ratio was picked for. */
+.stack-card__media {
+  display: grid;
+  place-items: center;
+}
+
+.stack-card__media img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  border-radius: calc(var(--radius) - 5px);
+  border: 1px solid var(--line);
+}
+
+.stack-card__media .card__icon {
+  width: 3rem;
+  height: 3rem;
+}
+
+.stack-card__title {
+  font-size: clamp(1.375rem, 3vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* Nothing pins and nothing moves. The cards become what they already are
+   underneath: a plain column of product panels, in order, all readable. */
+@media (prefers-reduced-motion: reduce) {
+  .stack-card {
+    position: static;
+    will-change: auto;
+    box-shadow: none;
+  }
+
+  .stack-cards { padding-block-end: 0; }
+}
+
 /* ---------- Social ----------
    The glyph sits on the text baseline-ish rather than being centred on the
    line box, and takes its colour from the link, so it dims and highlights with

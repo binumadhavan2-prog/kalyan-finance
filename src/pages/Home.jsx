@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useCopy } from '../i18n'
 import Draft from '../components/Draft'
-import ServiceIcon from '../components/ServiceIcons'
+import ScrollStack from '../components/ScrollStack'
 import CoreValues from '../components/CoreValues'
 import StepList from '../components/StepList'
 import Stats from '../components/Stats'
@@ -55,14 +55,10 @@ export default function Home() {
             </p>
           </div>
 
-          <ul className="grid" role="list">
-            {services.map((service) => (
-              <li className="card" key={service.id}>
-                <ServiceIcon name={service.icon} />
-                <h3 className="card__title">{service.title}</h3>
-              </li>
-            ))}
-          </ul>
+          {/* The five products as a pinned stack rather than a three-up grid.
+              Same content and the same art each product carries on
+              /loan-products; only the way they arrive has changed. */}
+          <ScrollStack items={services} />
 
           <p>
             <Link className="btn btn-ghost" to="/loan-products">
