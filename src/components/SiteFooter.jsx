@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom'
 import { useCopy } from '../i18n'
+import { useSamePageTop } from '../useSamePageTop'
 import Wordmark from './Wordmark'
 import Missing from './Missing'
 import InstagramIcon from './InstagramIcon'
 
 export default function SiteFooter() {
   const { company, contact, navLinks, ui } = useCopy()
+  /* The footer is the bottom of the page, so a link here to the page already
+     open is the one most likely to be clicked from a long way down it. */
+  const toTop = useSamePageTop()
   return (
     <footer className="footer">
       <div className="shell">
@@ -30,7 +34,9 @@ export default function SiteFooter() {
             <ul className="footer__links" role="list">
               {navLinks.map(({ to, label }) => (
                 <li key={to}>
-                  <Link to={to}>{label}</Link>
+                  <Link to={to} onClick={() => toTop(to)}>
+                    {label}
+                  </Link>
                 </li>
               ))}
             </ul>
