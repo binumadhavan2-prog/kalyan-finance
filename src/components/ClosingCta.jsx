@@ -33,7 +33,12 @@ export default function ClosingCta() {
   return (
     <section className="section section--dark cta-band">
       <div className="shell cta">
-        <p className="eyebrow cta__eyebrow">{ui.contact}</p>
+        {/* No eyebrow, the same cut the calculator band took: it read
+            "Contact" over a heading that already asks you to talk to us, which
+            is the band naming itself twice before saying anything. The h2
+            stays, so the band keeps its own heading in the outline.
+            ui.contact stays in content.js — Tamil carries it, and the footer
+            still heads its contact column with it. */}
         <h2 className="cta__title">
           <Draft>{draft.ctaTitle}</Draft>
         </h2>
