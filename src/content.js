@@ -295,8 +295,6 @@ export const draft = {
     'Business and personal finance support, arranged around your circumstances rather than a fixed product list.',
 
   productPreviewTitle: 'What we do',
-  productPreviewLede:
-    'Five ways we help individuals and businesses find the right financial footing.',
 
   /* The drafted "How we work" values that used to sit here (Direct, Clear,
      Flexible) were invented to fill the band. The client has since supplied

@@ -50,9 +50,6 @@ export default function Home() {
             <h2 className="heading">
               <Draft>{draft.productPreviewTitle}</Draft>
             </h2>
-            <p className="lede">
-              <Draft>{draft.productPreviewLede}</Draft>
-            </p>
           </div>
 
           {/* The five products as a pinned stack rather than a three-up grid.
@@ -80,13 +77,16 @@ export default function Home() {
           in a row lose the alternation the page rhythm runs on. */}
       <section className="section section--raised">
         <div className="shell stack-lg">
+          {/* Heading only. The lede under it (draft.whyLede) came out on
+              2026-09-08: the supplied rows below say what differs, and a
+              drafted line promising that they do was a sentence about the
+              list rather than part of it. /why-us still opens with it, where
+              it is the page's own lede and has nothing under it repeating
+              the point. */}
           <div className="stack prose">
             <h2 className="heading">
               <Draft>{draft.whyTitle}</Draft>
             </h2>
-            <p className="lede">
-              <Draft>{draft.whyLede}</Draft>
-            </p>
           </div>
 
           {/* Terms only, as supplied — the same rows /why-us shows. */}

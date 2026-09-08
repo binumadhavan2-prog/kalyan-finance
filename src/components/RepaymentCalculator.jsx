@@ -176,8 +176,12 @@ export default function RepaymentCalculator() {
   return (
     <section className="section" id="calculator">
       <div className="shell stack-lg">
+        {/* No eyebrow. It read "Calculator" over a heading that already said
+            "Work out a repayment", which is the same word twice in two sizes.
+            The band keeps the h2, so it still has its own heading in the
+            outline. ui.calculator stays in content.js — Tamil carries it
+            too — but nothing reads it now. */}
         <div className="stack prose">
-          <p className="eyebrow">{ui.calculator}</p>
           <h2 className="heading">
             <Draft>{draft.calculatorTitle}</Draft>
           </h2>

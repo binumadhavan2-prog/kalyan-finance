@@ -59,19 +59,23 @@ export default function LoanProducts() {
         lede={draft.productsLede}
         image="/page-header.webp"
         fill
-      />
+      >
+        {/* The standing note about terms, in the banner rather than at the top
+            of the list below it. It qualifies every product on the page, so it
+            belongs with the page's own heading and not above the first entry,
+            where it read as a note about that entry. */}
+        {anyTerms ? null : (
+          <>
+            <Missing>Terms not published yet</Missing>
+            <p className="page-head__note">
+              <Draft>{draft.termsPending}</Draft>
+            </p>
+          </>
+        )}
+      </PageHeader>
 
       <section className="section section--tight">
         <div className="shell stack-lg">
-          {anyTerms ? null : (
-            <div className="panel">
-              <Missing>Terms not published yet</Missing>
-              <p className="lede">
-                <Draft>{draft.termsPending}</Draft>
-              </p>
-            </div>
-          )}
-
           {services.map((service) => {
             const detail = productDetail[service.id] ?? {}
             return (

@@ -236,8 +236,6 @@ export const ta = {
       'அமைக்கப்படும் வணிக மற்றும் தனிநபர் நிதி உதவி.',
 
     productPreviewTitle: 'நாங்கள் செய்வது',
-    productPreviewLede:
-      'தனிநபர்களும் நிறுவனங்களும் சரியான நிதி நிலையை அடைய நாங்கள் உதவும் ஐந்து வழிகள்.',
 
     recognitionTitle: 'அங்கீகாரம்',
     recognitionEmpty:

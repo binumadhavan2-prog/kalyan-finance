@@ -1329,7 +1329,8 @@
    lighter scrim it falls to 2.4:1. White clears 6:1, and the near-white lede
    still keeps a step of hierarchy under the heading at 5.5:1. */
 .page-head--image .eyebrow { color: var(--ink-invert); }
-.page-head--image .lede { color: #e8e8ec; }
+.page-head--image .lede,
+.page-head--image .page-head__note { color: #e8e8ec; }
 
 /* Narrow screens put the copy across the middle of the frame, where a
    directional scrim leaves nothing to sit against. Flatten it to an even wash. */
@@ -1452,11 +1453,31 @@
 }
 
 /* The banner's shell is a .stack, whose 1rem step is the gap between lines of
-   copy and is too close to read as the break between the heading and the way
-   onward. This is .stack-lg's step, the same separation the home hero puts
-   between its copy and .hero__actions. */
-.page-head .contact-actions {
+   copy and is too close to read as the break between the heading and what the
+   page passes in under it. This is .stack-lg's step, the same separation the
+   home hero puts between its copy and .hero__actions. */
+.page-head .contact-actions,
+.page-head__note {
   margin-block-start: clamp(2rem, 5vw, 3.5rem);
+}
+
+/* A standing note under a banner's lede — plain copy, no box. The dashed
+   .panel this replaced is the container for a gap waiting to be filled, and
+   over the banner's artwork it read as a card dropped on the picture rather
+   than as part of the opening.
+
+   Still a step below .lede and on the soft ink, so the banner reads
+   heading -> lede -> note instead of as two ledes stacked — but only a step.
+   It was 0.9375rem flat, which at the top of a screen-tall banner sat closer
+   to fine print than to the qualification it is. The clamp tops out at
+   1.125rem against .lede's 1.3125rem, so the gap holds at every width rather
+   than closing on wide screens. Same 52ch measure as .page-head__lede, so the
+   two paragraphs share an edge. */
+.page-head__note {
+  max-width: 52ch;
+  color: var(--ink-soft);
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.55;
 }
 
 .map--empty {
@@ -1743,6 +1764,33 @@
 
 .valuelist__item:last-child { border-bottom: 1px solid var(--line); }
 
+/* Two home bands — "What we do" and "Why Kalyan Finance" — lost the lede that
+   used to sit between the heading and the block under it, which leaves the
+   heading resting straight on that block with only .stack-lg's step between
+   them. Both get a little more clear air, so the heading reads as a heading
+   over a list rather than as its first line.
+
+   Written as .prose + * because the two bands put different things under the
+   heading — a bordered list in one, the card stack in the other — and what
+   they have in common is the missing lede, not the block that follows. */
+.stack-lg > .prose + .valuelist,
+.stack-lg > .prose + .stack-cards {
+  margin-block-start: clamp(2.75rem, 6vw, 4.5rem);
+}
+
+/* The list needs one thing the card stack does not. .valuelist__item carries
+   its row rule as a border-top, so the first one lands just under the heading
+   and reads as an underline on it. The cards have their own full border and a
+   radius, so nothing there sits under the type this way.
+
+   Scoped to the pairing rather than put on .valuelist__item:first-child: the
+   other two lists keep their top rule, because neither has a heading resting
+   on it — /why-us has a lede between the two, and CoreValues sets its heading
+   in the column beside the list. */
+.stack-lg > .prose + .valuelist > .valuelist__item:first-child {
+  border-top: 0;
+}
+
 .section--dark .valuelist__item { border-color: var(--line-invert); }
 
 /* ---------- Indicative examples ----------
@@ -1968,33 +2016,48 @@
  * The hero, cut to fit the screen the way the English one does.
  *
  * .hero is min-height: 100svh minus the masthead and centres its row, so it can
- * only stay one screen while the copy column fits inside it. On a 1535x726
- * viewport that column has 653px. English asks for 628 and fits. Tamil asked
- * for 809 and did not, and the statement was 173px of the 181px difference:
+ * only stay one screen while the copy column fits inside it. Everything below
+ * is measured on a 1535x726 viewport, where the shell is capped at 1200 and the
+ * even .hero__grid split gives each column 572px.
  *
- *              lines   line box   height
- *   EN           5      65.3px    326px     4rem / 1.02 / 17.5ch
- *   TA           6      83.2px    499px     same size, 1.3 leading, wider glyphs
- *   TA now       5      62.4px    312px     3rem / 1.3 / 12em
+ * The measure is not the cap either language writes down. .display--statement
+ * asks for 17.5ch, which in Inter at 4rem is about 672px — wider than the
+ * column, so English is already wrapping to the column and not to its own cap.
+ * That is the honest baseline to cut Tamil against.
  *
- * Two things were wrong, and the size is only one of them.
+ * What the two scripts actually cost in that column:
  *
- * The other is the measure. 17.5ch and 46ch are ch units, and ch is the advance
- * of "0" in the first font in the stack — Inter, which has no Tamil in it at
- * all. So the caps stayed at their English pixel width while the glyphs filling
- * them got about a quarter wider, and the line count went up for a reason that
- * has nothing to do with how wide the column is. In em the cap still scales with
- * the type, which is what ch was there for, but it is calibrated against the
- * script actually being set: 12em at 3rem is 576px, which is the column.
+ *              size    one-line advance   lines   line box   height
+ *   EN         64px          2088px         4      65.3px     261px
+ *   TA         48px          2551px         6      62.4px     374px
+ *   TA now     40px          2126px         5      52.0px     260px
+ *
+ * Two things were wrong with the previous cut, and the size is only one.
+ *
+ * The other is that 12em at 3rem is 576px — a shade wider than the 572px column,
+ * so the cap never bound and the size alone was doing the work. Dropping the
+ * size to 2.5rem would have made 12em 480px and cost back a line, so the cap
+ * goes entirely: the column is the measure here, exactly as it is in English.
+ *
+ * The line counts are measured, not divided. Tamil packs a line to about 74% of
+ * its width against English's 91% — the words are long and there are few break
+ * points in them — which is why 2551/572 looks like 4.5 lines and renders as 6.
+ * Anything that changes the statement's wording has to be re-counted, not
+ * re-divided.
  *
  * The tagline drops a step for its own reason — 40 Tamil characters against the
- * English 32, which was wrapping it to two lines inside the lockup.
+ * English 32. At 1.375rem it runs 633px into a 572px column and takes two lines
+ * inside the lockup; at 1.125rem it runs 518px and takes one. That holds from
+ * about 1190px of viewport up, which is where the shell reaches its cap and the
+ * column stops growing. Below it the tagline wraps again, and it should: at the
+ * 62rem breakpoint the column is down to 420px, and there is no size worth
+ * reading that fits 40 Tamil characters across it.
  */
-:lang(ta) .hero__tagline { font-size: clamp(1rem, 1.9vw, 1.375rem); }
+:lang(ta) .hero__tagline { font-size: clamp(1rem, 1.5vw, 1.125rem); }
 
 :lang(ta) .hero .display--statement {
-  font-size: clamp(1.75rem, 4vw, 3rem);
-  max-width: 12em;
+  font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+  max-width: none;
 }
 
 :lang(ta) .hero__lede {
