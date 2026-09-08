@@ -20,8 +20,16 @@
  * site an invented figure is not a placeholder, it is a false claim.
  */
 
-/** Set to false once every string in `draft` is client-approved. */
-export const markDraftCopy = true
+/**
+ * Whether unapproved wording renders with its dotted underline.
+ *
+ * Turned off on 2026-09-07 at the client's request, the same call as the
+ * `Missing` labels. Note what it does NOT mean: nothing in `draft` has been
+ * signed off, and the strings below are still the ones written to fill out the
+ * layout. The marks are hidden, not earned — set this back to true to review
+ * what is still unapproved, and only delete the flag once `draft` is empty.
+ */
+export const markDraftCopy = false
 
 /** Client-supplied company facts, wording unchanged. */
 export const company = {
