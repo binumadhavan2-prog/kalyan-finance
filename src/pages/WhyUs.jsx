@@ -18,6 +18,7 @@ export default function WhyUs() {
         title={draft.whyTitle}
         lede={draft.whyLede}
         image="/page-header.webp"
+        fill
       />
 
       <section className="section">

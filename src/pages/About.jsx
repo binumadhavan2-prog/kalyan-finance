@@ -18,6 +18,7 @@ export default function About() {
         lede={about.body}
         drafted={false}
         image="/page-header.webp"
+        fill
       />
 
       {/* The story, first thing after the intro. The heading is the founding
