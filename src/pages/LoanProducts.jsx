@@ -60,22 +60,6 @@ export default function LoanProducts() {
         image="/page-header.webp"
       />
 
-      {/* Five products is enough that a reader arriving for one of them should
-          not have to scroll the other four to find it. */}
-      <section className="section section--tight">
-        <div className="shell stack">
-          <ul className="taglist" role="list">
-            {services.map((service) => (
-              <li key={service.id}>
-                <a className="tag tag--link" href={`#${service.id}`}>
-                  {service.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
       <section className="section section--tight">
         <div className="shell stack-lg">
           {anyTerms ? null : (
