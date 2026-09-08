@@ -43,9 +43,16 @@ const ICON_Y  = SY + 140;
 const LABEL_Y = ICON_Y + 108;
 const LABEL_W = 136;
 
-const CARD_W = 700;
+// The contact block is sized for how the clip is actually watched, not for
+// how it looks at 1920 wide. It sits in the home hero at roughly 700 CSS px,
+// a shade over a third of frame width, so the old 32px rows landed at about
+// 12 CSS px on screen - smaller than the body copy beside them. Type, icons
+// and the button are all 1.8x their first pass; the gaps between rows are only
+// 1.2x, so the block reads bigger without crowding the mark above it or the
+// sign-off below.
+const CARD_W = 1260;
 const CARD_X = (W - CARD_W) / 2;
-const CARD_Y = 310;
+const CARD_Y = 238;
 
 const bg = () => (
   <rect name="bg" x={0} y={0} width={W} height={H}
@@ -122,31 +129,31 @@ const beat2 = (icon, t0) => [
   // The stroke object mirrors the shape `path` takes above. The column owns
   // the card's computed height, so the edge has to be drawn by that same node
   // rather than by a rect sized behind it.
-  <column name="card" x={CARD_X} y={CARD_Y} width={CARD_W} padding={48} gap={28}
+  <column name="card" x={CARD_X} y={CARD_Y} width={CARD_W} padding={86} gap={34}
           fill={CARD_BG} radius={28} stroke={{ color: GOLD, width: 3 }}
           at={t0 + 0.30} duration={2.69}
           animate={[
             { property: "opacity", from: 0,  to: 1, at: 0, duration: 0.35 },
             { property: "offsetY", from: 26, to: 0, at: 0, duration: 0.50, easing: "house" },
           ]}>
-    <text name="eyebrow" fontFamily="Inter" fontSize={18} fontWeight={600} letterSpacing={4}
+    <text name="eyebrow" fontFamily="Inter" fontSize={32} fontWeight={600} letterSpacing={7}
           color={SOFT} text="GET IN TOUCH" />
-    <row name="row-phone" gap={22} align="center">
-      {icon("phone", { size: 36, color: GOLD })}
-      <text fontFamily="Inter" fontSize={32} color={WHITE} text={CONTACT.phone} />
+    <row name="row-phone" gap={40} align="center">
+      {icon("phone", { size: 65, color: GOLD })}
+      <text fontFamily="Inter" fontSize={58} color={WHITE} text={CONTACT.phone} />
     </row>
-    <row name="row-mail" gap={22} align="center">
-      {icon("mail", { size: 36, color: GOLD })}
-      <text fontFamily="Inter" fontSize={32} color={WHITE} text={CONTACT.email} />
+    <row name="row-mail" gap={40} align="center">
+      {icon("mail", { size: 65, color: GOLD })}
+      <text fontFamily="Inter" fontSize={58} color={WHITE} text={CONTACT.email} />
     </row>
-    <column name="cta" width={CARD_W - 96} padding={{ top: 26, bottom: 26 }} align="center"
+    <column name="cta" width={CARD_W - 172} padding={{ top: 47, bottom: 47 }} align="center"
             fill={GOLD} radius={14}
             animate={[{ property: "opacity", keyframes: [
               { at: 0,   value: 1 },
               { at: 0.5, value: 0.66 },
               { at: 1.0, value: 1 },
             ], repeat: 2 }]}>
-      <text fontFamily="Inter" fontSize={31} fontWeight={700} letterSpacing={2}
+      <text fontFamily="Inter" fontSize={56} fontWeight={700} letterSpacing={4}
             color="#0b1330" text="GET STARTED" />
     </column>
   </column>,
