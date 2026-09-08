@@ -103,18 +103,30 @@ export const services = [
     title: 'Business Finance',
     icon: 'briefcase',
     /**
-     * Client-supplied on 2026-09-05. Optional — not every product has one.
-     * The intrinsic size travels with the file so the markup can reserve the
-     * right box before it loads; these two are different shapes.
+     * Optional — not every product has one. The intrinsic size travels with
+     * the file so the markup can reserve the right box before it loads.
+     *
+     * Replaced on 2026-09-07: the 2026-09-05 supply was a stock word cloud,
+     * flagged at the time as worth replacing. This is a photograph, so it is
+     * decorative and carries no `alt` — there is no wording in it a reader
+     * would otherwise miss.
      */
-    image: { src: '/product-business.webp', width: 1080, height: 960 },
+    image: { src: '/product-business.webp', width: 1024, height: 559 },
   },
   {
     id: 'personal',
     title: 'Personal Finance Assistance',
     icon: 'person',
-    /** Client-supplied on 2026-09-05. */
-    image: { src: '/product-personal.jpg', width: 709, height: 433 },
+    /* Replaced on 2026-09-07. The 709x433 jpg before it was a generic meeting
+       photo that said "business" as readily as "personal", and it was the one
+       piece of product art on the page rendering upscaled — the column is about
+       550px wide, so 709px of source had very little to give.
+
+       No `alt`: the words in the picture (PERSONAL FINANCE PLANNER, EXPENSES VS
+       SAVINGS) are props in a scene, not a banner's own copy, and the first of
+       them only restates the h2 above it. That is the illustration case, so it
+       stays decorative. */
+    image: { src: '/product-personal.webp', width: 1024, height: 559 },
   },
   {
     id: 'short-term',
