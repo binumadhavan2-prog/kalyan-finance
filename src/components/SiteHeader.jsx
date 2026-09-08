@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useCopy } from '../i18n'
+import { useSamePageTop } from '../useSamePageTop'
 import Wordmark from './Wordmark'
 import LanguageToggle from './LanguageToggle'
 
@@ -8,11 +9,21 @@ export default function SiteHeader() {
   const { company, navLinks, ui } = useCopy()
   const [open, setOpen] = useState(false)
   const close = () => setOpen(false)
+  /* The masthead is sticky, so every one of these links is there to be clicked
+     at any scroll depth — including the one naming the page already open. */
+  const toTop = useSamePageTop()
 
   return (
     <header className="masthead">
       <div className="shell masthead__inner">
-        <Link className="wordmark" to="/" onClick={close}>
+        <Link
+          className="wordmark"
+          to="/"
+          onClick={() => {
+            close()
+            toTop('/')
+          }}
+        >
           <Wordmark />
           {/* Name and tagline stack into one lockup beside the mark. The
               tagline is aria-hidden so the link keeps "Kalyan Finance" as its
@@ -30,7 +41,7 @@ export default function SiteHeader() {
           <ul className="navlist" role="list">
             {navLinks.map(({ to, label, end }) => (
               <li key={to}>
-                <NavLink to={to} end={end}>
+                <NavLink to={to} end={end} onClick={() => toTop(to)}>
                   {label}
                 </NavLink>
               </li>
@@ -40,7 +51,14 @@ export default function SiteHeader() {
 
         <LanguageToggle className="lang-link" />
 
-        <Link className="btn btn--sm masthead__cta" to="/contact" onClick={close}>
+        <Link
+          className="btn btn--sm masthead__cta"
+          to="/contact"
+          onClick={() => {
+            close()
+            toTop('/contact')
+          }}
+        >
           {ui.getInTouch}
         </Link>
 
@@ -62,7 +80,14 @@ export default function SiteHeader() {
           <ul className="mobile-nav__list" role="list">
             {navLinks.map(({ to, label, end }) => (
               <li key={to}>
-                <NavLink to={to} end={end} onClick={close}>
+                <NavLink
+                  to={to}
+                  end={end}
+                  onClick={() => {
+                    close()
+                    toTop(to)
+                  }}
+                >
                   {label}
                 </NavLink>
               </li>
