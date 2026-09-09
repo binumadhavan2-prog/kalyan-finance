@@ -245,7 +245,7 @@
   line-height: 1.2;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  /* Picks up the gold of the mark it sits beside. 6.3:1 on navy, so it holds
+  /* Picks up the gold of the mark it sits beside. 7.4:1 on navy, so it holds
      at this size despite being the smallest type on the page. */
   color: var(--gold);
 }
@@ -319,7 +319,7 @@
   transition: color 0.15s ease;
 }
 
-/* Gold on hover, matching the active link below. 6.3:1 on the navy bar. */
+/* Gold on hover, matching the active link below. 7.4:1 on the navy bar. */
 .navlist a:hover { color: var(--gold); }
 
 .masthead__nav { display: none; }
@@ -935,7 +935,7 @@
 
 /* The only gold button on the site, reserved for the single action the page is
    asking for. The label is pinned to --black rather than --ink: --ink is white
-   on the navy page, and white on --gold is 2.1:1. Near-black measures 9.2:1. */
+   on the navy page, and white on --gold is 2.2:1. Near-black measures 8.8:1. */
 .btn--gold,
 .section--dark .btn--gold {
   background: var(--gold);
@@ -1097,7 +1097,7 @@
    .btn-ghost because `.masthead .btn` fills every button on this bar and
    would flatten a ghost into the same white pill as the CTA.
 
-   Gold on hover, matching what the nav links do either side of it. 6.3:1 on
+   Gold on hover, matching what the nav links do either side of it. 7.4:1 on
    navy for the label, and the border clears the 3:1 floor for a control's
    own edge. */
 .lang-link {
@@ -1266,9 +1266,9 @@
    --navy-deep, so the step cost nothing here:
 
      stop        white      lede #e8e8ec
-     0%   0.85   13.5:1      11.0:1
-     45%  0.70   11.2:1       9.2:1
-     100% 0.50    8.6:1       7.0:1
+     0%   0.85   15.5:1      12.7:1
+     45%  0.70   12.8:1      10.4:1
+     100% 0.50    9.4:1       7.7:1
 
    So if these are ever revisited, contrast is not the constraint — there is
    headroom down to about 0.15 before the lede reaches 4.5:1. What is at stake
@@ -1299,9 +1299,9 @@
   z-index: -1;
   background: linear-gradient(
     100deg,
-    rgb(22 33 66 / 0.85) 0%,
-    rgb(22 33 66 / 0.7) 45%,
-    rgb(22 33 66 / 0.5) 100%
+    rgb(8 23 43 / 0.85) 0%,
+    rgb(8 23 43 / 0.7) 45%,
+    rgb(8 23 43 / 0.5) 100%
   );
 }
 
@@ -1316,7 +1316,7 @@
    directional scrim leaves nothing to sit against. Flatten it to an even wash. */
 @media (max-width: 48rem) {
   .page-head--image::before {
-    background: rgb(22 33 66 / 0.8);
+    background: rgb(8 23 43 / 0.8);
   }
 }
 
@@ -1385,7 +1385,7 @@
 /* Pinned to the palette rather than left to the browser, whose defaults range
    from a passable grey to something well under the 4.5:1 floor. `opacity: 1`
    is not redundant: Firefox dims placeholders on its own, which would undo
-   --ink-soft's measured 5.4:1. */
+   --ink-soft's measured 4.6:1. */
 .field input::placeholder,
 .field textarea::placeholder {
   color: var(--ink-soft);
@@ -1702,7 +1702,7 @@
    Sits on the underside of the sticky masthead rather than at the very top
    of the viewport: over the navy it would be a second stripe of brand
    colour, and the home page opens on the hero, where an inked bar
-   would vanish. Navy track, gold fill at 6.3:1 — it reads as the header's
+   would vanish. Navy track, gold fill at 7.4:1 — it reads as the header's
    own edge, and the read position is the one moving thing on the page. */
 .scroll-progress {
   position: fixed;
