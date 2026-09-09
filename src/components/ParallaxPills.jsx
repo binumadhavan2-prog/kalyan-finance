@@ -78,6 +78,48 @@ export default function ParallaxPills({ items }) {
     const pills = Array.from(el.children)
     // Current px offset per pill, eased toward the target every frame.
     const offsets = pills.map(() => ({ x: 0, y: 0 }))
+
+    /*
+     * How far each pill may lean sideways before it leaves the row's own box.
+     *
+     * The drift is a transform, so it changes nothing about layout and the row
+     * has no idea a pill has moved. That is fine in the middle of the row and
+     * wrong at its ends: the five supplied terms come to about 1196px of pills
+     * and gaps against a 1200px shell, so the row fits on one line with almost
+     * nothing to spare, and then the outermost pill is asked to travel up to
+     * 62px — STRENGTH 48 x the deepest depth 1.3 — into space that is not
+     * there. It ends up outside the shell, and on a window not much wider than
+     * the shell, outside the viewport, taking the page's horizontal scroll with
+     * it.
+     *
+     * So each pill is clamped to the distance actually available on its own
+     * side. Interior pills are unaffected, because the room beside them is far
+     * more than they ever use; the end ones give up travel in proportion to how
+     * close they already sit to the edge, which is the right trade and is only
+     * visible on the widths where the alternative was a pill hanging off the
+     * page.
+     *
+     * Measured from offsetLeft rather than getBoundingClientRect, because
+     * offsets are layout values and are not affected by the transforms this is
+     * in the middle of writing — reading rects here would feed the drift back
+     * into its own limits.
+     */
+    const limits = pills.map(() => ({ left: 0, right: 0 }))
+    // A little back from the true edge, for the width a pill's tilt adds.
+    const EDGE_INSET = 4
+
+    const measure = () => {
+      const rowLeft = el.offsetLeft
+      const rowRight = rowLeft + el.clientWidth
+
+      pills.forEach((pill, i) => {
+        const room = limits[i]
+        room.left = Math.min(0, rowLeft - pill.offsetLeft + EDGE_INSET)
+        room.right = Math.max(0, rowRight - pill.offsetLeft - pill.offsetWidth - EDGE_INSET)
+      })
+    }
+
+    measure()
     // Pointer position relative to the row's centre, normalised to -1..1.
     const pointer = { x: 0, y: 0 }
     let frame = 0
@@ -87,7 +129,11 @@ export default function ParallaxPills({ items }) {
 
       pills.forEach((pill, i) => {
         const depth = DEPTHS[i % DEPTHS.length]
-        const targetX = pointer.x * STRENGTH * depth
+        const room = limits[i]
+        const targetX = Math.min(
+          Math.max(pointer.x * STRENGTH * depth, room.left),
+          room.right,
+        )
         const targetY = pointer.y * STRENGTH * depth * VERTICAL_DAMPING
         const at = offsets[i]
 
@@ -142,17 +188,35 @@ export default function ParallaxPills({ items }) {
       schedule()
     }
 
+    /* The row re-flows and the room beside each pill changes with it, so the
+       limits are stale until this runs. It also covers the wrap to two lines,
+       where a pill that was mid-row becomes the last one on its own. */
+    const onResize = () => {
+      measure()
+      schedule()
+    }
+
+    /* Pill widths are set by the webfont, and the first measurement above can
+       land before it arrives — the fallback stack is not the same width. One
+       re-measure when the fonts settle costs nothing and stops the row's ends
+       being clamped against widths that no longer apply. */
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(onResize).catch(() => {})
+    }
+
     /* Tracked on the window, not the row: the pills should already be leaning
        toward the cursor as it approaches, and a listener on the row itself
        only fires once the cursor is on top of them. */
     window.addEventListener('pointermove', onMove, { passive: true })
     window.addEventListener('blur', onLeave)
+    window.addEventListener('resize', onResize)
 
     return () => {
       observer.disconnect()
       if (frame) cancelAnimationFrame(frame)
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('blur', onLeave)
+      window.removeEventListener('resize', onResize)
     }
   }, [items])
 

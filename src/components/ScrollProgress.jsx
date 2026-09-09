@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 
 /**
  * A reading-progress bar pinned to the underside of the masthead.
@@ -9,7 +10,23 @@ import { useEffect, useRef } from 'react'
  */
 export default function ScrollProgress() {
   const fill = useRef(null)
+  const { pathname } = useLocation()
 
+  /*
+   * Keyed on the route, which it did not need to be while the home page was
+   * the only thing rendering it: leaving that page unmounted the component and
+   * arriving back mounted a fresh one, so the fill always started from a
+   * measurement of the page it was on.
+   *
+   * It lives in the layout now and survives navigation, so it has to re-measure
+   * itself. The layout scrolls to the top on every route change and that alone
+   * usually resets the fill through the scroll listener below — but only if a
+   * scroll event actually fires, and arriving at a page already at offset zero
+   * fires nothing. Without this the bar would keep the previous page's fill.
+   *
+   * Re-subscribing the two listeners per navigation is the cost, and it is not
+   * one worth engineering around.
+   */
   useEffect(() => {
     let frame = 0
 
@@ -40,7 +57,7 @@ export default function ScrollProgress() {
       window.removeEventListener('scroll', schedule)
       window.removeEventListener('resize', schedule)
     }
-  }, [])
+  }, [pathname])
 
   // Decorative: the position is already conveyed by the scrollbar itself.
   return (
