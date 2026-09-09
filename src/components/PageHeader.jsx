@@ -4,7 +4,7 @@ import Draft from './Draft'
  * The banner the inner pages open with, so they share a silhouette with the
  * home hero without repeating its scale.
  *
- * On --navy-deep, a step below the ground the sections under it sit on, so the
+ * On --primary-deep, a step below the ground the sections under it sit on, so the
  * banner reads as its own band and the page has an edge under its heading.
  *
  * It sat on --page for a while, and the reason was Loan Products: that page had
@@ -12,8 +12,8 @@ import Draft from './Draft'
  * left four inner pages with two different opening colours. All four carry
  * /page-header.webp now, so they step together and the flat version has nothing
  * left to argue for it. Nothing else moves with the ground: --ink-soft and
- * --ink-invert-soft are both --nav-soft, --ink and --ink-invert are both white,
- * and both clear easily on the deeper band (white 15.8:1, --nav-soft 7.6:1).
+ * --ink-invert-soft are both --primary-soft, --ink and --ink-invert are both white,
+ * and both clear easily on the deeper band (white 15.8:1, --primary-soft 7.6:1).
  *
  * `drafted` is true by default because most page copy still is. Pass false
  * where the wording is client-approved, so it renders without the dotted mark.
@@ -24,13 +24,13 @@ import Draft from './Draft'
  * a heading over the sections below it.
  *
  * `children` render under the lede, for a page that puts its way onward in the
- * banner rather than in a band below it. The banner is navy on a light page, so
+ * banner rather than in a band below it. The banner is primary on a light page, so
  * it carries .section--dark like any other inverted band — that is what hands
  * the copy, the buttons and anything in the aside the invert pair.
  *
  * `aside` is a second column beside the copy, the way the home hero puts the
  * clip beside its lockup. It goes with `fill` in practice: a screen-tall banner
- * carrying one heading and a button row is mostly empty navy, and the width is
+ * carrying one heading and a button row is mostly empty primary, and the width is
  * where the emptiness shows. Without it the copy keeps the full shell, which is
  * what the three banners that pass no aside want.
  *

@@ -6,8 +6,8 @@ import Draft from './Draft'
  * The closing call to action, on every page but /contact.
  *
  * The last thing on the page and the one section that has to convert, so it
- * carries weight the other bands do not: the brand gold on the primary action
- * — the only gold button on the site.
+ * carries weight the other bands do not: the bright accent on the primary
+ * action — the only button on the site that takes it.
  *
  * Two routes out. The form for people who want to describe a requirement, and
  * a direct mailto for people who would rather just write. The mail button only
@@ -38,7 +38,7 @@ export default function ClosingCta() {
         </p>
 
         <p className="cta__actions">
-          <Link className="btn btn--gold btn--lg" to="/contact">
+          <Link className="btn btn--feature btn--lg" to="/contact">
             <Draft>{draft.ctaButton}</Draft>
           </Link>
           {contact.email ? (

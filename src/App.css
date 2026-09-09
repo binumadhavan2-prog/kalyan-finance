@@ -6,9 +6,22 @@
 
 .section { padding-block: var(--step); }
 
+/* An edge between consecutive light bands.
+ *
+ * --page and --raised are 1.04:1 apart, which is enough to feel as a change of
+ * ground on a page that keeps alternating them but not enough to be a boundary
+ * — three light bands in a row read as one long expanse of white. The dark
+ * bands need nothing here: primary against the page is its own edge.
+ *
+ * So the hairline is drawn only where light meets light. Full-bleed rather than
+ * inset to the shell: it is the band that is ending, not the column. */
+.section:not(.section--dark) + .section:not(.section--dark) {
+  border-top: 1px solid var(--line);
+}
+
 /* Full-bleed inverted band. Alternating these carries the page rhythm, and on
-   a light page "inverted" means dark again: --navy-deep under the ivory and
-   cream bands, where the all-navy palette had it a step below an already dark
+   a light page "inverted" means dark again: --primary-deep under the page and
+   white bands, where the all-dark palette had it a step below an already dark
    --page.
 
    The four tokens below are the base pair re-pointed at the invert values for
@@ -20,12 +33,12 @@
    restate what the cascade already does, and are kept only because they say
    out loud which components were checked on the dark ground. */
 .section--dark {
-  background: var(--navy-deep);
+  background: var(--primary-deep);
   color: var(--ink-invert);
   --ink: var(--ink-invert);
   --ink-soft: var(--ink-invert-soft);
   --line: var(--line-invert);
-  --on-light: var(--navy);
+  --on-light: var(--primary);
 }
 
 .section--raised { background: var(--raised); }
@@ -99,11 +112,11 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.875rem 1.625rem;
-  border: 1px solid var(--emerald);
+  border: 1px solid var(--accent-deep);
   border-radius: 100px;
-  background: var(--emerald);
+  background: var(--accent-deep);
   /* Not --on-light: that token flips with the ground, and this label sits on
-     the emerald pill, which does not. */
+     the accent pill, which does not. */
   color: var(--ink-invert);
   font-weight: 500;
   font-size: 0.9375rem;
@@ -112,15 +125,15 @@
   transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
 
-/* Darker emerald rather than the hollow-out the button used to do: the fill is
+/* Darker accent rather than the hollow-out the button used to do: the fill is
    the brand secondary now, and emptying it on hover reads as the button going
    away. */
-.btn:hover { background: var(--emerald-deep); border-color: var(--emerald-deep); }
+.btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 
 /* The global :focus-visible ring is `2px solid currentColor` at a 3px offset,
-   and on the filled button currentColor is the label — white on the emerald
+   and on the filled button currentColor is the label — white on the accent
    pill. The offset puts the ring outside the pill, on the ground, where white
-   would be invisible on the ivory page. --ink is the ground's own darkest ink
+   would be invisible on the light page. --ink is the ground's own darkest ink
    and flips to white inside a dark band with the rest of the base pair, so one
    value covers both. */
 .btn:focus-visible { outline-color: var(--ink); }
@@ -137,8 +150,8 @@
   border-color: var(--ink);
 }
 
-/* The filled button no longer swaps polarity — it is emerald on the ivory page
-   and emerald on the navy bands, which is the point of having a secondary
+/* The filled button no longer swaps polarity — it is the accent on the light
+   page and the accent on the primary bands, which is the point of having a
    colour carry it. Only the ghost variant, which is drawn from the ground
    rather than from the palette, still has to flip. */
 .section--dark .btn-ghost {
@@ -156,21 +169,21 @@
 .btn--sm { padding: 0.625rem 1.25rem; font-size: 0.875rem; }
 
 /* ---------- Masthead ----------
-   Navy, matched by the footer at the other end of the page. Kept opaque rather
+   Primary, matched by the footer at the other end of the page. Kept opaque rather
    than translucent: the blur would wash the brand colour out, and over the
    hero it would read as a third shade.
 
-   The bottom rule was navy-on-navy, i.e. invisible, which was fine while the
-   hero was black. Now that the hero — and every page under it — is navy too,
-   the bar would dissolve into the page, so the divider moves to --nav-line:
+   The bottom rule was primary-on-primary, i.e. invisible, which was fine while
+   the hero was black. Now that the hero — and every page under it — is light,
+   the bar would dissolve into the page, so the divider moves to --primary-line:
    the palette's hairline for this ground, and the same one the footer uses. */
 .masthead {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: var(--navy);
+  background: var(--primary);
   color: var(--ink-invert);
-  border-bottom: 1px solid var(--nav-line);
+  border-bottom: 1px solid var(--primary-line);
 }
 
 .masthead__inner {
@@ -196,8 +209,8 @@
 }
 
 /* Pure white rather than the inherited value, so the name holds its own
-   against the gold mark beside it instead of sitting back into the navy. */
-.masthead .wordmark { color: #ffffff; }
+   against the accent mark beside it instead of sitting back into the primary. */
+.masthead .wordmark { color: var(--ink-invert); }
 
 /* Scoped to the masthead on purpose: the footer uses the same class for its
    sign-off, and that one keeps the base size.
@@ -246,9 +259,10 @@
   line-height: 1.2;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  /* Picks up the gold of the mark it sits beside. 7.4:1 on navy, so it holds
-     at this size despite being the smallest type on the page. */
-  color: var(--gold);
+  /* Picks up the accent of the mark it sits beside. --accent-bright rather
+     than the supplied accent, which is 3.0:1 on primary: this is the smallest
+     type on the page and needs the 4.5:1 the tint gets it. */
+  color: var(--accent-bright);
 }
 
 @media (min-width: 48rem) {
@@ -316,12 +330,14 @@
 
 .navlist a {
   white-space: nowrap;
-  color: var(--nav-soft);
+  color: var(--primary-soft);
   transition: color 0.15s ease;
 }
 
-/* Gold on hover, matching the active link below. 7.4:1 on the navy bar. */
-.navlist a:hover { color: var(--gold); }
+/* The accent on hover. The active link below is gold, so the current page
+   stays distinct from whichever link is under the cursor. 4.5:1 on the
+   primary bar. */
+.navlist a:hover { color: var(--accent-bright); }
 
 .masthead__nav { display: none; }
 
@@ -330,20 +346,21 @@
 }
 
 /* ---------- Hero ---------- */
-/* Navy rather than the black the other dark bands take. The hero opens the
-   page directly under the navy masthead, so the brand colour now runs from the
-   top of the viewport through the hero as a single field. */
+/* --page, not a dark band at all on this palette: the photograph carries the
+   hero and the scrim above holds it light enough for dark type. The primary
+   masthead sits directly on top of it, so the page opens on the brand colour
+   and then drops straight into the light ground the rest of it runs on. */
 .hero {
   position: relative;
   isolation: isolate;
   /* One screen, and no more.
 
      Height is still what makes this read as the opening rather than as the
-     first of several equal navy bands — that part of the old note stands. But
+     first of several equal bands — that part of the old note stands. But
      it was bought with padding alone, 13rem top and bottom around a copy block
      that is already about 575px tall, and padding does not know how tall the
      window is. On a 1535x726 viewport that put the hero at roughly 1.4 screens
-     and left a third of a screen of empty navy under the buttons.
+     and left a third of a screen of empty ground under the buttons.
 
      Measured against the viewport instead: fill exactly what is left under the
      sticky masthead, its 1px bottom border included, and centre the row in it.
@@ -367,12 +384,12 @@
 }
 
 /*
- * A directional scrim over the photograph. Solid ivory on the left where the
+ * A directional scrim over the photograph. Solid --page on the left where the
  * copy sits, thinning to the right so the picture is legible behind the clip.
  *
- * Ivory is painted underneath as the background colour too, so a failed or slow
- * image load leaves the hero exactly as it was rather than dropping navy text
- * onto nothing.
+ * --page is painted underneath as the background colour too, so a failed or
+ * slow image load leaves the hero exactly as it was rather than dropping dark
+ * text onto nothing.
  */
 .hero::before {
   content: "";
@@ -382,28 +399,28 @@
   /* Opaque behind the copy, and this one is not a dial to turn by eye either.
      Dark type on a light scrim is measured against the DARKEST part of the
      image rather than the lightest, and the worst case there is a black pixel,
-     which composites the ivory straight down towards it:
+     which composites --page straight down towards it:
 
-       alpha   --ink     --ink-soft   --emerald
-       1.00    15.17:1     4.64:1       4.57:1   <- both stops behind the copy
-       0.99    14.90:1     4.56:1       4.50:1
-       0.98    14.51:1     4.44:1       4.38:1
-       0.95    13.63:1     4.17:1       4.11:1
+       alpha   --ink     --ink-soft   --accent-deep
+       1.00    15.51:1     4.53:1       4.68:1   <- both stops behind the copy
+       0.99    15.18:1     4.43:1       4.58:1
+       0.98    14.85:1     4.34:1       4.48:1
+       0.95    13.90:1     4.06:1       4.19:1
 
-     --ink-soft and --emerald are already within a tenth of the floor on the
-     ivory itself, so there is no transparency left to spend behind the copy:
-     the lede and the strapline go under 4.5:1 by alpha 0.98. Hence 1 rather
-     than the 0.89 the navy palette could afford — the picture behind the copy
-     column is the price of dark type on a light ground.
+     --ink-soft is already within a hundredth of the floor on --page itself, so
+     there is no transparency left to spend behind the copy: it goes under
+     4.5:1 the moment alpha leaves 1, and --accent-deep follows by 0.98. Hence
+     1 rather than the 0.89 the all-dark palette could afford — the picture
+     behind the copy column is the price of dark type on a light ground.
 
      The last stop carries no text at all — the clip sits in that column and
      paints its own background — so it stays free to go much thinner, and it is
      the whole of what is left of the photograph. */
   background: linear-gradient(
     to right,
-    rgb(248 247 242 / 1) 0%,
-    rgb(248 247 242 / 1) 45%,
-    rgb(248 247 242 / 0.55) 100%
+    rgb(247 245 252 / 1) 0%,
+    rgb(247 245 252 / 1) 45%,
+    rgb(247 245 252 / 0.55) 100%
   );
 }
 
@@ -412,15 +429,16 @@
    at the same opacity the copy column takes above, which on this palette means
    the photograph does not show on a phone at all. */
 @media (max-width: 61.999rem) {
-  .hero::before { background: rgb(248 247 242 / 1); }
+  .hero::before { background: rgb(247 245 252 / 1); }
 }
 
 /* The hero is a light band on this palette, so the lede takes the light
-   ground's soft ink rather than the navy one's. --nav-soft is 1.4:1 on ivory. */
+   ground's soft ink rather than the primary one's. --primary-soft is 2.6:1 on
+   --page. */
 .hero .lede { color: var(--ink-soft); }
 
 /* The hero's ground is --page like the bands under it, so the ghost button
-   takes the plain hairline and the rule the navy hero needed here is gone. */
+   takes the plain hairline and the rule the dark hero needed here is gone. */
 .hero .btn-ghost { border-color: var(--line); }
 
 .hero__actions {
@@ -446,14 +464,15 @@
 .hero .hero__name { color: var(--ink); }
 
 /* The brand line, tucked under the company name as the masthead has it. In the
-   secondary rather than the mark's gold: the hero is ivory on this palette and
-   gold measures 2.1:1 on it, where the emerald clears the floor at 4.6:1. */
+   deepened rather than the mark's own accent: the hero is light on this palette
+   and the supplied accent measures 3.9:1 on it, where --accent-deep clears the
+   floor at 4.7:1. */
 .hero__tagline {
   font-size: clamp(1.125rem, 2.2vw, 1.5rem);
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.3;
-  color: var(--emerald);
+  color: var(--accent-deep);
 }
 
 /* Both override the flat 1rem from `.stack > * + *`, and both need to match
@@ -497,8 +516,8 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: var(--radius);
-  border: 5px solid var(--gold);
-  background: var(--navy);
+  border: 5px solid var(--accent);
+  background: var(--primary);
   object-fit: contain;
 }
 
@@ -522,9 +541,9 @@
   flex-direction: column;
   gap: 1rem;
   padding: clamp(1.5rem, 3vw, 2.25rem);
-  /* Its own token rather than --page: the bands alternate ivory and cream, and
-     the card is cream on both — by its border on the cream ones, by the step
-     up from ivory on the others. */
+  /* Its own token rather than --page: the bands alternate --page and white,
+     and the card is white on both — by its border on the white ones, by the
+     step up from --page on the others. */
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -538,7 +557,7 @@
 .card:hover {
   transform: translateY(-2px);
   border-color: var(--ink);
-  box-shadow: 0 8px 24px rgb(11 31 58 / 0.12);
+  box-shadow: 0 8px 24px rgb(59 36 107 / 0.12);
 }
 
 /* Touch has no hover, so the lift would stick after a tap. */
@@ -547,7 +566,7 @@
 }
 
 .section--dark .card {
-  background: var(--navy-deep);
+  background: var(--primary-deep);
   border-color: var(--line-invert);
 }
 
@@ -556,14 +575,14 @@
   box-shadow: none;
 }
 
-/* Gold, the accent's main job on this palette: the icon is the one warm mark
-   on a card that is otherwise navy on cream. Decorative — every card states
+/* The supplied accent, undeepened: the icon is the one saturated mark
+   on a card that is otherwise ink on white. Decorative — every card states
    its subject in the title under it — so the accent is free to sit here at
-   2.2:1 on the cream, which no piece of type on the site is allowed to do. */
+   4.2:1 on white, just under the floor no piece of type on the site may go. */
 .card__icon {
   width: 1.875rem;
   height: 1.875rem;
-  color: var(--gold);
+  color: var(--accent);
 }
 
 .card__title {
@@ -789,10 +808,10 @@
 
 .section--dark .stat__label { color: var(--ink-invert-soft); }
 
-/* The figures themselves in the accent, on the one band that is navy in the
-   middle of the page. 8.0:1 on --navy-deep, and the only place gold carries
-   type at this size. */
-.section--dark .stat__value { color: var(--gold); }
+/* The figures themselves in the accent, on the one band that is primary in the
+   middle of the page. --accent-bright at 5.4:1 on --primary-deep, and the only
+   place the accent carries type at this size. */
+.section--dark .stat__value { color: var(--accent-bright); }
 
 /* ---------- Split rows ---------- */
 .split {
@@ -865,9 +884,9 @@
 
 /* The footer is dark but carries no `section--dark`, so it was missing the
    rule above and its chips sat at the light-background ink — about 2.9:1 once
-   the opacity is applied, dim enough to read as nothing there. Navy takes
-   --nav-soft rather than the neutral, matching the rest of the footer. */
-.footer .todo { color: var(--nav-soft); }
+   the opacity is applied, dim enough to read as nothing there. Primary takes
+   --primary-soft rather than the neutral, matching the rest of the footer. */
+.footer .todo { color: var(--primary-soft); }
 
 /* Draft copy keeps a faint dotted underline until the client signs it off.
    Set markDraftCopy to false in content.js to switch the marks off. */
@@ -879,7 +898,7 @@
 
 /* ---------- Closing CTA ----------
    The one band on the page that has to convert, so it is given more room than
-   a normal section and a gold hairline to lift it off the band above.
+   a normal section and an accent hairline to lift it off the band above.
 
    The rule belongs to this band alone. It was briefly put on .section, which
    gave every band on the site one and left this one with nothing the others
@@ -887,7 +906,7 @@
    the line appears. */
 .cta-band {
   padding-block: clamp(5.5rem, 13vw, 10rem);
-  border-top: 2px solid var(--gold);
+  border-top: 2px solid var(--accent-bright);
 }
 
 .cta {
@@ -897,9 +916,9 @@
   gap: 1.25rem;
 }
 
-/* Gold rather than the muted invert grey the other eyebrows use: it ties the
-   label to the primary button and marks this band as the closing one. */
-.section--dark .cta__eyebrow { color: var(--gold); }
+/* The accent rather than the muted invert grey the other eyebrows use: it ties
+   the label to the featured button and marks this band as the closing one. */
+.section--dark .cta__eyebrow { color: var(--accent-bright); }
 
 /* Above .heading but short of .display: this is the last thing on the page and
    should land harder than the section headings above it, without reading as a
@@ -934,22 +953,26 @@
   font-size: 1rem;
 }
 
-/* The only gold button on the site, reserved for the single action the page is
-   asking for. The label is pinned to --black rather than --ink: this button
-   only ever appears on a dark band, where --ink is white, and white on --gold
-   is 2.2:1. Near-black measures 8.8:1. */
-.btn--gold,
-.section--dark .btn--gold {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--black);
+/* The one featured button on the site, reserved for the single action the page
+   is asking for. The supplied palette has no second accent to give it, so the
+   separation is tonal instead: --accent-bright where every other button is
+   --accent-deep, which on a dark band reads as the lighter, nearer one.
+
+   The label is the literal --ink rather than the band's inverted one: this
+   button only ever appears on a dark band, where --ink has been flipped to
+   white, and white on --accent-bright is 2.8:1. The dark ink measures 6.0:1. */
+.btn--feature,
+.section--dark .btn--feature {
+  background: var(--accent-bright);
+  border-color: var(--accent-bright);
+  color: var(--ink);
 }
 
-.btn--gold:hover,
-.section--dark .btn--gold:hover {
+.btn--feature:hover,
+.section--dark .btn--feature:hover {
   background: transparent;
-  color: var(--gold);
-  border-color: var(--gold);
+  color: var(--accent-bright);
+  border-color: var(--accent-bright);
 }
 
 /* `.btn` sets nowrap, which a long address would ride straight out of the
@@ -960,12 +983,13 @@
 }
 
 /* ---------- Footer ----------
-   Navy, closing the page with the same brand colour the masthead opens it in.
-   Everything soft inside it moves off the neutral greys and onto --nav-soft:
-   #a1a1aa clears 4.5:1 on navy but reads as a muddy grey against the blue,
-   where --nav-soft is the palette's measured soft-on-navy at 7.4:1. */
+   Primary, closing the page with the same brand colour the masthead opens it
+   in. Everything soft inside it moves off the neutral greys and onto
+   --primary-soft: a neutral #a1a1aa clears the floor on primary at 5.0:1 but
+   reads as a muddy grey against the purple, where --primary-soft is the
+   palette's own soft-on-primary at 4.6:1. */
 .footer {
-  background: var(--navy);
+  background: var(--primary);
   color: var(--ink-invert);
   padding-block: clamp(3rem, 6vw, 4.5rem) 2rem;
 }
@@ -974,7 +998,7 @@
   display: grid;
   gap: 2.5rem;
   padding-block-end: 2.5rem;
-  border-bottom: 1px solid var(--nav-line);
+  border-bottom: 1px solid var(--primary-line);
 }
 
 /* Same minmax(0, …) fix as .details__row, and for the same address: at 48rem
@@ -993,7 +1017,7 @@
   font-size: 0.875rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--nav-soft);
+  color: var(--primary-soft);
   font-weight: 700;
   margin-block-end: 1rem;
 }
@@ -1013,7 +1037,7 @@
 }
 
 .footer__links a {
-  color: var(--nav-soft);
+  color: var(--primary-soft);
   transition: color 0.15s ease;
   /* The contact column holds the email address; see .details__value. */
   overflow-wrap: anywhere;
@@ -1028,7 +1052,7 @@
   gap: 1rem;
   padding-block-start: 2rem;
   font-size: 0.875rem;
-  color: var(--nav-soft);
+  color: var(--primary-soft);
 }
 
 /* ---------- Skip link ---------- */
@@ -1039,11 +1063,11 @@
   z-index: 50;
   padding: 0.75rem 1.25rem;
   /* The light chip rather than the --ink one the other chips take: this lands
-     on top of the masthead, which is navy, and --ink on --navy is 1.2:1. The
-     focus ring is currentColor, so it takes the same swap — navy on the cream
-     chip would be another dark mark on the navy bar. */
+     on top of the masthead, which is primary, and --ink on --primary is 1.3:1.
+     The focus ring is currentColor, so it takes the same swap — primary on a
+     white chip would be another dark mark on the primary bar. */
   background: var(--card);
-  color: var(--navy);
+  color: var(--primary);
   /* Chip, not a card: --radius-sm keeps this a tab tucked under the header
      edge rather than a quarter-circle scooped out of a 46px box. */
   border-radius: 0 0 var(--radius-sm) 0;
@@ -1053,14 +1077,15 @@
 .skip-link:focus-visible { outline-color: var(--card); }
 
 /* ---------- Active nav state ----------
-   Gold rather than the white it was. Hover is gold too, so colour alone no
-   longer separates the current page from the one under the cursor: the
-   weight bump is what carries that distinction, which is why it stays here
-   and why the links around it are left at the inherited 400.
+   Gold, as it was before the purple palette landed, and the only place in the
+   bar that colour appears besides the read-position line directly under it.
+   Hover is the accent, so colour separates the current page from the one under
+   the cursor on its own; the weight bump reinforces it, which is why it stays
+   here and why the links around it are left at the inherited 400.
 
-   7.4:1 on the navy bar and on the mobile panel's --navy. Both rules sit
-   after `.navlist a:hover` at equal specificity, so the current page holds
-   its weight when you hover it. */
+   5.7:1 on the primary bar and on the mobile panel's --primary. Both rules sit
+   after `.navlist a:hover` at equal specificity, so the current page keeps its
+   gold when you hover it. */
 .navlist a.active,
 .mobile-nav__list a.active { color: var(--gold); font-weight: 500; }
 
@@ -1077,22 +1102,26 @@
   cursor: pointer;
 }
 
-/* Written when the generic .btn was near-black and disappeared on the navy
-   bar, and kept for a different reason now: the generic .btn is emerald, and
+/* Written when the generic .btn was near-black and disappeared on the primary
+   bar, and kept for a different reason now: the generic .btn is the accent, and
    two filled pills of it — this one and the language toggle's neighbour on the
    same bar — would put the accent twice in a row where the bar is meant to be
-   navy with one thing to press. So the header CTA is the page's surface colour
-   instead, cream on navy at 16.0:1, and the emerald stays for the buttons in
+   primary with one thing to press. So the header CTA is gold instead — the
+   same gold the current nav link beside it and the read-position line under it
+   carry, which makes the bar one colour story rather than three. Its primary
+   label reads at 5.7:1 on the fill, and the accent stays for the buttons in
    the page below. */
 .masthead .btn {
-  background: var(--card);
-  color: var(--navy);
-  border-color: var(--card);
+  background: var(--gold);
+  color: var(--primary);
+  border-color: var(--gold);
 }
 
+/* Hollows out to the outline it was already wearing: gold label on gold border,
+   5.7:1 on the primary bar. */
 .masthead .btn:hover {
   background: transparent;
-  color: var(--card);
+  color: var(--gold);
 }
 
 /* ---------- Tamil link ----------
@@ -1100,11 +1129,11 @@
    and the CTA is the action the bar is asking for, so two filled pills side
    by side would have them competing. It carries its own class rather than
    .btn-ghost because `.masthead .btn` fills every button on this bar and
-   would flatten a ghost into the same cream pill as the CTA.
+   would flatten a ghost into the same white pill as the CTA.
 
-   Gold on hover, matching what the nav links do either side of it. 7.4:1 on
-   navy for the label, and the border clears the 3:1 floor for a control's
-   own edge. */
+   The accent on hover, matching what the nav links do either side of it.
+   4.5:1 on primary for the label, and the border clears the 3:1 floor for a
+   control's own edge. */
 .lang-link {
   display: inline-flex;
   align-items: center;
@@ -1115,9 +1144,9 @@
   font-family: inherit;
   cursor: pointer;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--nav-line);
+  border: 1px solid var(--primary-line);
   border-radius: 100px;
-  color: var(--nav-soft);
+  color: var(--primary-soft);
   font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
@@ -1125,8 +1154,8 @@
 }
 
 .lang-link:hover {
-  color: var(--gold);
-  border-color: var(--gold);
+  color: var(--accent-bright);
+  border-color: var(--accent-bright);
 }
 
 /* Hidden from the bar on narrow screens and shown in the mobile panel
@@ -1154,18 +1183,18 @@
    blur. The masthead deliberately stays opaque (see the note up there), and
    glass over a flat band is just a translucent box.
 
-   Opaque navy is the base, so a browser without backdrop-filter — or one that
+   Opaque primary is the base, so a browser without backdrop-filter — or one that
    has it disabled — gets a solid panel rather than page text showing through
    the links. */
 .mobile-nav {
   border-top: 1px solid color-mix(in srgb, var(--ink-invert) 20%, transparent);
-  background: var(--navy);
+  background: var(--primary);
   padding-block: 1rem 1.5rem;
 }
 
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
   .mobile-nav {
-    background: color-mix(in srgb, var(--navy) 82%, transparent);
+    background: color-mix(in srgb, var(--primary) 82%, transparent);
     -webkit-backdrop-filter: blur(16px) saturate(1.3);
     backdrop-filter: blur(16px) saturate(1.3);
   }
@@ -1180,7 +1209,7 @@
   font-size: 1.0625rem;
 }
 
-.mobile-nav__list a { color: var(--nav-soft); }
+.mobile-nav__list a { color: var(--primary-soft); }
 
 @media (min-width: 68rem) {
   .menu-toggle, .mobile-nav { display: none; }
@@ -1198,9 +1227,9 @@
 
 /* ---------- Page header ---------- */
 /* A step below --page rather than level with it. The banner and the first
-   section under it were the same navy, so the two bands ran together and the
+   section under it were the same primary, so the two bands ran together and the
    header had no bottom edge — the masthead's hairline was the only division
-   anywhere near the top of an inner page. --navy-deep is the step the palette
+   anywhere near the top of an inner page. --primary-deep is the step the palette
    already keeps for exactly this, so the band is named rather than nudged.
 
    This is the second answer to the question. The banner sat on --page because
@@ -1209,7 +1238,7 @@
    All four carry /page-header.webp now, so that reason has lapsed. */
 .page-head {
   padding-block: clamp(3.5rem, 9vw, 6.5rem);
-  background: var(--navy-deep);
+  background: var(--primary-deep);
 }
 .page-head__lede { max-width: 52ch; }
 
@@ -1254,7 +1283,7 @@
 }
 
 /* Optional per-page backdrop (see PageHeader's `image`). The scrim is the
-   band's own --navy-deep, not --page: an image covers the whole header, so the
+   band's own --primary-deep, not --page: an image covers the whole header, so the
    background-color above it barely shows and the scrim is what the step is
    actually made of. Weighted left, where the copy sits, leaving the pattern
    strongest on the right.
@@ -1263,17 +1292,17 @@
    argued for lightening them was sound and is not the reason: /page-header.webp
    is already a scrimmed image, its brightest pixel is rgb(137 117 80), and white
    measures 4.45:1 on that bare — so 0.85 is darkening something already dark and
-   the gold does not survive it. The judgement went the other way regardless, and
-   a banner that reads as navy is the intended result rather than a cost.
+   the accent does not survive it. The judgement went the other way regardless,
+   and a banner that reads as primary is the intended result rather than a cost.
 
    Measured against that brightest pixel, the worst case anywhere in the frame.
-   Every figure went up when the scrim moved from --navy to the deeper
-   --navy-deep, so the step cost nothing here:
+   Every figure went up when the scrim moved from --primary to the deeper
+   --primary-deep, so the step cost nothing here:
 
-     stop        white      lede #e8e8ec
-     0%   0.85   15.5:1      12.7:1
-     45%  0.70   12.8:1      10.4:1
-     100% 0.50    9.4:1       7.7:1
+     stop        white      lede #e7e5ed
+     0%   0.85   13.1:1      10.5:1
+     45%  0.70   10.9:1       8.8:1
+     100% 0.50    8.5:1       6.8:1
 
    So if these are ever revisited, contrast is not the constraint — there is
    headroom down to about 0.15 before the lede reaches 4.5:1. What is at stake
@@ -1304,24 +1333,28 @@
   z-index: -1;
   background: linear-gradient(
     100deg,
-    rgb(8 23 43 / 0.85) 0%,
-    rgb(8 23 43 / 0.7) 45%,
-    rgb(8 23 43 / 0.5) 100%
+    rgb(44 27 80 / 0.85) 0%,
+    rgb(44 27 80 / 0.7) 45%,
+    rgb(44 27 80 / 0.5) 100%
   );
 }
 
-/* The default soft grey is --ink-invert-soft; over the lit centre at this
-   lighter scrim it falls to 2.4:1. White clears 6:1, and the near-white lede
-   still keeps a step of hierarchy under the heading at 5.5:1. */
+/* The default soft is --ink-invert-soft, which over the lit centre at this
+   lighter scrim falls below the floor. White clears 8.5:1 at the thinnest stop,
+   and the near-white lede keeps a step of hierarchy under the heading at 6.8:1.
+
+   #e7e5ed rather than the neutral #e8e8ec it was: --primary tinted 88% toward
+   white, so the one near-white on the site that is not White itself still
+   belongs to the palette rather than sitting beside it as a grey. */
 .page-head--image .eyebrow { color: var(--ink-invert); }
 .page-head--image .lede,
-.page-head--image .page-head__note { color: #e8e8ec; }
+.page-head--image .page-head__note { color: #e7e5ed; }
 
 /* Narrow screens put the copy across the middle of the frame, where a
    directional scrim leaves nothing to sit against. Flatten it to an even wash. */
 @media (max-width: 48rem) {
   .page-head--image::before {
-    background: rgb(8 23 43 / 0.8);
+    background: rgb(44 27 80 / 0.8);
   }
 }
 
@@ -1697,7 +1730,7 @@
   aspect-ratio: 16 / 9;
   border-radius: var(--radius);
   border: 1px solid var(--line);
-  background: var(--navy-deep);
+  background: var(--primary-deep);
   object-fit: contain;
 }
 
@@ -1705,10 +1738,15 @@
 
 /* ---------- Scroll progress ----------
    Sits on the underside of the sticky masthead rather than at the very top
-   of the viewport: over the navy it would be a second stripe of brand
+   of the viewport: over the primary it would be a second stripe of brand
    colour, and the home page opens on the hero, where an inked bar
-   would vanish. Navy track, gold fill at 7.4:1 — it reads as the header's
-   own edge, and the read position is the one moving thing on the page. */
+   would vanish.
+
+   Gold, asked for on 2026-09-09 and the only thing on the site that kept it
+   through the palette change. It is also the better read here than the accent
+   was: 5.7:1 on the primary track against the accent's 3.0:1, and a fill that
+   is not a shade of the bar it slides along. No type rides on it, and the read
+   position is the one moving thing on the page. */
 .scroll-progress {
   position: fixed;
   top: calc(var(--masthead-h) + 1px);
@@ -1716,7 +1754,7 @@
   right: 0;
   z-index: 21;
   height: 3px;
-  background: var(--navy);
+  background: var(--primary);
 }
 
 .scroll-progress__fill {
@@ -2055,9 +2093,9 @@
 :lang(ta) body { overflow-wrap: break-word; }
 
 /* ---------- Parallax pills ----------
-   The differentiators on /why-us. Monochrome and navy only: --gold is
-   approved as an accent in four named places and "anywhere else still needs
-   asking first", so these stay off it until someone says otherwise. */
+   The differentiators on /why-us. Monochrome and primary only: the accent is
+   approved in four named places and "anywhere else still needs asking first",
+   so these stay off it until someone says otherwise. */
 .pills {
   display: flex;
   flex-wrap: wrap;
@@ -2206,13 +2244,13 @@
    span still available. An untouched field sends 0%, so the track is bare and
    the thumb sits at the left rather than implying a figure.
 
-   Gold, asked for on 2026-09-07, and the track stays navy on the light page
-   rather than dropping to --line: the hairline is 1.3:1 on ivory, which is
-   nothing to read a control against. So the fill reads 4.6:1 against the
-   --nav-line track it sits in, and the thumb — gold at 2.1:1 on ivory, which
-   would not do on its own — is bounded by its 2px --navy ring at 16.5:1.
-   Both clear the 3:1 floor for a control you have to see to operate. It is the
-   same idiom as the scroll progress bar: gold marking a position on navy.
+   The accent, asked for on 2026-09-07, and the track stays primary on the
+   light page rather than dropping to --line: the hairline is 1.5:1 on --page,
+   which is nothing to read a control against. So the fill reads against the
+   --primary-line track it sits in, and the thumb — the accent at 3.9:1 on
+   --page — is bounded by its 2px --primary ring at 11.8:1. Both clear the 3:1
+   floor for a control you have to see to operate. It is the same idiom as the
+   scroll progress bar: the accent marking a position on primary.
 
    Outranks `.field input` on class count, which would otherwise hand the
    slider the number box's padding, border and radius. */
@@ -2239,8 +2277,8 @@
   border-radius: 999px;
   background: linear-gradient(
     to right,
-    var(--gold) var(--fill, 0%),
-    var(--nav-line) var(--fill, 0%)
+    var(--accent) var(--fill, 0%),
+    var(--primary-line) var(--fill, 0%)
   );
 }
 
@@ -2249,8 +2287,8 @@
   border-radius: 999px;
   background: linear-gradient(
     to right,
-    var(--gold) var(--fill, 0%),
-    var(--nav-line) var(--fill, 0%)
+    var(--accent) var(--fill, 0%),
+    var(--primary-line) var(--fill, 0%)
   );
 }
 
@@ -2264,8 +2302,8 @@
   height: 1.125rem;
   margin-block-start: -0.4375rem;
   border-radius: 50%;
-  border: 2px solid var(--navy);
-  background: var(--gold);
+  border: 2px solid var(--primary);
+  background: var(--accent);
   box-shadow: 0 1px 4px rgb(0 0 0 / 0.45);
 }
 
@@ -2273,8 +2311,8 @@
   width: 1.125rem;
   height: 1.125rem;
   border-radius: 50%;
-  border: 2px solid var(--navy);
-  background: var(--gold);
+  border: 2px solid var(--primary);
+  background: var(--accent);
   box-shadow: 0 1px 4px rgb(0 0 0 / 0.45);
 }
 
