@@ -24,9 +24,9 @@ import Draft from './Draft'
  * a heading over the sections below it.
  *
  * `children` render under the lede, for a page that puts its way onward in the
- * banner rather than in a band below it. The palette's base and invert pairs
- * are both light-on-dark (see index.css), so .btn and .btn-ghost already carry
- * the right polarity here without the band being marked .section--dark.
+ * banner rather than in a band below it. The banner is navy on a light page, so
+ * it carries .section--dark like any other inverted band — that is what hands
+ * the copy, the buttons and anything in the aside the invert pair.
  *
  * `aside` is a second column beside the copy, the way the home hero puts the
  * clip beside its lockup. It goes with `fill` in practice: a screen-tall banner
@@ -61,7 +61,7 @@ export default function PageHeader({
   return (
     <section
       className={
-        'section page-head' +
+        'section section--dark page-head' +
         (image ? ' page-head--image' : '') +
         (fill ? ' page-head--fill' : '')
       }

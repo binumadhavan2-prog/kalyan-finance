@@ -6,13 +6,25 @@
 
 .section { padding-block: var(--step); }
 
-/* Full-bleed inverted band. Alternating these carries the page rhythm. On a
-   navy page "inverted" means deeper, not lighter: --navy-deep sits a step
-   below --page where this used to be black under white. The colour below is
-   unchanged — both grounds want the same white. */
+/* Full-bleed inverted band. Alternating these carries the page rhythm, and on
+   a light page "inverted" means dark again: --navy-deep under white, where the
+   all-navy palette had it a step below an already dark --page.
+
+   The four tokens below are the base pair re-pointed at the invert values for
+   the length of the band. Every rule on the site is written against --ink,
+   --ink-soft, --line and --on-light for the light ground; redeclaring them
+   here means a card, a chip, a divider or a button inside a dark band flips
+   with it instead of needing a second rule of its own. The explicit
+   `.section--dark X` rules further down are what this replaces — they now
+   restate what the cascade already does, and are kept only because they say
+   out loud which components were checked on the dark ground. */
 .section--dark {
   background: var(--navy-deep);
   color: var(--ink-invert);
+  --ink: var(--ink-invert);
+  --ink-soft: var(--ink-invert-soft);
+  --line: var(--line-invert);
+  --on-light: var(--navy);
 }
 
 .section--raised { background: var(--raised); }
@@ -86,10 +98,12 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.875rem 1.625rem;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--emerald);
   border-radius: 100px;
-  background: var(--ink);
-  color: var(--on-light);
+  background: var(--emerald);
+  /* Not --on-light: that token flips with the ground, and this label sits on
+     the emerald pill, which does not. */
+  color: var(--ink-invert);
   font-weight: 500;
   font-size: 0.9375rem;
   white-space: nowrap;
@@ -97,16 +111,18 @@
   transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
 
-.btn:hover { background: transparent; color: var(--ink); }
+/* Darker emerald rather than the hollow-out the button used to do: the fill is
+   the brand secondary now, and emptying it on hover reads as the button going
+   away. */
+.btn:hover { background: var(--emerald-deep); border-color: var(--emerald-deep); }
 
-/* The global :focus-visible ring is `2px solid currentColor` at a 3px offset.
-   On a ghost button currentColor is white and that is fine, but on the filled
-   button it is --on-light, i.e. navy — and the offset puts the ring outside the
-   white pill, on the navy page. Navy on navy: the keyboard focus indicator was
-   invisible on every primary button on the site, not only the ones here. White
-   sits at 13.5:1 on --navy and is already the ring the ghost button gets, so
-   both variants now show the same one. */
-.btn:focus-visible { outline-color: var(--ink-invert); }
+/* The global :focus-visible ring is `2px solid currentColor` at a 3px offset,
+   and on the filled button currentColor is the label — white on the emerald
+   pill. The offset puts the ring outside the pill, on the ground, where white
+   would be invisible on the ivory page. --ink is the ground's own darkest ink
+   and flips to white inside a dark band with the rest of the base pair, so one
+   value covers both. */
+.btn:focus-visible { outline-color: var(--ink); }
 
 .btn-ghost {
   background: transparent;
@@ -120,18 +136,10 @@
   border-color: var(--ink);
 }
 
-/* On dark bands the two variants swap polarity. */
-.section--dark .btn {
-  background: var(--ink-invert);
-  color: var(--on-light);
-  border-color: var(--ink-invert);
-}
-
-.section--dark .btn:hover {
-  background: transparent;
-  color: var(--ink-invert);
-}
-
+/* The filled button no longer swaps polarity — it is emerald on the ivory page
+   and emerald on the navy bands, which is the point of having a secondary
+   colour carry it. Only the ghost variant, which is drawn from the ground
+   rather than from the palette, still has to flip. */
 .section--dark .btn-ghost {
   background: transparent;
   color: var(--ink-invert);
@@ -354,71 +362,65 @@
      currency, which is the subject worth seeing, sits below the middle. Dead
      centre crops the notes; this keeps the portrait in the surviving strip. */
   background:
-    var(--navy) url("/hero.webp") center 58% / cover no-repeat;
+    var(--page) url("/hero.webp") center 58% / cover no-repeat;
 }
 
 /*
- * A directional scrim over the photograph. Near-solid navy on the left where
- * the copy sits, thinning to the right so the picture is legible behind the
- * clip — measured against the lightest part of the image (the white desk), the
- * copy column still clears 4.5:1.
+ * A directional scrim over the photograph. Solid ivory on the left where the
+ * copy sits, thinning to the right so the picture is legible behind the clip.
  *
- * Navy is still painted underneath as the background colour, so a failed or
- * slow image load leaves the hero exactly as it was rather than dropping white
- * text onto nothing.
+ * Ivory is painted underneath as the background colour too, so a failed or slow
+ * image load leaves the hero exactly as it was rather than dropping navy text
+ * onto nothing.
  */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  /* Thinned to the floor, so the picture reads as far as it is allowed to.
-     Measured against the lightest part of the image — the white desk, which is
-     pure rgb(255 255 255) and so the worst case there is:
+  /* Opaque behind the copy, and this one is not a dial to turn by eye either.
+     Dark type on a light scrim is measured against the DARKEST part of the
+     image rather than the lightest, and the worst case there is a black pixel,
+     which composites the ivory straight down towards it:
 
-       alpha   white     --nav-soft   --gold
-       0.95    11.60:1     5.55:1      5.42:1
-       0.90     9.97:1     4.77:1      4.66:1
-       0.89     9.66:1     4.62:1      4.51:1   <- both stops behind the copy
-       0.885                4.50:1      4.47:1
-       0.88     9.35:1     4.46:1      4.35:1
+       alpha   --ink     --ink-soft   --emerald
+       1.00    15.17:1     4.64:1       4.57:1   <- both stops behind the copy
+       0.99    14.90:1     4.56:1       4.50:1
+       0.98    14.51:1     4.44:1       4.38:1
+       0.95    13.63:1     4.17:1       4.11:1
 
-     0.89 is the floor and there is nothing under it: --gold clears by 0.01.
-     The old note put the floor at 0.90 having checked --nav-soft only; the
-     tagline is the tighter of the two and moves first. So this is not a dial to
-     turn by eye — anything that touches --gold, --nav-soft or the photograph
-     itself has to be re-measured against this table.
-
-     Both stops behind the copy are held at 0.89 rather than kept apart: the
-     copy column is now half the row, so 45% is still behind text and cannot be
-     the lighter of the two any more.
+     --ink-soft and --emerald are already within a tenth of the floor on the
+     ivory itself, so there is no transparency left to spend behind the copy:
+     the lede and the strapline go under 4.5:1 by alpha 0.98. Hence 1 rather
+     than the 0.89 the navy palette could afford — the picture behind the copy
+     column is the price of dark type on a light ground.
 
      The last stop carries no text at all — the clip sits in that column and
-     paints its own background — so it stays free to go much thinner. */
+     paints its own background — so it stays free to go much thinner, and it is
+     the whole of what is left of the photograph. */
   background: linear-gradient(
     to right,
-    rgb(30 44 88 / 0.89) 0%,
-    rgb(30 44 88 / 0.89) 45%,
-    rgb(30 44 88 / 0.55) 100%
+    rgb(248 247 242 / 1) 0%,
+    rgb(248 247 242 / 1) 45%,
+    rgb(248 247 242 / 0.55) 100%
   );
 }
 
 /* One column below 62rem, where the copy sits over the middle of the picture
-   rather than beside it — the gradient has no weak side to exploit there. */
+   rather than beside it — the gradient has no weak side to exploit there. Flat
+   at the same opacity the copy column takes above, which on this palette means
+   the photograph does not show on a phone at all. */
 @media (max-width: 61.999rem) {
-  .hero::before { background: rgb(30 44 88 / 0.89); }
+  .hero::before { background: rgb(248 247 242 / 1); }
 }
 
-/* On navy the neutral soft grey goes muddy. The footer hit exactly this and
-   moved to --nav-soft, the palette's measured soft-on-navy at 7.4:1; the hero
-   follows it rather than inventing a second answer. */
-.hero .lede { color: var(--nav-soft); }
+/* The hero is a light band on this palette, so the lede takes the light
+   ground's soft ink rather than the navy one's. --nav-soft is 1.4:1 on ivory. */
+.hero .lede { color: var(--ink-soft); }
 
-/* --line-invert is the hairline for the deeper band, and it is a shade too
-   quiet against --navy. --nav-line is the palette's divider for this ground.
-   (Since the page went navy --line is --nav-line, so this now restates the
-   default; it is kept because the hero would still need it if --line moved.) */
-.hero .btn-ghost { border-color: var(--nav-line); }
+/* The hero's ground is --page like the bands under it, so the ghost button
+   takes the plain hairline and the rule the navy hero needed here is gone. */
+.hero .btn-ghost { border-color: var(--line); }
 
 .hero__actions {
   display: flex;
@@ -437,19 +439,20 @@
   letter-spacing: 0.14em;
 }
 
-/* Scoped to the dark band rather than left on .hero__name: `.section--dark
-   .eyebrow` outranks a lone class, so an unscoped colour here would be
-   ignored and the name would stay at the muted eyebrow grey. */
-.section--dark .hero__name { color: var(--ink-invert); }
+/* Two classes rather than one: `.page-head--image .eyebrow` and the rest of
+   the .eyebrow overrides are two-class selectors, and a lone .hero__name would
+   lose to them and stay at the muted eyebrow grey. */
+.hero .hero__name { color: var(--ink); }
 
 /* The brand line, tucked under the company name as the masthead has it. In the
-   mark's gold — 6.3:1 on the navy the hero sits on. */
+   secondary rather than the mark's gold: the hero is ivory on this palette and
+   gold measures 2.1:1 on it, where the emerald clears the floor at 4.6:1. */
 .hero__tagline {
   font-size: clamp(1.125rem, 2.2vw, 1.5rem);
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.3;
-  color: var(--gold);
+  color: var(--emerald);
 }
 
 /* Both override the flat 1rem from `.stack > * + *`, and both need to match
@@ -518,7 +521,10 @@
   flex-direction: column;
   gap: 1rem;
   padding: clamp(1.5rem, 3vw, 2.25rem);
-  background: var(--page);
+  /* Its own token rather than --page: the bands alternate ivory and white, and
+     the card is white on both — by its border on the white ones, by the step
+     up from ivory on the others. */
+  background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   min-height: 13rem;
@@ -531,7 +537,7 @@
 .card:hover {
   transform: translateY(-2px);
   border-color: var(--ink);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.32);
+  box-shadow: 0 8px 24px rgb(11 31 58 / 0.12);
 }
 
 /* Touch has no hover, so the lift would stick after a tap. */
@@ -549,13 +555,15 @@
   box-shadow: none;
 }
 
+/* Gold, the accent's main job on this palette: the icon is the one warm mark
+   on an otherwise navy-and-white card. Decorative — every card states its
+   subject in the title under it — so the accent is free to sit here at 2.2:1
+   on white, which no piece of type on the site is allowed to do. */
 .card__icon {
   width: 1.875rem;
   height: 1.875rem;
-  color: var(--ink);
+  color: var(--gold);
 }
-
-.section--dark .card__icon { color: var(--ink-invert); }
 
 .card__title {
   font-size: 1.1875rem;
@@ -780,6 +788,11 @@
 
 .section--dark .stat__label { color: var(--ink-invert-soft); }
 
+/* The figures themselves in the accent, on the one band that is navy in the
+   middle of the page. 8.0:1 on --navy-deep, and the only place gold carries
+   type at this size. */
+.section--dark .stat__value { color: var(--gold); }
+
 /* ---------- Split rows ---------- */
 .split {
   display: grid;
@@ -915,44 +928,6 @@
   margin-block-start: -0.25rem;
 }
 
-/* The details in full, under a hairline: the form suits people describing a
-   requirement, but somebody who just wants to phone should not have to load
-   another page to find the number. */
-.cta__channels {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem clamp(2rem, 6vw, 4.5rem);
-  margin: 0;
-  padding-block-start: clamp(2rem, 4vw, 3rem);
-  padding-inline: 0;
-  list-style: none;
-  border-top: 1px solid var(--line-invert);
-  width: min(100%, 60rem);
-}
-
-.cta__channel {
-  display: grid;
-  gap: 0.35rem;
-  justify-items: center;
-}
-
-.cta__channel-label {
-  font-size: 0.75rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-invert-soft);
-  font-weight: 500;
-}
-
-.cta__channel-value {
-  font-size: 1.0625rem;
-  font-weight: 500;
-  word-break: break-word;
-}
-
-.cta__channel-value a { color: inherit; }
-
 .btn--lg {
   padding: 1.0625rem 2rem;
   font-size: 1rem;
@@ -1061,14 +1036,19 @@
   top: 0;
   z-index: 50;
   padding: 0.75rem 1.25rem;
-  background: var(--ink);
-  color: var(--on-light);
+  /* The light chip rather than the --ink one the other chips take: this lands
+     on top of the masthead, which is navy, and --ink on --navy is 1.2:1. The
+     focus ring is currentColor, so it takes the same swap — navy on the white
+     chip would be another dark mark on the navy bar. */
+  background: var(--ink-invert);
+  color: var(--navy);
   /* Chip, not a card: --radius-sm keeps this a tab tucked under the header
      edge rather than a quarter-circle scooped out of a 46px box. */
   border-radius: 0 0 var(--radius-sm) 0;
 }
 
 .skip-link:focus { left: 0; }
+.skip-link:focus-visible { outline-color: var(--ink-invert); }
 
 /* ---------- Active nav state ----------
    Gold rather than the white it was. Hover is gold too, so colour alone no
@@ -1076,7 +1056,7 @@
    weight bump is what carries that distinction, which is why it stays here
    and why the links around it are left at the inherited 400.
 
-   6.3:1 on the navy bar, 7.6:1 on the mobile panel's --navy. Both rules sit
+   7.4:1 on the navy bar and on the mobile panel's --navy. Both rules sit
    after `.navlist a:hover` at equal specificity, so the current page holds
    its weight when you hover it. */
 .navlist a.active,
@@ -1921,7 +1901,6 @@
 :lang(ta) .eyebrow,
 :lang(ta) .hero__name,
 :lang(ta) .stat__label,
-:lang(ta) .cta__channel-label,
 :lang(ta) .footer__col h2,
 :lang(ta) .wordmark__tagline,
 :lang(ta) .example__flag,
@@ -2141,9 +2120,10 @@
 }
 
 /* Every third pill inverts, so the row has some weight in it rather than
-   reading as five identical chips. The inversion used to be a navy pill on the
-   white page; on the navy page that is the pill disappearing, so it flips to
-   the light chip — navy on white, 13.5:1, measured in the token block. */
+   reading as five identical chips. Back to the dark pill the light page always
+   gave it — white on --ink, 15.2:1 — and inside a dark band --ink and
+   --on-light flip with the ground, so the same rule paints the light chip
+   there instead. */
 .pills__slot:nth-child(3n - 1) .pills__pill {
   border-color: var(--ink);
   background: var(--ink);
@@ -2221,11 +2201,13 @@
    span still available. An untouched field sends 0%, so the track is bare and
    the thumb sits at the left rather than implying a figure.
 
-   Gold, asked for on 2026-09-07 and measured for it: the fill reads 3.9:1
-   against the --nav-line track it sits in and the thumb 6.3:1 against the
-   navy behind it, both clear of the 3:1 floor for a control you have to see
-   to operate. It is the same idiom as the scroll progress bar — gold marking
-   a position along a navy track.
+   Gold, asked for on 2026-09-07, and the track stays navy on the light page
+   rather than dropping to --line: the hairline is 1.3:1 on ivory, which is
+   nothing to read a control against. So the fill reads 4.6:1 against the
+   --nav-line track it sits in, and the thumb — gold at 2.1:1 on ivory, which
+   would not do on its own — is bounded by its 2px --navy ring at 16.5:1.
+   Both clear the 3:1 floor for a control you have to see to operate. It is the
+   same idiom as the scroll progress bar: gold marking a position on navy.
 
    Outranks `.field input` on class count, which would otherwise hand the
    slider the number box's padding, border and radius. */

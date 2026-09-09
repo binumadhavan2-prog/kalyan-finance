@@ -9,8 +9,11 @@ import Missing from './Missing'
  */
 export default function Stats({ labelled = true }) {
   const { draft, stats } = useCopy()
+  /* Navy rather than the raised band this had on the all-navy palette: it is
+     the one band in the middle of a light page that inverts, and the figures
+     take the accent on it (App.css, `.section--dark .stat__value`). */
   return (
-    <section className="section section--raised">
+    <section className="section section--dark">
       <div className="shell stack-lg">
         {labelled ? (
           <p className="eyebrow">

@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useCopy } from '../i18n'
 import Draft from '../components/Draft'
-import ScrollStack from '../components/ScrollStack'
 import CoreValues from '../components/CoreValues'
 import StepList from '../components/StepList'
 import Stats from '../components/Stats'
@@ -12,12 +11,12 @@ import ScrollProgress from '../components/ScrollProgress'
 import RepaymentCalculator from '../components/RepaymentCalculator'
 
 export default function Home() {
-  const { company, draft, services, ui, vision, whyPoints } = useCopy()
+  const { company, draft, ui, vision, whyPoints } = useCopy()
   return (
     <>
       <ScrollProgress />
 
-      <section className="section section--dark hero">
+      <section className="section hero">
         <div className="shell hero__grid">
           <div className="stack-lg">
             <div className="stack">
@@ -44,37 +43,17 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section section--dark">
-        <div className="shell stack-lg">
-          <div className="stack prose">
-            <h2 className="heading">
-              <Draft>{draft.productPreviewTitle}</Draft>
-            </h2>
-          </div>
-
-          {/* The five products as a pinned stack rather than a three-up grid.
-              Same content and the same art each product carries on
-              /loan-products; only the way they arrive has changed. */}
-          <ScrollStack items={services} />
-
-          <p>
-            <Link className="btn btn-ghost" to="/loan-products">
-              {ui.seeEligibility}
-            </Link>
-          </p>
-        </div>
-      </section>
-
-      {/* After the products and before the reasons: someone who has just seen
-          what is offered can put numbers to it, then read why us. */}
+      {/* Straight from the hero into the numbers. The products preview that
+          used to sit here came out on 2026-09-09; /loan-products carries the
+          five products in full, and the hero already links to it. */}
       <RepaymentCalculator />
 
       {/* A short read of /why-us: the supplied reasons and a way through to
           the full page, which carries the process and trust sections too.
 
-          Raised rather than plain, because the products band above it and the
-          recognition band below are both on --page, and three plain sections
-          in a row lose the alternation the page rhythm runs on. */}
+          Raised rather than plain, because the calculator above it is on
+          --page, and two plain sections in a row lose the alternation the
+          page rhythm runs on. */}
       <section className="section section--raised">
         <div className="shell stack-lg">
           {/* Heading only. The lede under it (draft.whyLede) came out on

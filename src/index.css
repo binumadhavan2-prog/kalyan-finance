@@ -1,62 +1,83 @@
 /*
- * Design tokens.
+ * Design tokens — the supplied navy / emerald / gold palette.
  *
- * The page runs on navy. --navy is the supplied brand colour (#1E2C58,
- * sampled from the client swatch); it used to carry only the masthead, the
- * hero and the footer, bracketing a white page, and it is now the ground for
- * every page top to bottom.
+ * A trial against the all-navy page on main: the same layout run on a light
+ * ground, with navy back to bracketing the page rather than being it. Header,
+ * inner-page banner, statistics band and footer are navy; everything between
+ * them is ivory and white; emerald carries the primary buttons and gold the
+ * highlights and the decorative work.
  *
- * The rhythm the light page got from white / grey / black comes from three
- * shades of the one colour instead: --raised a step up from --page for the
- * alternating bands, --navy-deep a step down for the inverted ones.
+ * The supplied hexes are kept as given except the emerald, which is one step
+ * down from #0E8F6E: a white label on the supplied green measures 4.06:1,
+ * under the 4.5:1 floor the rest of the palette is held to, and the button is
+ * the one place the green has to carry small type.
  *
- * Measured contrast — on --navy: white 13.5:1, --nav-soft 6.5:1, --gold 6.3:1.
- * On --raised: white 11.6:1, --nav-soft 5.6:1. On --navy-deep: white 15.8:1,
- * --nav-soft 7.6:1, --gold 7.4:1. Keep replacements above 4.5:1.
+ * Because the two grounds are opposite polarities — light page, dark bands —
+ * --ink, --ink-soft, --line and --on-light are re-pointed at their invert
+ * values inside `.section--dark` (see App.css), so a rule written for the
+ * light page keeps working on a dark band without being restated.
+ *
+ * Measured contrast — on --page: --ink 15.2:1, --ink-soft 4.6:1, --emerald
+ * 4.6:1. On --card: --ink 16.3:1, --ink-soft 5.0:1. On --navy: white 16.5:1,
+ * --nav-soft 8.0:1, --gold 7.4:1. On --navy-deep: white 18.0:1, --nav-soft
+ * 8.8:1, --gold 8.0:1. White on --emerald 4.9:1, on --emerald-deep 5.8:1.
+ * Keep replacements above 4.5:1.
  */
 :root {
-  --navy: #1e2c58;
-  /* The two neighbours of --navy, same hue, kept as their own tokens so the
-     bands are named rather than being one-off hex values in App.css.
-     --raised is white at 5% over --navy, --navy-deep is --navy at 75%. */
-  --navy-deep: #162142;
-  --nav-soft: #aab3cd;
+  /* Primary. The masthead, the inner-page banner, the statistics band and the
+     footer; the ink on the light ground is its own shadow (--ink) rather than
+     a second, cooler grey beside it. */
+  --navy: #0b1f3a;
+  /* --navy at 75%, the way main's --navy-deep sits under its --navy: the step
+     that keeps the banner from dissolving into the masthead above it, and the
+     inverted bands from dissolving into the footer below them. */
+  --navy-deep: #08172b;
+  --nav-soft: #a9b6c9;
   /* Hairline for dividers on navy: white at 15% over --navy, flattened to an
      opaque value so it does not shift over whatever sits behind it. */
-  --nav-line: #404c71;
-  /* Sampled from the mark itself: the mean of every gold pixel in
-     public/logo.png, which runs from #b57616 in the shadows to #fcf6af on the
-     highlights. Client-approved as an accent and never as a ground: the
-     masthead and hero taglines, the animated frame around the hero clip, the
-     primary button in the closing CTA, the scroll progress fill, the active
-     nav link and the calculator sliders (both asked for on 2026-09-07). The
-     "What we do" band was gold briefly and went back to the plain dark band on
-     2026-09-05. Anywhere else still needs asking first. */
-  --gold: #d7ab48;
+  --nav-line: #304158;
+
+  /* Secondary. The primary button, its darker hover, and the accent the hero
+     strapline takes now that the hero is light and gold would measure 2.1:1
+     on it. Supplied as #0E8F6E — see the note above the token block. */
+  --emerald: #0c8062;
+  --emerald-deep: #0b7357;
+
+  /* Accent, never a ground: the statistics figures, the card icons, the frame
+     around the hero clip, the scroll progress fill, the closing CTA's button
+     and rule, the active nav link. Every place it carries type it sits on
+     navy, where it measures 7.4:1. */
+  --gold: #d4a72c;
 
   /* Kept as a real black for one job: the label on the gold button, where
-     white measures 2.1:1 and this measures 9.2:1. Nothing else grounds on it
-     any more — the dark bands moved to --navy-deep. */
+     white measures 2.1:1 and this measures 8.8:1. */
   --black: #0a0a0b;
 
-  --ink: #ffffff;
-  --ink-soft: var(--nav-soft);
-  /* The invert pair is the same light-on-dark as the base pair now, because
-     both grounds are navy: every `.section--dark` colour rule restates the
-     base instead of flipping it. The other half of what --ink-invert used to
-     mean — the label on a white or gold chip — moved to --on-light. */
+  --ink: #172033;
+  --ink-soft: #667085;
   --ink-invert: #ffffff;
   --ink-invert-soft: var(--nav-soft);
-  /* Text and glyphs sitting on a light chip: the filled button, the skip
-     link, the notice flag, the hovered tag. Navy on white is 13.5:1. */
-  --on-light: var(--navy);
-  --line: var(--nav-line);
+  /* The label on a chip filled with --ink: the skip link, the notice flag,
+     every third pill, the hovered ghost button. On this ground that chip is
+     dark, so the label is white; on a dark band the chip flips to white and
+     this token flips to navy with it (App.css, `.section--dark`). */
+  --on-light: #ffffff;
+  /* The "very subtle navy border" the cards are specified with, and the same
+     hairline everywhere else the light ground is divided: --navy at 12% over
+     --card. Deliberately quiet — it is a divider the eye follows, not a rule
+     it reads. */
+  --line: #dde1e8;
   /* --nav-line's counterpart on the deeper band: white at 13% over
      --navy-deep, flattened the same way. */
-  --line-invert: #343f62;
-  --page: var(--navy);
-  --raised: #29375f;
-  --accent: var(--navy);
+  --line-invert: #283547;
+
+  /* Background and cards. The bands alternate ivory and white, so a white card
+     reads by its border on the white ones and by its lift on the ivory ones. */
+  --page: #f8f7f2;
+  --raised: #ffffff;
+  --card: #ffffff;
+
+  --accent: var(--emerald);
 
   --shell: 1200px;
   --measure: 60ch;
@@ -72,7 +93,7 @@
 
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
-  color-scheme: dark;
+  color-scheme: light;
   color: var(--ink);
   background: var(--page);
   font-family: var(--sans);
