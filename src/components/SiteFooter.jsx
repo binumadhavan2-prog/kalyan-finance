@@ -15,7 +15,7 @@ export default function SiteFooter() {
       <div className="shell">
         <div className="footer__top">
           <div className="footer__col">
-            {/* The same lockup the masthead uses — mark, name, gold tagline
+            {/* The same lockup the masthead uses — mark, name, accent tagline
                 stacked under it. Not aria-hidden here, unlike the masthead's:
                 that one is suppressed so the home link reads as just the
                 company name, which leaves this as the one place the tagline

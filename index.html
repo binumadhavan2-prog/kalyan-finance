@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Kalyan Finance - business finance, personal finance assistance and short-term financial support for individuals and businesses." />
     <title>Kalyan Finance</title>
-    <meta name="theme-color" content="#1e2c58" />
+    <meta name="theme-color" content="#3B246B" />
 
     <!-- The splash covers the gap before the bundle runs, so its markup, styles
          and images all have to be here rather than in the app. -->
@@ -18,7 +18,7 @@
          edge-on and the crown drops onto it.
 
          The crown landing is the beat the whole thing is built around. On
-         impact the navy deepens to black, a gold bloom opens behind the mark,
+         impact the ground deepens, an accent bloom opens behind the mark,
          sparks lift off it and a pool of light settles underneath — the mark
          is then held in that state before the screen clears.
 
@@ -34,10 +34,11 @@
         align-items: center;
         justify-content: center;
         gap: 1.25rem;
-        /* --navy, --ink-invert and --nav-soft, hard-coded because index.css
-           has not loaded at this point. Keep them in step with :root. */
-        background: #0a0a0b;
-        --gold: #f2c14e;
+        /* --primary, --ink, --ink-invert, --primary-soft and --accent, hard
+           coded because index.css has not loaded at this point. Keep them in
+           step with :root. */
+        background: #211A2E;
+        --accent: #8B5CF6;
         --settle: 1.75s; /* the moment the crown lands */
         animation:
           splash-settle 0.9s ease-out 1.7s both,
@@ -84,10 +85,10 @@
         pointer-events: none;
         background: radial-gradient(
           circle,
-          rgba(255, 214, 122, 0.55) 0%,
-          rgba(242, 193, 78, 0.28) 22%,
-          rgba(242, 193, 78, 0.08) 42%,
-          rgba(242, 193, 78, 0) 68%
+          rgba(200, 176, 253, 0.55) 0%,
+          rgba(139, 92, 246, 0.28) 22%,
+          rgba(139, 92, 246, 0.08) 42%,
+          rgba(139, 92, 246, 0) 68%
         );
         animation-name: splash-glow;
         animation-duration: 1.5s;
@@ -97,7 +98,7 @@
       }
 
       /* The mark itself picks up the bloom, which is what actually reads as
-         gold catching light rather than a haze parked behind a flat logo. */
+         the mark catching light rather than a haze parked behind a flat logo. */
       #splash .splash__mark {
         animation-name: splash-lit;
         animation-duration: 1.2s;
@@ -116,9 +117,9 @@
         pointer-events: none;
         background: radial-gradient(
           ellipse at center,
-          rgba(242, 193, 78, 0.5) 0%,
-          rgba(242, 193, 78, 0.1) 42%,
-          rgba(242, 193, 78, 0) 70%
+          rgba(139, 92, 246, 0.5) 0%,
+          rgba(139, 92, 246, 0.1) 42%,
+          rgba(139, 92, 246, 0) 70%
         );
         filter: blur(3px);
         animation-name: splash-floor;
@@ -142,8 +143,8 @@
         height: var(--s, 3px);
         margin-left: var(--x, 0);
         border-radius: 50%;
-        background: #ffe6a8;
-        box-shadow: 0 0 8px 2px rgba(242, 193, 78, 0.85);
+        background: #e6dcfd;
+        box-shadow: 0 0 8px 2px rgba(139, 92, 246, 0.85);
         animation-name: splash-spark;
         animation-duration: 1.6s;
         animation-timing-function: ease-out;
@@ -172,7 +173,7 @@
         font-size: clamp(1.125rem, 4vw, 1.5rem);
         font-weight: 400;
         line-height: 1;
-        color: #aab3cd;
+        color: #a196b8;
         animation-delay: 1.35s;
       }
 
@@ -187,12 +188,12 @@
         to { transform: translateY(0); opacity: 1; }
       }
 
-      /* Black holds through the spin and the drop so the gold reads against
-         it, then the settle lifts to the navbar navy — the screen the splash
-         clears into is already that colour at the top. */
+      /* The deep ink holds through the spin and the drop so the accent reads
+         against it, then the settle lifts to the masthead's primary — the
+         screen the splash clears into is already that colour at the top. */
       @keyframes splash-settle {
-        from { background-color: #0a0a0b; }
-        to { background-color: #1e2c58; }
+        from { background-color: #211A2E; }
+        to { background-color: #3B246B; }
       }
 
       @keyframes splash-glow {
@@ -203,8 +204,8 @@
 
       @keyframes splash-lit {
         0%   { filter: none; }
-        20%  { filter: drop-shadow(0 0 22px rgba(255, 214, 122, 0.95)); }
-        100% { filter: drop-shadow(0 0 12px rgba(242, 193, 78, 0.6)); }
+        20%  { filter: drop-shadow(0 0 22px rgba(200, 176, 253, 0.95)); }
+        100% { filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.6)); }
       }
 
       @keyframes splash-floor {
@@ -232,7 +233,7 @@
          the screen clears almost at once. */
       @media (prefers-reduced-motion: reduce) {
         #splash {
-          background: #1e2c58;
+          background: #3B246B;
           animation: splash-out 0.4s ease 0.6s both;
         }
 
@@ -251,7 +252,7 @@
 
         #splash .splash__mark {
           animation: none;
-          filter: drop-shadow(0 0 12px rgba(242, 193, 78, 0.6));
+          filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.6));
         }
 
         #splash .splash__floor {
