@@ -170,11 +170,16 @@ export default function RepaymentCalculator() {
   const total = ready ? monthly * months : null
   const interest = ready ? total - amount : null
 
-  /* Plain, not --raised. It sits between the dark products band and the raised
-     why-us read, and raised on either side of it would put two of the same
-     ground together and lose the alternation the page rhythm runs on. */
+  /* Sandal since 2026-09-09, where it was the plain page ground before.
+
+     It was plain because --raised sits directly under it and two of the same
+     ground in a row lose the alternation the page rhythm runs on. A ground of
+     its own answers that better than --page did: the hero above is also --page,
+     so the calculator was the second plain band in a row at the top of the home
+     page and only the raised one below it was breaking the run. Now the three
+     read hero, sandal, raised. */
   return (
-    <section className="section" id="calculator">
+    <section className="section section--sandal" id="calculator">
       <div className="shell stack-lg">
         {/* No eyebrow. It read "Calculator" over a heading that already said
             "Work out a repayment", which is the same word twice in two sizes.
