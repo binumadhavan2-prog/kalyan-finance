@@ -323,7 +323,7 @@ export const draft = {
     business:
       'Funding for working capital, equipment and growth, structured around how the business actually earns.',
     personal:
-      'Help arranging personal borrowing, with the trade-offs explained before you commit.',
+      'Help arranging personal borrowing, with the tradeoffs explained before you commit.',
     'short-term':
       'Bridging a defined gap, with a clear repayment date agreed at the outset.',
     'customer-focused':
