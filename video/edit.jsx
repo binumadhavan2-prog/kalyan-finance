@@ -109,7 +109,7 @@ const beat1 = (icon, t0) => [
             { property: "offsetY", from: 14, to: 0, at: 1.46 + i * 0.16, duration: 0.40, easing: "house" },
           ]} />
   )),
-  <text name="headline" text="Building Better Futures"
+  <text name="headline" text="Building Better Futures Together"
         x={260} y={800} width={1400} align="center"
         fontFamily="Inter" fontSize={82} fontWeight={700} color={WHITE}
         at={t0 + 1.95} duration={1.04}
