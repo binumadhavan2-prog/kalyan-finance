@@ -51,6 +51,13 @@
 
 .section--raised { background: var(--raised); }
 
+/* A warm band rather than the cool one, for a section that wants to sit apart
+   from the alternation instead of taking its turn in it. The recognition
+   section on the home and about pages, which is a clip and a label and would
+   otherwise be --page in both places, between a lavender band and a primary
+   one. See --cream in index.css for what it does and does not carry. */
+.section--cream { background: var(--cream); }
+
 .stack > * + * { margin-block-start: 1rem; }
 .stack-lg > * + * { margin-block-start: clamp(2rem, 5vw, 3.5rem); }
 
@@ -483,7 +490,9 @@
  * treatment was first written, on the reasoning that the supplied Background
  * was already a soft lavender; it was not, it was a near-white with a trace of
  * violet in it, and that only became obvious once the rest of the palette went
- * lavender around it. It has its own ground above.
+ * lavender around it. It has its own ground above — which is just as well,
+ * since --page has since gone the other way and become a cream, and a hero
+ * inheriting it would now be the one warm thing on a lavender page.
  *
  * The other three were re-derived against that ground on the same day, and two
  * of them were carrying real shortfalls before the move rather than because of

@@ -13,7 +13,11 @@ import Missing from './Missing'
 export default function Recognition() {
   const { draft, recognition, recognitionVideo } = useCopy()
   return (
-    <section className="section">
+    /* Cream rather than the plain page ground since 2026-09-09: on both pages
+       that render this, it falls between a --raised band and a dark one, and
+       on --page it was the only light band in that run with no ground of its
+       own. */
+    <section className="section section--cream">
       <div className="shell stack-lg">
         <div className="stack prose">
           <p className="eyebrow">
