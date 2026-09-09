@@ -356,13 +356,25 @@
 }
 
 /* ---------- Hero ---------- */
-/* --page, not a dark band at all on this palette: the photograph carries the
+/* Light, not a dark band at all on this palette: the photograph carries the
    hero and the scrim above holds it light enough for dark type. The primary
    masthead sits directly on top of it, so the page opens on the brand colour
-   and then drops straight into the light ground the rest of it runs on. */
+   and then drops into the light ground the rest of it runs on.
+
+   Its own soft lavender since 2026-09-09, where it used to be --page. Once the
+   alternate band went deep lavender the hero was the last near-white surface
+   on the site and read as the one place the palette had not reached. This
+   value is the supplied --card, chosen because it is already in the palette
+   and already proven as a surface, but written out rather than referenced:
+   --card means "the thing a card is made of", and a full-bleed section ground
+   is not that. They are the same colour today by intent, not by dependency. */
 .hero {
   position: relative;
   isolation: isolate;
+  /* rgb 237 231 248 — the scrim below writes these channels out longhand,
+     because a gradient stop needs them separately for its alpha. Change one
+     and change the other three. */
+  --hero-ground: #EDE7F8;
   /* One screen, and no more.
 
      Height is still what makes this read as the opening rather than as the
@@ -390,16 +402,17 @@
      currency, which is the subject worth seeing, sits below the middle. Dead
      centre crops the notes; this keeps the portrait in the surviving strip. */
   background:
-    var(--page) url("/hero.webp") center 58% / cover no-repeat;
+    var(--hero-ground) url("/hero.webp") center 58% / cover no-repeat;
 }
 
 /*
- * A directional scrim over the photograph. Solid --page on the left where the
- * copy sits, thinning to the right so the picture is legible behind the clip.
+ * A directional scrim over the photograph. Solid --hero-ground on the left
+ * where the copy sits, thinning to the right so the picture is legible behind
+ * the clip.
  *
- * --page is painted underneath as the background colour too, so a failed or
- * slow image load leaves the hero exactly as it was rather than dropping dark
- * text onto nothing.
+ * --hero-ground is painted underneath as the background colour too, so a
+ * failed or slow image load leaves the hero exactly as it was rather than
+ * dropping dark text onto nothing.
  */
 .hero::before {
   content: "";
@@ -411,26 +424,28 @@
      image rather than the lightest, and the worst case there is a black pixel,
      which composites --page straight down towards it:
 
-       alpha   --ink     --ink-soft   --accent-deep
-       1.00    15.51:1     4.53:1       4.68:1   <- both stops behind the copy
-       0.99    15.18:1     4.43:1       4.58:1
-       0.98    14.85:1     4.34:1       4.48:1
-       0.95    13.90:1     4.06:1       4.19:1
+       alpha   --ink     --hero-ink-soft   --gold-deep
+       1.00    13.89:1       5.58:1          4.65:1   <- both stops behind copy
+       0.99    13.64:1       5.48:1          4.56:1
+       0.98    13.26:1       5.33:1          4.44:1
+       0.95    12.42:1       4.99:1          4.16:1
 
-     --ink-soft is already within a hundredth of the floor on --page itself, so
-     there is no transparency left to spend behind the copy: it goes under
-     4.5:1 the moment alpha leaves 1, and --accent-deep follows by 0.98. Hence
-     1 rather than the 0.89 the all-dark palette could afford — the picture
-     behind the copy column is the price of dark type on a light ground.
+     The binding token changed with the ground. On --page it was the muted ink
+     that ran out first; on this darker ground the lede was re-derived with
+     room to spare and it is --gold-deep, the strapline, that is now nearest
+     the floor at 4.65:1. It goes under by alpha 0.98. So the answer is the
+     same as it was for a different reason: 1 rather than the 0.89 the all-dark
+     palette could afford, and the picture behind the copy column is the price
+     of dark type on a light ground.
 
      The last stop carries no text at all — the clip sits in that column and
      paints its own background — so it stays free to go much thinner, and it is
      the whole of what is left of the photograph. */
   background: linear-gradient(
     to right,
-    rgb(247 245 252 / 1) 0%,
-    rgb(247 245 252 / 1) 45%,
-    rgb(247 245 252 / 0.55) 100%
+    rgb(237 231 248 / 1) 0%,
+    rgb(237 231 248 / 1) 45%,
+    rgb(237 231 248 / 0.55) 100%
   );
 }
 
@@ -439,7 +454,7 @@
    at the same opacity the copy column takes above, which on this palette means
    the photograph does not show on a phone at all. */
 @media (max-width: 61.999rem) {
-  .hero::before { background: rgb(247 245 252 / 1); }
+  .hero::before { background: rgb(237 231 248 / 1); }
 }
 
 /*
@@ -454,9 +469,16 @@
  * would take it under. That margin has not grown as the band deepened; the
  * token has only kept pace with it.
  *
- * The ground itself needed no change: .hero already paints --page, which is the
- * supplied Background #F7F5FC, and the scrim over the photograph is that same
- * value at alpha 1 behind the copy column.
+ * All four parts are real values now. The ground was left as --page when the
+ * treatment was first written, on the reasoning that the supplied Background
+ * was already a soft lavender; it was not, it was a near-white with a trace of
+ * violet in it, and that only became obvious once the rest of the palette went
+ * lavender around it. It has its own ground above.
+ *
+ * The other three were re-derived against that ground on the same day, and two
+ * of them were carrying real shortfalls before the move rather than because of
+ * it — see the call to action below, which had been shipping a label under the
+ * floor since the treatment was written.
  */
 
 /* Deep Purple for the vision statement — the supplied Primary, the colour the
@@ -467,45 +489,69 @@
 
 /* Muted purple-gray for the supporting copy. --ink-soft is the neutral the rest
    of the light page runs on and reads grey beside a purple heading; this is the
-   same lightness carried round to the violet hue, 15% saturation, so it sits
-   between the Deep Purple above it and the ground without becoming a third
-   accent. 5.2:1 on --page, where --ink-soft was 5.0:1. */
-.hero { --hero-ink-soft: #6b6285; }
+   violet hue at 15% saturation, so it sits between the Deep Purple above it and
+   the ground without becoming a third accent.
+
+   Taken down from #6b6285 when the ground darkened on 2026-09-09. The old value
+   measured 4.69:1 on the new ground, which clears the floor but leaves nothing
+   for the scrim to spend; at 40% lightness it is 5.58:1 and the scrim table
+   above has somewhere to go. */
+.hero { --hero-ink-soft: #605775; }
 
 /* The hero is a light band on this palette, so the lede takes the light
    ground's soft ink rather than the primary one's. --primary-soft is 2.6:1 on
    --page. */
 .hero .lede { color: var(--hero-ink-soft); }
 
-/* The hero's ground is --page like the bands under it, so the ghost button
-   takes the plain hairline and the rule the dark hero needed here is gone. */
-.hero .btn-ghost { border-color: var(--line); }
+/* The secondary action, and the one thing here that a colour change alone had
+   to fix. A ghost button is nothing but its outline, so that outline is a user
+   interface boundary and answers to the 3:1 floor rather than to taste. --line
+   is the supplied hairline and measures 1.22:1 on this ground — fine for
+   dividing a list, not a control anyone can find. It was 1.73:1 when the
+   hairline was still derived here, which is how a rule that was merely weak
+   became a rule that was wrong without anyone touching it.
+
+   --accent-deep instead, at 4.19:1: the same violet the filled button beside it
+   is made of, so the pair reads as one set with the primary action filled and
+   the secondary drawn. The label stays --ink and the hover, which floods the
+   button with --ink, is untouched. */
+.hero .btn-ghost { border-color: var(--accent-deep); }
 
 /*
- * Vibrant Lavender for the main call to action: --accent at its supplied value,
- * where every other filled button on the site takes --accent-deep. :not() keeps
- * it off the ghost button beside it, which is the secondary action and stays a
- * hairline on the ground.
+ * Vibrant Lavender for the main call to action, where every other filled button
+ * on the site takes --accent-deep. :not() keeps it off the ghost button beside
+ * it, which is the secondary action and is drawn rather than filled.
  *
- * One thing to know about this fill. A white label on the supplied accent
- * measures 4.23:1, under the 4.5:1 floor the rest of the palette is held to —
- * that shortfall is why --accent-deep (5.1:1) exists and why decoration is all
- * the supplied value carries anywhere else. It clears the 3:1 non-text floor,
- * so the pill itself is fine against the ground; it is the 15px label on it
- * that is short. Darkening the label does not rescue it either: --ink on
- * --accent is 3.96:1, worse than the white.
+ * This used to be --accent at its supplied value, and that was a defect the
+ * whole time: a white label on the supplied accent measures 4.23:1, under the
+ * 4.5:1 floor the rest of the palette is held to. The pill cleared the 3:1
+ * non-text floor so the shape was never the problem; it was the 15px label on
+ * it, on the single most important button on the site. Darkening the label
+ * does not rescue it either — --ink on --accent is 3.96:1, worse than white.
  *
- * Hover deepens to --accent-deep, so the button lands back on 5.1:1 the moment
- * it is pointed at, and the focus ring is unchanged.
+ * The fix is smaller than it sounds. Hold the supplied hue and saturation
+ * exactly — 258deg, 90% — and take lightness from 66% to 63%. That is #804CF5,
+ * a white label at 4.92:1, and next to the old fill the two are hard to tell
+ * apart: the vibrancy people asked for lives in the saturation, which has not
+ * moved, and the three points of lightness are what was standing between this
+ * button and the floor. --accent itself is left alone at its supplied value
+ * for the decoration it carries elsewhere.
+ *
+ * Hover goes to --accent-hover at 6.1:1, which is where the rest of the site's
+ * buttons hover to, so the hero stops being special on that one state. The
+ * rule is needed at all only because the selector above outranks `.btn:hover`.
+ * The focus ring is unchanged.
  */
+.hero { --hero-cta: #804CF5; }
+
 .hero .btn:not(.btn-ghost) {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--hero-cta);
+  border-color: var(--hero-cta);
 }
 
 .hero .btn:not(.btn-ghost):hover {
-  background: var(--accent-deep);
-  border-color: var(--accent-deep);
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 
 .hero__actions {
@@ -654,7 +700,9 @@
 /* The supplied accent, undeepened: the icon is the one saturated mark
    on a card that is otherwise ink on white. Decorative — every card states
    its subject in the title under it — so the accent is free to sit here at
-   4.2:1 on white, just under the floor no piece of type on the site may go. */
+   3.5:1 on the card, under the floor no piece of type on the site may go.
+   That figure was 4.2:1 while the card was white; the supplied card ground of
+   2026-09-09 took it down, and it is still decoration, so it still stands. */
 .card__icon {
   width: 1.875rem;
   height: 1.875rem;
