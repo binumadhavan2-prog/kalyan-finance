@@ -144,7 +144,7 @@ export const services = [
       height: 1024,
       wide: true,
       alt:
-        'Short Term Financial Support from Kalyan Finance — quick financial ' +
+        'Short Term Financial Support from Kalyan Finance. Quick financial ' +
         'solutions for your immediate needs: quick approval, flexible tenure ' +
         'and a hassle-free process.',
     },
@@ -160,7 +160,7 @@ export const services = [
       height: 1024,
       wide: true,
       alt:
-        'Customer-Focused Financial Solutions from Kalyan Finance — tailored ' +
+        'Customer-Focused Financial Solutions from Kalyan Finance. Tailored ' +
         'financial solutions designed around your needs, helping you manage ' +
         "today's requirements with confidence and plan for tomorrow: flexible " +
         'financial options, a quick and simple process, transparent terms, ' +
@@ -179,7 +179,7 @@ export const services = [
       wide: true,
       alt:
         'Tailored Financial Support for Individuals and Businesses from ' +
-        'Kalyan Finance — personalized solutions, flexible financial support, ' +
+        'Kalyan Finance. Personalized solutions, flexible financial support, ' +
         'empowering growth and trusted partnership.',
     },
   },
@@ -313,7 +313,7 @@ export const draft = {
   /* Sits under the buttons. Deliberately about effort and obligation rather
      than speed: a response time is a promise, and nobody has given us one. */
   ctaNote:
-    'No documents needed to start — just tell us roughly what you are looking for.',
+    'No documents needed to start. Just tell us roughly what you are looking for.',
 
   /* ---------- Loan products ---------- */
   productsTitle: 'Loan products',
@@ -351,7 +351,7 @@ export const draft = {
      substance is not optional: the rate is the visitor's own figure, and the
      result has to be marked as arithmetic rather than as a quotation. */
   calculatorNotice:
-    'Illustrative only. This works out the arithmetic on the figures you enter — it is not a quotation, not an offer, and not a decision. Kalyan Finance has not published rates, so the rate here is yours to supply. Any actual terms are confirmed for your circumstances in writing.',
+    'Illustrative only. This works out the arithmetic on the figures you enter. It is not a quotation, not an offer, and not a decision. Kalyan Finance has not published rates, so the rate here is yours to supply. Any actual terms are confirmed for your circumstances in writing.',
   calculatorRateHint:
     'We have not published rates, so enter the one you want to test.',
   calculatorEmpty:
@@ -565,9 +565,9 @@ export const ui = {
   formMessagePlaceholder: 'What you need, and roughly when',
   formSend: 'Send enquiry',
   formSending: 'Sending…',
-  formSent: 'Thank you — we will come back to you.',
+  formSent: 'Thank you. We will come back to you.',
   formFailed: 'That did not send. Please try again or call us.',
-  formNoEndpoint: 'Form is not connected yet — no destination configured',
+  formNoEndpoint: 'Form is not connected yet, no destination configured',
   errName: 'Please tell us your name.',
   errContact: 'Please give us either an email address or a phone number.',
   errEmail: 'That does not look like an email address.',
