@@ -7,15 +7,12 @@ import Stats from '../components/Stats'
 import Recognition from '../components/Recognition'
 import ClosingCta from '../components/ClosingCta'
 import HeroVideo from '../components/HeroVideo'
-import ScrollProgress from '../components/ScrollProgress'
 import RepaymentCalculator from '../components/RepaymentCalculator'
 
 export default function Home() {
   const { company, draft, ui, vision, whyPoints } = useCopy()
   return (
     <>
-      <ScrollProgress />
-
       <section className="section hero">
         <div className="shell hero__grid">
           <div className="stack-lg">

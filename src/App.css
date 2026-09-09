@@ -361,20 +361,27 @@
    masthead sits directly on top of it, so the page opens on the brand colour
    and then drops into the light ground the rest of it runs on.
 
-   Its own soft lavender since 2026-09-09, where it used to be --page. Once the
+   Its own lavender since 2026-09-09, where it used to be --page. Once the
    alternate band went deep lavender the hero was the last near-white surface
-   on the site and read as the one place the palette had not reached. This
-   value is the supplied --card, chosen because it is already in the palette
-   and already proven as a surface, but written out rather than referenced:
-   --card means "the thing a card is made of", and a full-bleed section ground
-   is not that. They are the same colour today by intent, not by dependency. */
+   on the site and read as the one place the palette had not reached.
+
+   Deepened again the same day, from the supplied card value to a step below
+   it: 1.28:1 off --page where it was 1.12:1. What stopped it going further is
+   worth knowing, because it is not the body copy — --ink is at 12.2:1 here and
+   the heading at 9.2:1, both with room to spare. It is the gold strapline. The
+   gold has to darken to stay above the floor as the ground darkens, and a gold
+   that darkens far enough stops being gold and turns olive; that was tried and
+   reverted on --gold-deep earlier the same day. Two steps below this the
+   strapline is brown. The ground can only go as dark as the gold on it can
+   afford, so this is close to the end of the road unless the strapline gives up
+   the gold or the palette gives it a lighter one. */
 .hero {
   position: relative;
   isolation: isolate;
-  /* rgb 237 231 248 — the scrim below writes these channels out longhand,
+  /* rgb 225 215 244 — the scrim below writes these channels out longhand,
      because a gradient stop needs them separately for its alpha. Change one
      and change the other three. */
-  --hero-ground: #EDE7F8;
+  --hero-ground: #E1D7F4;
   /* One screen, and no more.
 
      Height is still what makes this read as the opening rather than as the
@@ -424,28 +431,31 @@
      image rather than the lightest, and the worst case there is a black pixel,
      which composites --page straight down towards it:
 
-       alpha   --ink     --hero-ink-soft   --gold-deep
-       1.00    13.89:1       5.58:1          4.65:1   <- both stops behind copy
-       0.99    13.64:1       5.48:1          4.56:1
-       0.98    13.26:1       5.33:1          4.44:1
-       0.95    12.42:1       4.99:1          4.16:1
+       alpha   --ink     --hero-ink-soft   --hero-gold
+       1.00    12.16:1       4.88:1          4.53:1   <- both stops behind copy
+       0.99    11.93:1       4.79:1          4.44:1
+       0.98    11.67:1       4.69:1          4.34:1
+       0.95    10.91:1       4.38:1          4.06:1
 
      The binding token changed with the ground. On --page it was the muted ink
-     that ran out first; on this darker ground the lede was re-derived with
-     room to spare and it is --gold-deep, the strapline, that is now nearest
-     the floor at 4.65:1. It goes under by alpha 0.98. So the answer is the
-     same as it was for a different reason: 1 rather than the 0.89 the all-dark
-     palette could afford, and the picture behind the copy column is the price
-     of dark type on a light ground.
+     that ran out first; on this one it is --hero-gold, the strapline, which is
+     nearest the floor at 4.53:1 and goes under the moment alpha leaves 1. So
+     the answer is the same as it was for a different reason: 1 rather than the
+     0.89 the all-dark palette could afford, and the picture behind the copy
+     column is the price of dark type on a light ground.
+
+     Note how little slack is left in this column now. Every deepening of the
+     ground comes out of the same place, and at 4.53:1 the strapline has about
+     one more step in it.
 
      The last stop carries no text at all — the clip sits in that column and
      paints its own background — so it stays free to go much thinner, and it is
      the whole of what is left of the photograph. */
   background: linear-gradient(
     to right,
-    rgb(237 231 248 / 1) 0%,
-    rgb(237 231 248 / 1) 45%,
-    rgb(237 231 248 / 0.55) 100%
+    rgb(225 215 244 / 1) 0%,
+    rgb(225 215 244 / 1) 45%,
+    rgb(225 215 244 / 0.55) 100%
   );
 }
 
@@ -454,7 +464,7 @@
    at the same opacity the copy column takes above, which on this palette means
    the photograph does not show on a phone at all. */
 @media (max-width: 61.999rem) {
-  .hero::before { background: rgb(237 231 248 / 1); }
+  .hero::before { background: rgb(225 215 244 / 1); }
 }
 
 /*
@@ -492,10 +502,11 @@
    violet hue at 15% saturation, so it sits between the Deep Purple above it and
    the ground without becoming a third accent.
 
-   Taken down from #6b6285 when the ground darkened on 2026-09-09. The old value
-   measured 4.69:1 on the new ground, which clears the floor but leaves nothing
-   for the scrim to spend; at 40% lightness it is 5.58:1 and the scrim table
-   above has somewhere to go. */
+   Taken down from #6b6285 when the ground first darkened on 2026-09-09, to 40%
+   lightness on the violet hue. It held that value through the second
+   deepening: 4.88:1 on the ground now, where the old #6b6285 would have been
+   at 4.10:1 and under. It is no longer the token with the most room here, but
+   it is no longer the one that runs out first either. */
 .hero { --hero-ink-soft: #605775; }
 
 /* The hero is a light band on this palette, so the lede takes the light
@@ -577,21 +588,33 @@
 .hero .hero__name { color: var(--ink); }
 
 /* The brand line, tucked under the company name as the masthead has it, and
-   gold to match the masthead's since 2026-09-09. In --gold-deep rather than the
-   gold itself: this is the one of the four straplines that sits on a light
-   ground, and the supplied gold measures 2.1:1 on --page. The deepened value is
-   5.2:1 there. Same move the palette already makes on its accent, and for the
-   same reason.
+   gold to match the masthead's since 2026-09-09. Deepened rather than the
+   supplied gold itself: this is the one of the four straplines that sits on a
+   light ground, and the supplied gold measures 2.1:1 on --page. Same move the
+   palette already makes on its accent, and for the same reason.
 
-   This rule and the `.tagline` fallback below are the whole of --gold-deep's
-   usage, which is why that token is derived against --page and --card only.
-   It does not clear the floor on the deepened --raised; keep both off it. */
+   In --hero-gold rather than --gold-deep since the hero ground was deepened
+   later the same day. That leaves `.tagline` below as the only user of
+   --gold-deep, which is why that token is still derived against --page and
+   --card only; it does not clear the floor on --raised either. Keep both off
+   the band. */
+/* Its own gold since the hero ground was deepened on 2026-09-09, where it took
+   --gold-deep before. --gold-deep is derived against --page and --card and is
+   4.07:1 on this ground, under the floor; this is the same hue and saturation
+   two points of lightness lower, at 4.53:1.
+
+   Scoped here rather than pushed into --gold-deep, which still has --page and
+   --card to serve and no reason to darken for a ground it never meets. That is
+   the same argument the note on --gold-deep makes in the other direction, and
+   this is the second value it anticipated. */
+.hero { --hero-gold: #775D18; }
+
 .hero__tagline {
   font-size: clamp(1.125rem, 2.2vw, 1.5rem);
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.3;
-  color: var(--gold-deep);
+  color: var(--hero-gold);
 }
 
 /* Both override the flat 1rem from `.stack > * + *`, and both need to match
@@ -1908,7 +1931,14 @@
    through the palette change. It is also the better read here than the accent
    was: 5.7:1 on the primary track against the accent's 3.0:1, and a fill that
    is not a shade of the bar it slides along. No type rides on it, and the read
-   position is the one moving thing on the page. */
+   position is the one moving thing on the page.
+
+   On every route since 2026-09-09, where it used to be rendered by the home
+   page alone. That widened what the fill has to work over: the home page puts
+   it against the lavender hero, and the inner pages put it between the primary
+   masthead and the primary banner, where the track disappears and the gold is
+   the only part of it anyone sees. 5.7:1 covers both, which is why the fill
+   needed no second value the way the straplines did. */
 .scroll-progress {
   position: fixed;
   top: calc(var(--masthead-h) + 1px);
@@ -2425,13 +2455,27 @@
    span still available. An untouched field sends 0%, so the track is bare and
    the thumb sits at the left rather than implying a figure.
 
-   The accent, asked for on 2026-09-07, and the track stays primary on the
-   light page rather than dropping to --line: the hairline is 1.5:1 on --page,
-   which is nothing to read a control against. So the fill reads against the
-   --primary-line track it sits in, and the thumb — the accent at 3.9:1 on
-   --page — is bounded by its 2px --primary ring at 11.8:1. Both clear the 3:1
-   floor for a control you have to see to operate. It is the same idiom as the
-   scroll progress bar: the accent marking a position on primary.
+   Gold since 2026-09-09, where the accent was asked for on 2026-09-07. The
+   track stays primary on the light page rather than dropping to --line: the
+   hairline is 1.5:1 on --page, which is nothing to read a control against.
+
+   The swap fixed something the original note asserted without measuring. It
+   said the fill "reads against the --primary-line track it sits in" and then
+   only ever checked the accent against the page. Against the track — which is
+   the comparison that matters, because the whole job of the fill is to show
+   where the chosen span ends and the remaining one begins — the accent was
+   1.9:1. Two halves of one bar, under the 3:1 floor, on the control this page
+   is built around. --gold is 3.6:1 there.
+
+   The thumb improves against its own ring too, 5.7:1 where the accent was
+   exactly 3.0:1. What it gives up is the ground: gold is 2.1:1 on --page
+   against the accent's 3.9:1, so the thumb no longer clears 3:1 on its own and
+   leans on the 2px --primary ring at 11.8:1 to bound it. That is what a
+   boundary is for and it is the trade worth making — a thumb is found by its
+   outline, and a fill has nothing but the track to be read against.
+
+   Same idiom as the scroll progress bar, and now the same colour: gold marking
+   a position on primary.
 
    Outranks `.field input` on class count, which would otherwise hand the
    slider the number box's padding, border and radius. */
@@ -2458,7 +2502,7 @@
   border-radius: 999px;
   background: linear-gradient(
     to right,
-    var(--accent) var(--fill, 0%),
+    var(--gold) var(--fill, 0%),
     var(--primary-line) var(--fill, 0%)
   );
 }
@@ -2468,7 +2512,7 @@
   border-radius: 999px;
   background: linear-gradient(
     to right,
-    var(--accent) var(--fill, 0%),
+    var(--gold) var(--fill, 0%),
     var(--primary-line) var(--fill, 0%)
   );
 }
@@ -2484,7 +2528,7 @@
   margin-block-start: -0.4375rem;
   border-radius: 50%;
   border: 2px solid var(--primary);
-  background: var(--accent);
+  background: var(--gold);
   box-shadow: 0 1px 4px rgb(0 0 0 / 0.45);
 }
 
@@ -2493,7 +2537,7 @@
   height: 1.125rem;
   border-radius: 50%;
   border: 2px solid var(--primary);
-  background: var(--accent);
+  background: var(--gold);
   box-shadow: 0 1px 4px rgb(0 0 0 / 0.45);
 }
 

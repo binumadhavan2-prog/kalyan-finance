@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { useCopy } from '../i18n'
 import SiteHeader from './SiteHeader'
 import SiteFooter from './SiteFooter'
+import ScrollProgress from './ScrollProgress'
 
 export default function Layout() {
   const { company, ui } = useCopy()
@@ -81,6 +82,23 @@ export default function Layout() {
         {ui.skipToContent}
       </a>
       <SiteHeader />
+      {/*
+       * Every route, not just the home page, since 2026-09-09.
+       *
+       * Here rather than in each page for the reason the masthead and footer
+       * are here: it belongs to the frame around a route, not to any route.
+       * It reads document.documentElement, so it needs nothing from the page
+       * under it, and the effect that drives it re-runs on scroll rather than
+       * on navigation — the route change resets the scroll position above and
+       * the bar's own scroll listener follows it down to zero.
+       *
+       * On a page shorter than the viewport the component holds the fill at
+       * zero, so what is left is the 3px primary track. On the inner pages
+       * that track sits between the primary masthead and the primary banner
+       * and cannot be seen at all; on the home page it reads as a rule under
+       * the masthead, which is what it already did there.
+       */}
+      <ScrollProgress />
       <main id="main">
         <Outlet />
       </main>
