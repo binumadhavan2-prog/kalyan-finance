@@ -30,9 +30,11 @@
  * light page keeps working on a dark band without being restated.
  *
  * Measured contrast — on --page: --ink 15.5:1, --ink-soft 4.5:1, --accent-deep
- * 4.7:1. On --card: --ink 16.2:1, --ink-soft 4.7:1, --accent-deep 4.9:1. On
- * --primary: white 12.7:1, --primary-soft 4.6:1, --accent-bright 4.5:1. On
- * --primary-deep: white 15.2:1, --primary-soft 5.5:1, --accent-bright 5.4:1.
+ * 4.7:1, --gold-deep 5.4:1. On --card: --ink 16.2:1, --ink-soft 4.7:1,
+ * --accent-deep 4.9:1, --gold-deep 5.7:1. On --primary: white 12.7:1,
+ * --primary-soft 4.6:1, --accent-bright 4.5:1, --gold 5.7:1. On
+ * --primary-deep: white 15.2:1, --primary-soft 5.5:1, --accent-bright 5.4:1,
+ * --gold 6.8:1.
  * White on --accent-deep 5.1:1, on --accent-hover 6.1:1; --ink on
  * --accent-bright 6.0:1. Keep replacements above 4.5:1.
  */
@@ -75,8 +77,23 @@
      It is the previous palette's gold, unchanged, and it reads better on this
      ground than it did on the last one — 5.7:1 on --primary, where the accent
      it replaces sits at 3.0:1 and is the same family as the bar it moves
-     across. Nothing else uses it; anything that wants to should say so. */
+     across. It also carries the tagline now (see the pair below); anything
+     else that wants it should say so. */
   --gold: #d4a72c;
+  /* The gold where the tagline has to be read on a light ground, which the
+     supplied value cannot do — 2.1:1 on --page, because a yellow is nearly as
+     bright as the page it sits on. --gold at 58%, the same single shade toward
+     black that --accent-deep makes on the accent: 5.4:1 on --page and 5.7:1 on
+     the creams. It has margin for the creams to go on darkening, too — at
+     #efebe0 it is still 4.9:1, where --accent-deep is already under the floor.
+     This is the hero strapline and the About vision band.
+
+     The pair splits by ground, not by emphasis: --gold on the primary bands
+     (5.7:1 on --primary for the masthead and footer lockups, 6.8:1 on
+     --primary-deep), --gold-deep on the light half of the page. Neither works
+     on the other's ground — --gold-deep is 2.2:1 on --primary — so a tagline
+     moving between them has to move token with it. */
+  --gold-deep: #7b611a;
 
   /* Text, as supplied, and its muted partner — --ink tinted toward white until
      it is level with the floor on both light grounds: 4.5:1 on --page and
