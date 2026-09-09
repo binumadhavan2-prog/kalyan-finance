@@ -255,28 +255,58 @@
      deepened band that gap is wide enough to matter, so treat accent type on
      a band as ruled out rather than merely discouraged. */
   --card: #EDE7F8;
-  /* A deeper cream for one band, added 2026-09-09 for the recognition section
-     and available to any other that wants it (App.css, `.section--cream`).
+  /* A cream for one band, added 2026-09-09 for the recognition section and
+     available to any other that wants it (App.css, `.section--cream`). Supplied
+     outright at #FAF8F0, where it started as a derived #EFE7CD.
 
-     --page's own hue and saturation, hsl(46, 52%), taken from 95% lightness to
-     87%. That is 1.14:1 off --page — the same distance a card sits off it, and
-     enough here because this band never has --page on either side of it: it
-     runs between the lavender band above and a primary one below on both pages
-     that use it, so what reads is cream against violet, not cream against
-     cream.
+     It is hsl(48, 50%, 96%) — near enough --page's own hue and saturation, and
+     within one point of its lightness. So this is a warm band rather than a
+     lighter one: 1.02:1 off --page, which is no tonal step at all, against the
+     1.14:1 the derived value had.
 
-     Everything clears the floor on it without a second value, which is why it
-     has no usage rule the way --raised does: --ink 13.6:1, --ink-soft 6.3:1,
-     --gold-deep 4.5:1. --line is 1.19:1, between the card's 1.22 and the
-     lavender band's 1.15, so the video's border sits where the site's other
-     borders sit.
+     That is only workable because the band never has --page on either side of
+     it. On both pages that use it the section above is --raised and the section
+     below is primary — the statistics band on the home page, the closing call
+     to action on the about page — so what reads is cream against violet, not
+     cream against cream, and against --raised it is 1.59:1. Put this beside
+     --page and it will not be a band at all. That is the usage rule, and it is
+     tighter than the one the derived value carried.
+
+     Type is comfortable on it and needs no second value: --ink 15.8:1,
+     --ink-soft 7.3:1, --gold-deep 5.3:1. --line is 1.38:1, a firmer hairline
+     than the lavender grounds give it, so the video's border reads a little
+     more here than elsewhere.
 
      One thing to know before putting a card on it. --card is a cool lavender
-     and this is a warm cream, and they are 1.02:1 apart — no tonal step at
-     all. On this band a card is separated by temperature and its border and
-     nothing else. Nothing does that today, since the recognition list is empty
-     and only the clip renders, but the markup for it is right there. */
-  --cream: #EFE7CD;
+     and this is a warm near-white, and they are 1.13:1 apart, so a card does
+     now take a tonal step off this band as well as a temperature one — the
+     reverse of the derived value, where the two were level. Nothing does that
+     today, since the recognition list is empty and only the clip renders, but
+     the markup for it is right there. */
+  --cream: #FAF8F0;
+  /* Sandal, for the repayment calculator, added 2026-09-09. The second warm
+     ground on the site and the only one with any depth to it: hsl(38, 45%, 81%)
+     against --cream's 96% lightness, so where the cream band separates from
+     --page by temperature alone this one separates by both. 1.34:1 off --page
+     above it and 1.17:1 off --raised below it — the second of those is thin as
+     a number and carries because warm tan against lavender is not a tonal
+     comparison.
+
+     Type clears the floor without a second value: --ink 11.6:1, --ink-soft
+     5.3:1. --gold-deep is 3.9:1 and --accent-deep 3.5:1, so neither is type on
+     this ground; the accent is only ever a control fill here and 3.5:1 is past
+     the 3:1 those are held to.
+
+     The hairline is the one thing that does not survive the move, and the band
+     re-points it rather than living with it — see `.section--sandal` in
+     App.css. --line is a lavender mixed for the cool grounds and measures
+     1.01:1 here, which is not a faint divider but no divider at all, and the
+     calculator is built out of bordered boxes. */
+  --sandal: #E4D5B7;
+  /* Its hairline: the sandal's own hue taken down to 66% lightness. 1.40:1 on
+     the band, which puts it with --line's 1.38:1 on --cream rather than at the
+     fainter end the lavender grounds sit at. */
+  --sandal-line: #C9B48A;
 
   --shell: 1200px;
   --measure: 60ch;

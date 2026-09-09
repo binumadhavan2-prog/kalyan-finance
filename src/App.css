@@ -58,6 +58,18 @@
    one. See --cream in index.css for what it does and does not carry. */
 .section--cream { background: var(--cream); }
 
+/* Sandal, for the repayment calculator. The one band on the site that re-points
+   a token rather than only setting a ground: --line is mixed at the primary's
+   hue for the cool grounds and comes back invisible on a warm tan, at 1.01:1,
+   and this band is built almost entirely out of bordered boxes — the result
+   panel, the number fields, the notice. Re-pointing it here is the same move
+   `.section--dark` makes for the same reason, so every rule written against
+   --line keeps working without being restated. */
+.section--sandal {
+  background: var(--sandal);
+  --line: var(--sandal-line);
+}
+
 .stack > * + * { margin-block-start: 1rem; }
 .stack-lg > * + * { margin-block-start: clamp(2rem, 5vw, 3.5rem); }
 
@@ -2323,15 +2335,15 @@
      pills by different amounts and this is the clearance that stops them
      crossing at full lean.
 
-     Sized against the worst adjacent pair in DEPTHS, 0.55 beside 1.15, which
-     close by 0.6 x STRENGTH: 28.8px across at STRENGTH 48, and 13px down once
-     VERTICAL_DAMPING is applied. Then the tilt, which is the part that is easy
-     to miss — a rotated pill's box grows by its own WIDTH x sin(angle), so the
-     widest label adds roughly 6px of height, given up by the row above and the
-     row below at the same time.
+     The column gap is sized against the worst adjacent pair in DEPTHS, 0.55
+     beside 1.15, which close by 0.6 x STRENGTH: 28.8px at STRENGTH 48. So
+     44px across against 28.8 plus a couple, and raising STRENGTH without
+     raising it is what makes two pills touch.
 
-     So: 44px across against 28.8 + ~2, and 36px down against 13 + ~6. Raising
-     STRENGTH or the TILTS without raising these is what makes them touch. */
+     The row gap no longer answers to the drift at all, which is now horizontal
+     only, nor to the tilt, which the entry animation returns to square. 36px
+     is what a wrapped row wants for its own sake, and it is only ever seen on
+     the widths where the five terms do not fit on one line. */
   gap: 2.25rem 2.75rem;
 
   /* Headroom above the row, and it has to be declared here rather than left to
@@ -2344,13 +2356,19 @@
      down the file, so the reset won and the row sat flush against the heading.
      Then the first upward lean carried the pills over the type.
 
-     The number is the row's own, not the stack's, because the stack knows
-     nothing about the lean: a pill travels up to 28px up — STRENGTH 48 x the
-     deepest depth 1.3 x VERTICAL_DAMPING 0.45 — and its tilt adds about 6px on
-     top, so 34px of any gap is spent before the row looks like it has moved at
-     all. 2.75rem clears that with a little to spare. max() keeps the stack's
-     figure wherever it is the larger of the two, which is every viewport above
-     about 880px, so the rhythm of the page is unchanged there. */
+     The 2.75rem floor was sized against a vertical lean of 28px plus about 6px
+     of tilt. Neither is there any more: the drift is horizontal only and the
+     tilt lives in the entry animation rather than in the resting state. What
+     is left for the floor to cover is the entry itself, which lifts a pill
+     0.1875rem past its resting place at the 60% keyframe — far less than this.
+
+     It stays because the value it holds is only reachable below about 880px,
+     where max() stops preferring the stack's own figure, and where the drift
+     never runs at all: the pointer check bails out on a coarse pointer. So it
+     is now headroom for its own sake on small screens and nothing more, and it
+     could come down whenever the phone spacing is next looked at. What must
+     NOT go is the declaration — `margin: 0` here is what silently beat
+     `.stack-lg > * + *` and put the row flush against the heading. */
   margin: max(clamp(2rem, 5vw, 3.5rem), 2.75rem) 0 0;
   padding: 0;
   list-style: none;
@@ -2379,7 +2397,9 @@
   letter-spacing: -0.01em;
   line-height: 1.25;
   white-space: nowrap;
-  transform: rotate(var(--tilt, 0deg));
+  /* No resting transform. The tilt used to live here, so a pill's finished
+     state was a rotated one and the row never came to rest level — see the
+     entry note below, where the tilt now belongs. */
 }
 
 /* Every third pill inverts, so the row has some weight in it rather than
@@ -2404,8 +2424,18 @@
  * view, never by this stylesheet, so a pill with no JavaScript is simply a
  * pill — it is never left hidden waiting for a class that may not arrive.
  *
- * The overshoot in the middle is the bounce: it passes the resting tilt and
+ * The overshoot in the middle is the bounce: it passes its resting state and
  * comes back to it, rather than easing politely into place.
+ *
+ * The tilt is now part of that arrival and nothing else. It used to be the
+ * pill's resting transform, with the animation merely passing through a larger
+ * version of it on the way, which meant the row's finished state was five
+ * pills each sitting at its own angle — no two labels on the same baseline and
+ * no two gaps quite equal. That is the misalignment: not something happening
+ * after the animation, but where the animation was always going.
+ *
+ * So the angles stay in `from` and at 60%, where they give the arrival its
+ * character, and `to` is square. The pills tilt in and settle level.
  */
 .pills.is-entering .pills__pill {
   animation: pill-in 0.62s cubic-bezier(0.34, 1.56, 0.64, 1) var(--delay, 0ms) both;
@@ -2422,7 +2452,7 @@
   }
   to {
     opacity: 1;
-    transform: rotate(var(--tilt, 0deg)) scale(1);
+    transform: rotate(0deg) scale(1);
   }
 }
 

@@ -14,10 +14,14 @@ import { useEffect, useRef } from 'react'
  * the thing that makes one appear.
  */
 
-/* Drift multiplier and resting tilt per pill, cycled by index rather than
+/* Drift multiplier and arrival tilt per pill, cycled by index rather than
    randomised: Math.random() in a render gives a different layout on every
    pass, so the pills would jump each time React re-rendered the page. Six
-   entries against five terms, so the cycle does not visibly repeat. */
+   entries against five terms, so the cycle does not visibly repeat.
+
+   TILTS is spent entirely on the way in now. It was the pill's resting angle
+   until 2026-09-09, which left the finished row sitting at five different
+   angles rather than level; the keyframes in App.css say the rest. */
 const DEPTHS = [0.55, 1.15, 0.75, 1.3, 0.9, 1.05]
 /* Halved from the angles this started on. A tilt costs vertical room in
    proportion to the pill's width, not its height — W x sin(angle) — so the
@@ -30,9 +34,42 @@ const TILTS = [-1.25, 0.75, -0.5, 1, -0.875, 0.625]
    cycle takes 1.3x this, so the row needs a gap wider than the spread between
    neighbouring depths or the pills cross over each other at full lean. */
 const STRENGTH = 48
-/* Vertical travel is damped: the row is much wider than it is tall, so equal
-   travel on both axes reads as the pills sliding off their own line. */
-const VERTICAL_DAMPING = 0.45
+/*
+ * There is no vertical travel. It was damped rather than removed for a long
+ * time, on the reasoning that a smaller share of the same movement would read
+ * as depth without costing the row its line. It does not: any vertical share
+ * at all puts five pills at five different heights, because each takes its own
+ * depth, and a row of labels reads as a row by sharing a baseline. Asked about
+ * twice as a misalignment before it was called an effect, which is the answer.
+ *
+ * So the drift is horizontal only. The pills still lead and lag each other by
+ * depth, which is the whole of the parallax, and the line they sit on is never
+ * in question. The vertical half of the pointer is still measured — see REACH
+ * — but only to decide how near the cursor is, never to move anything.
+ */
+/*
+ * How far from the row the drift still answers the cursor, in px, measured out
+ * from the row's own edge.
+ *
+ * This is what was missing, and it is why the pills landed scattered rather
+ * than on their line. Y was normalised against the row's own box the way X is,
+ * and that box is wide and short — around 60px tall against 1200 wide. X reads
+ * honestly at that width; Y did not. Half a row above or below it already read
+ * as a full lean, and the cursor is hardly ever inside those 60px, so the
+ * vertical drift sat pinned at its maximum for practically every pointer
+ * position on the page.
+ *
+ * That is where the row is when it scrolls into view: the reader's cursor is
+ * wherever they left it, the first pointermove pins the lean, and the entry
+ * animation hands the pills straight into it. Each one takes its own depth, up
+ * to 28px of it, so the bounce finished and the row settled off its own line
+ * instead of on it.
+ *
+ * So Y now reads as a distance from the row rather than a position inside it,
+ * and both axes fade across that same distance: at the row, the full effect;
+ * this far away, none of it. The row rests level until the cursor comes near.
+ */
+const REACH = 320
 /* Share of the remaining distance closed each frame. Low enough that the
    pills lag the cursor — that lag is the whole effect; at 1 they would be
    welded to it. */
@@ -77,7 +114,7 @@ export default function ParallaxPills({ items }) {
 
     const pills = Array.from(el.children)
     // Current px offset per pill, eased toward the target every frame.
-    const offsets = pills.map(() => ({ x: 0, y: 0 }))
+    const offsets = pills.map(() => ({ x: 0 }))
 
     /*
      * How far each pill may lean sideways before it leaves the row's own box.
@@ -105,7 +142,9 @@ export default function ParallaxPills({ items }) {
      * into its own limits.
      */
     const limits = pills.map(() => ({ left: 0, right: 0 }))
-    // A little back from the true edge, for the width a pill's tilt adds.
+    /* A little back from the true edge. It covered the width a pill's resting
+       tilt added; the tilt is gone from the resting state, but the inset stays
+       as plain slack against a sub-pixel row width. */
     const EDGE_INSET = 4
 
     const measure = () => {
@@ -120,8 +159,9 @@ export default function ParallaxPills({ items }) {
     }
 
     measure()
-    // Pointer position relative to the row's centre, normalised to -1..1.
-    const pointer = { x: 0, y: 0 }
+    /* How far across the row the pointer is, -1..1, faded by how near it is
+       vertically. One axis, because only one axis moves anything. */
+    const pointer = { x: 0 }
     let frame = 0
 
     const tick = () => {
@@ -134,16 +174,11 @@ export default function ParallaxPills({ items }) {
           Math.max(pointer.x * STRENGTH * depth, room.left),
           room.right,
         )
-        const targetY = pointer.y * STRENGTH * depth * VERTICAL_DAMPING
         const at = offsets[i]
 
         at.x += (targetX - at.x) * EASE
-        at.y += (targetY - at.y) * EASE
 
-        if (
-          Math.abs(targetX - at.x) > SETTLED ||
-          Math.abs(targetY - at.y) > SETTLED
-        ) {
+        if (Math.abs(targetX - at.x) > SETTLED) {
           moving = true
         }
 
@@ -153,7 +188,7 @@ export default function ParallaxPills({ items }) {
 
            The translate sits on the <li> and the tilt on the pill inside it,
            so this never overwrites the entry animation's own transform. */
-        pill.style.transform = `translate3d(${at.x.toFixed(2)}px, ${at.y.toFixed(2)}px, 0)`
+        pill.style.transform = `translate3d(${at.x.toFixed(2)}px, 0, 0)`
       })
 
       // Idle once everything has arrived; the next pointer move restarts it.
@@ -169,22 +204,34 @@ export default function ParallaxPills({ items }) {
       if (!box.width || !box.height) return
 
       /*
-       * Clamped, and the clamp is load-bearing rather than defensive. The
-       * pointer is tracked on the window but normalised against the row's own
-       * box, and that box is wide and short — a cursor a few hundred px above
-       * it normalises to -10, not -1, which sent a pill several hundred px up
-       * instead of the ~37 the spacing is built around. Outside the row the
-       * lean now holds at full rather than continuing to grow.
+       * Both axes are still clamped, and the clamp is still load-bearing rather
+       * than defensive: the pointer is tracked on the window, so without it a
+       * cursor a few hundred px above the row normalises to -10, not -1, and
+       * sends a pill several hundred px up instead of the ~37 the spacing is
+       * built around.
+       *
+       * What the clamp cannot do on its own is decide when the row should be
+       * leaning at all — held at full is still held. See REACH above for why
+       * that showed up on the vertical axis and not the horizontal one.
+       *
+       * X reads as a position across the row, which is the axis the effect is
+       * about and the one the row is wide enough to measure honestly. The
+       * vertical distance is measured too, but only to fade X in and out: at
+       * the row, the full effect; REACH away, none of it. So the drift belongs
+       * to a cursor that has come to the row rather than to one parked
+       * anywhere on the page, and nothing it does can move a pill off its line.
        */
-      pointer.x = clamp(((event.clientX - box.left) / box.width) * 2 - 1)
-      pointer.y = clamp(((event.clientY - box.top) / box.height) * 2 - 1)
+      const centreY = box.top + box.height / 2
+      const gap = Math.max(0, Math.abs(event.clientY - centreY) - box.height / 2)
+      const near = 1 - clamp(gap / REACH)
+
+      pointer.x = clamp(((event.clientX - box.left) / box.width) * 2 - 1) * near
       schedule()
     }
 
     // Drift back to rest rather than snapping there when the cursor leaves.
     const onLeave = () => {
       pointer.x = 0
-      pointer.y = 0
       schedule()
     }
 
@@ -206,10 +253,16 @@ export default function ParallaxPills({ items }) {
 
     /* Tracked on the window, not the row: the pills should already be leaning
        toward the cursor as it approaches, and a listener on the row itself
-       only fires once the cursor is on top of them. */
+       only fires once the cursor is on top of them. REACH is what decides how
+       far "as it approaches" reaches. */
     window.addEventListener('pointermove', onMove, { passive: true })
     window.addEventListener('blur', onLeave)
     window.addEventListener('resize', onResize)
+    /* The cursor leaving the page is not a blur: the window keeps focus when it
+       goes to the browser chrome, to a second screen, or off the top of the
+       display. Without this the row held its last lean until something else
+       moved, which is the same misalignment arriving by a different door. */
+    document.documentElement.addEventListener('pointerleave', onLeave)
 
     return () => {
       observer.disconnect()
@@ -217,6 +270,7 @@ export default function ParallaxPills({ items }) {
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('blur', onLeave)
       window.removeEventListener('resize', onResize)
+      document.documentElement.removeEventListener('pointerleave', onLeave)
     }
   }, [items])
 
