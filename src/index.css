@@ -18,7 +18,7 @@
  * light page keeps working on a dark band without being restated.
  *
  * Measured contrast — on --page: --ink 15.2:1, --ink-soft 4.6:1, --emerald
- * 4.6:1. On --card: --ink 16.3:1, --ink-soft 5.0:1. On --navy: white 16.5:1,
+ * 4.6:1. On --card: --ink 15.7:1, --ink-soft 4.8:1. On --navy: white 16.5:1,
  * --nav-soft 8.0:1, --gold 7.4:1. On --navy-deep: white 18.0:1, --nav-soft
  * 8.8:1, --gold 8.0:1. White on --emerald 4.9:1, on --emerald-deep 5.8:1.
  * Keep replacements above 4.5:1.
@@ -64,18 +64,26 @@
   --on-light: #ffffff;
   /* The "very subtle navy border" the cards are specified with, and the same
      hairline everywhere else the light ground is divided: --navy at 12% over
-     --card. Deliberately quiet — it is a divider the eye follows, not a rule
-     it reads. */
+     the surface. Deliberately quiet — it is a divider the eye follows, not a
+     rule it reads, and on this palette it is what separates a cream card from
+     the ivory behind it. */
   --line: #dde1e8;
   /* --nav-line's counterpart on the deeper band: white at 13% over
      --navy-deep, flattened the same way. */
   --line-invert: #283547;
 
-  /* Background and cards. The bands alternate ivory and white, so a white card
-     reads by its border on the white ones and by its lift on the ivory ones. */
+  /* Background and cards. Cream rather than the white the brief names for the
+     cards: white beside ivory reads as a colour that has had the warmth taken
+     out of it, where cream is the same family a shade up. The bands alternate
+     ivory and cream, 1.04:1 apart, so a card reads by its border on the cream
+     ones and by its lift on the ivory ones — as it did against white, which
+     was 1.06:1 from the same ivory.
+
+     The type on cream is measured for it: --ink 15.7:1, --ink-soft 4.8:1,
+     --emerald 4.8:1, all clear of the floor. */
   --page: #f8f7f2;
-  --raised: #ffffff;
-  --card: #ffffff;
+  --raised: #fffbf0;
+  --card: #fffbf0;
 
   --accent: var(--emerald);
 

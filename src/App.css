@@ -7,8 +7,9 @@
 .section { padding-block: var(--step); }
 
 /* Full-bleed inverted band. Alternating these carries the page rhythm, and on
-   a light page "inverted" means dark again: --navy-deep under white, where the
-   all-navy palette had it a step below an already dark --page.
+   a light page "inverted" means dark again: --navy-deep under the ivory and
+   cream bands, where the all-navy palette had it a step below an already dark
+   --page.
 
    The four tokens below are the base pair re-pointed at the invert values for
    the length of the band. Every rule on the site is written against --ink,
@@ -521,8 +522,8 @@
   flex-direction: column;
   gap: 1rem;
   padding: clamp(1.5rem, 3vw, 2.25rem);
-  /* Its own token rather than --page: the bands alternate ivory and white, and
-     the card is white on both — by its border on the white ones, by the step
+  /* Its own token rather than --page: the bands alternate ivory and cream, and
+     the card is cream on both — by its border on the cream ones, by the step
      up from ivory on the others. */
   background: var(--card);
   border: 1px solid var(--line);
@@ -556,9 +557,9 @@
 }
 
 /* Gold, the accent's main job on this palette: the icon is the one warm mark
-   on an otherwise navy-and-white card. Decorative — every card states its
-   subject in the title under it — so the accent is free to sit here at 2.2:1
-   on white, which no piece of type on the site is allowed to do. */
+   on a card that is otherwise navy on cream. Decorative — every card states
+   its subject in the title under it — so the accent is free to sit here at
+   2.2:1 on the cream, which no piece of type on the site is allowed to do. */
 .card__icon {
   width: 1.875rem;
   height: 1.875rem;
@@ -934,8 +935,9 @@
 }
 
 /* The only gold button on the site, reserved for the single action the page is
-   asking for. The label is pinned to --black rather than --ink: --ink is white
-   on the navy page, and white on --gold is 2.2:1. Near-black measures 8.8:1. */
+   asking for. The label is pinned to --black rather than --ink: this button
+   only ever appears on a dark band, where --ink is white, and white on --gold
+   is 2.2:1. Near-black measures 8.8:1. */
 .btn--gold,
 .section--dark .btn--gold {
   background: var(--gold);
@@ -1038,9 +1040,9 @@
   padding: 0.75rem 1.25rem;
   /* The light chip rather than the --ink one the other chips take: this lands
      on top of the masthead, which is navy, and --ink on --navy is 1.2:1. The
-     focus ring is currentColor, so it takes the same swap — navy on the white
+     focus ring is currentColor, so it takes the same swap — navy on the cream
      chip would be another dark mark on the navy bar. */
-  background: var(--ink-invert);
+  background: var(--card);
   color: var(--navy);
   /* Chip, not a card: --radius-sm keeps this a tab tucked under the header
      edge rather than a quarter-circle scooped out of a 46px box. */
@@ -1048,7 +1050,7 @@
 }
 
 .skip-link:focus { left: 0; }
-.skip-link:focus-visible { outline-color: var(--ink-invert); }
+.skip-link:focus-visible { outline-color: var(--card); }
 
 /* ---------- Active nav state ----------
    Gold rather than the white it was. Hover is gold too, so colour alone no
@@ -1076,18 +1078,21 @@
 }
 
 /* Written when the generic .btn was near-black and disappeared on the navy
-   bar. The base is a white pill with a navy label now, so this restates it;
-   kept because the header CTA is the one button guaranteed to sit on --navy
-   whatever the page bands do. */
+   bar, and kept for a different reason now: the generic .btn is emerald, and
+   two filled pills of it — this one and the language toggle's neighbour on the
+   same bar — would put the accent twice in a row where the bar is meant to be
+   navy with one thing to press. So the header CTA is the page's surface colour
+   instead, cream on navy at 16.0:1, and the emerald stays for the buttons in
+   the page below. */
 .masthead .btn {
-  background: var(--ink-invert);
+  background: var(--card);
   color: var(--navy);
-  border-color: var(--ink-invert);
+  border-color: var(--card);
 }
 
 .masthead .btn:hover {
   background: transparent;
-  color: var(--ink-invert);
+  color: var(--card);
 }
 
 /* ---------- Tamil link ----------
@@ -1095,7 +1100,7 @@
    and the CTA is the action the bar is asking for, so two filled pills side
    by side would have them competing. It carries its own class rather than
    .btn-ghost because `.masthead .btn` fills every button on this bar and
-   would flatten a ghost into the same white pill as the CTA.
+   would flatten a ghost into the same cream pill as the CTA.
 
    Gold on hover, matching what the nav links do either side of it. 7.4:1 on
    navy for the label, and the border clears the 3:1 floor for a control's
