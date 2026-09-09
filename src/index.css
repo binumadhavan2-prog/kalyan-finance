@@ -10,10 +10,16 @@
  *
  * The layout is unchanged: primary brackets the page — masthead, inner-page
  * banner, statistics band, footer — and everything between them is light.
- * --page is the supplied Background; the card surface was the supplied White
- * and is now a warm cream (see the note down at the surface tokens). White
- * itself stays in the palette as --ink-invert and --on-light, which is where
- * it was always doing the load-bearing work.
+ * --page is the supplied Background. The card surface and the hairline were
+ * derived here and are now supplied outright — #EDE7F8 and #DCD0EE, the second
+ * pair given on 2026-09-09 — which puts a violet tint where the cream was and
+ * takes the hairline up into the same family. The alternate band followed the
+ * same day: the last cream on the site is now a lavender too, so all three
+ * light grounds are one family, and the band was then taken down past the
+ * hairline so that being one family did not cost it its edge. Text is
+ * #211A2E, unchanged.
+ * White stays in the palette as --ink-invert and --on-light, which is where it
+ * was always doing the load-bearing work.
  *
  * The accent is the one colour that needs help. #8B5CF6 is light for a violet:
  * a white label on it measures 4.23:1 and it measures 3.92:1 as type on the
@@ -29,8 +35,9 @@
  * values inside `.section--dark` (see App.css), so a rule written for the
  * light page keeps working on a dark band without being restated.
  *
- * Measured contrast — on --page: --ink 15.5:1, --ink-soft 4.5:1, --accent-deep
- * 4.7:1. On --card: --ink 16.2:1, --ink-soft 4.7:1, --accent-deep 4.9:1. On
+ * Measured contrast — on --page: --ink 15.5:1, --ink-soft 7.2:1, --accent-deep
+ * 4.7:1. On --raised: --ink 9.9:1, --ink-soft 4.6:1. On --card: --ink 13.9:1,
+ * --ink-soft 6.4:1 (--accent-deep is 4.2:1 there and unused — see the note). On
  * --primary: white 12.7:1, --primary-soft 4.6:1, --accent-bright 4.5:1. On
  * --primary-deep: white 15.2:1, --primary-soft 5.5:1, --accent-bright 5.4:1.
  * White on --accent-deep 5.1:1, on --accent-hover 6.1:1; --ink on
@@ -57,9 +64,9 @@
      scroll progress fill, the calculator's slider track and thumb. */
   --accent: #8B5CF6;
   /* The accent where it has to work as type on a light ground, or carry a
-     white label: --accent at 88%. 4.7:1 on --page, 5.1:1 on --card, and white
-     on it is 5.1:1 — one value covers the primary button and the hero
-     strapline both. */
+     white label: --accent at 88%. 4.7:1 on --page, and white on it is 5.1:1 —
+     one value covers the primary button and the hero strapline both. On --card
+     it is 4.2:1 and only ever a fill, never type; see the note there. */
   --accent-deep: #7d53dd;
   /* Its hover, a second step down. White on it 6.1:1. */
   --accent-hover: #6f4ac5;
@@ -73,16 +80,51 @@
      two things that asked for it: the read-position bar under the masthead
      and the active nav link in the bar above it.
      It is the previous palette's gold, unchanged, and it reads better on this
-     ground than it did on the last one — 5.7:1 on --primary, where the accent
-     it replaces sits at 3.0:1 and is the same family as the bar it moves
-     across. Nothing else uses it; anything that wants to should say so. */
+     ground than it did on the last one — 5.7:1 on --primary, 6.7:1 on
+     --primary-deep, where the accent it replaces sits at 3.0:1 and is the same
+     family as the bar it moves across.
+     The company strapline asked for it and now takes it too, in all four
+     places it appears: the masthead lockup, the footer lockup, the home hero
+     and the /about quote band. Three of those are primary grounds and use this
+     value; the hero is the light one and uses --gold-deep below. */
   --gold: #d4a72c;
+  /* The same gold where it has to be read on a light ground, which the
+     supplied value cannot do — it measures 2.1:1 on --page, which is
+     decoration, not type. Same hue and saturation (44deg, 66%), taken from 50%
+     lightness to 30%: 5.2:1 on --page, 4.7:1 on --card. Reads as a deep gold
+     rather than a bronze because none of the chroma was spent getting there.
+
+     Unlike --ink-soft, this is NOT derived against --raised, and the
+     difference is deliberate. It has exactly two uses (App.css): the hero
+     strapline, which is on --page, and `.tagline`, which only ever renders
+     inside a `.section--dark` band where it is overridden to --gold outright.
+     It never meets the deepened band. Holding it to the band's floor as well
+     was tried on 2026-09-09 and cost it a third of its lightness for nothing —
+     at that value it had stopped being gold and started being olive.
+
+     So the constraint on this token is a usage rule rather than a number: it
+     measures 3.3:1 on --raised and must not be put there. If a gold strapline
+     is ever wanted on a band section, derive a second value for it rather than
+     dragging this one down to cover both. */
+  --gold-deep: #7f641a;
 
   /* Text, as supplied, and its muted partner — --ink tinted toward white until
-     it is level with the floor on both light grounds: 4.5:1 on --page and
-     4.9:1 on --card. */
+     it is level with the floor on the DARKEST of the three light grounds,
+     which is --raised: 4.57:1 there, 6.41:1 on --card, 7.16:1 on --page.
+
+     Read that spread before touching this token. It has come down three times
+     on 2026-09-09, from #6c6875, every time because --raised moved under it
+     and never because anyone wanted darker secondary text. On the band it is
+     doing its job at 4.6:1; on --page it is at 7.2:1 against --ink's 15.5:1,
+     which is muted but no longer very. One value is serving three grounds that
+     are now 1.56:1 apart, and it is pinned by the darkest of them.
+
+     If --raised goes deeper again this token cannot follow much further
+     without ceasing to read as secondary at all. The move at that point is to
+     stop deriving it globally and give the band its own --ink-soft the way
+     `.section--dark` does, rather than to keep spending the light grounds. */
   --ink: #211A2E;
-  --ink-soft: #736f7b;
+  --ink-soft: #55515B;
   --ink-invert: #ffffff;
   --ink-invert-soft: var(--primary-soft);
   /* The label on a chip filled with --ink: the skip link, the notice flag,
@@ -93,35 +135,99 @@
   /* The "very subtle border" the cards are specified with, and the same
      hairline everywhere else the light ground is divided.
 
-     Mixed at the primary's own hue rather than straight over the background:
-     --primary at 20% over a warm ground comes back nearly grey, and the point
-     of the hairline is that it reads as the primary — the light half of the
-     page has no other primary in it between the banner and the statistics
-     band. 1.46:1 against --page: a divider the eye follows, not a rule it
-     reads. It separates a white card from the background behind it, and one
-     light band from the next. */
-  --line: #d1cbdf;
+     It reads as the primary rather than as grey, which is the point of it —
+     the light half of the page has no other primary in it between the banner
+     and the statistics band.
+
+     Supplied as #DCD0EE on 2026-09-09, replacing the value derived here. It is
+     lighter than what it replaces and so a fainter line: 1.36:1 on --page,
+     1.22:1 on --card, 1.15:1 on --raised, where the derived value held 1.73 /
+     1.57 / 1.65.
+
+     Note that the last of those three now points the other way. --raised has
+     been taken below this value, so on a band section this is a light line on
+     a dark ground rather than a dark line on a light one. Nothing in the CSS
+     had to change for that; it is only worth knowing that this token is no
+     longer "the dark hairline" in every context, and that its lightness is
+     what fixes how deep --raised is allowed to go. */
+  --line: #DCD0EE;
   /* --primary-line's counterpart on the deeper band: white at 13% over
      --primary-deep, flattened the same way. */
   --line-invert: #473967;
 
-  /* The two light grounds. --page is the supplied Background; the cards and
-     the raised bands are a warm cream instead of the supplied White, asked for
-     on 2026-09-09.
+  /* Three light grounds, all one lavender family as of 2026-09-09 — the band
+     was the last cream on the site and has been taken across. --page is the
+     supplied Background, unchanged; --card is the supplied violet tint;
+     --raised is the alternate band, derived here.
 
-     The two are opposite temperatures, and that is the whole of the effect:
-     --page leans cool (b+5 over r) and the cream leans warm (b-15), so they
-     separate by hue where the previous pair separated by luminance. In
-     numbers the surfaces got closer, 1.08:1 down to 1.05:1, and to the eye
-     they got further apart. Worth knowing if this is ever revisited — it is a
-     warm card on a cool page, not a light card on a lighter one, and the
-     supplied White is still what --ink-invert and --on-light mean.
+     Note the direction on the band, because it is the reverse of what the name
+     suggests: --raised is DARKER than --page, not lighter. "Raised" means the
+     alternate band, not the higher one.
 
-     The hairline in App.css is still what draws the edge where two light bands
-     meet; at 1.05:1 it is doing more work than before, not less. */
+     Read the stack as page → card → band, lightest to darkest, and note that
+     the band is now well BELOW the card. It took three values on 2026-09-09
+     and the path is worth keeping, because two of the three were wrong for
+     reasons that are not visible in a hex.
+
+     The first matched the cream's luminance exactly, which kept every measured
+     figure in this file intact and looked like a free swap. It was not. The
+     cream had been separating from --page by temperature as much as by tone —
+     page cool, band warm — with only 1.04:1 of tone underneath. Take the
+     warmth out and put that same 1.04:1 between two tints of one hue and the
+     band stops existing. A palette move that reads as a no-op on screen is the
+     tell.
+
+     The second gave it a real step, 1.18:1, and stopped there because --line
+     was just below it. That is the trap in this palette and it is worth
+     naming: the supplied hairline sits at its own fixed lightness, and a band
+     descending toward it loses its borders before it gains any presence — at
+     1.36:1 off --page the band and the hairline are the same value and every
+     card edge on a band section is gone. There is no small step down. Either
+     the band stays above the hairline or it goes past it.
+
+     It goes past it. At 1.56:1 off --page the band is a lavender the eye reads
+     as a band, and --line comes back as a LIGHTER line on a darker ground —
+     1.15:1, the same figure it had pointing the other way. Every border on a
+     band section has quietly reversed polarity; nothing needed rewriting
+     because contrast does not care which way it points, but it is the first
+     thing to check if a border ever looks wrong there.
+
+     The card is now well clear of the band at 1.40:1 and sits UP off it, while
+     on --page sections it still sits below its ground at 1.12:1. Those two
+     directions are inconsistent and the site does not seem to mind, because a
+     card reads as a surface by having an edge and a step at all, not by which
+     way the step goes. Worth knowing before adding a shadow, which would have
+     to point the same way on both and cannot.
+
+     The band sets the floor, being much the darkest of the three: --ink-soft
+     and --gold-deep are both derived against it and both moved with it, and
+     both are now close to the point where one token can no longer serve
+     grounds this far apart. See the note at --ink-soft.
+
+     The supplied White has not left the palette — it is still what
+     --ink-invert and --on-light mean, which is where it was doing the
+     load-bearing work anyway. */
   --page: #F7F5FC;
-  --raised: #fffbf0;
-  --card: #fffbf0;
+  --raised: #CFC0ED;
+  /* The card, supplied on 2026-09-09. It sits between the two bands rather
+     than under both: 1.12:1 below --page and 1.40:1 above --raised. So it
+     reads as a surface on either, recessed on the page sections and raised on
+     the band ones — see the note above the grounds for why that is allowed to
+     be inconsistent.
+
+     The band sections are now the easy ones: a light card on a deep lavender
+     ground carries itself, and the border is a detail rather than the whole
+     edge. The page sections are where the card is doing thin work, at 1.12:1
+     with a 1.22:1 hairline around it. If either has to give, it is that pair.
+
+     --accent-deep measures 4.19:1 here and 2.99:1 on --raised, and is the one
+     token that does not clear the floor on either. It is not a failure:
+     --accent-deep is only ever type in one place, the hero strapline, which
+     sits on --page at 4.68:1. Everywhere else it is a button fill carrying a
+     white label, where the ground behind it does not enter into it. On the
+     deepened band that gap is wide enough to matter, so treat accent type on
+     a band as ruled out rather than merely discouraged. */
+  --card: #EDE7F8;
 
   --shell: 1200px;
   --measure: 60ch;
