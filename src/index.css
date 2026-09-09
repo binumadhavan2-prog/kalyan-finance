@@ -10,7 +10,7 @@
  *
  * The layout is unchanged: primary brackets the page — masthead, inner-page
  * banner, statistics band, footer — and everything between them is light.
- * --page is the supplied Background. The card surface and the hairline were
+ * --page is a warmed Background — see its own note. The card and hairline were
  * derived here and are now supplied outright — #EDE7F8 and #DCD0EE, the second
  * pair given on 2026-09-09 — which puts a violet tint where the cream was and
  * takes the hairline up into the same family. The alternate band followed the
@@ -155,10 +155,20 @@
      --primary-deep, flattened the same way. */
   --line-invert: #473967;
 
-  /* Three light grounds, all one lavender family as of 2026-09-09 — the band
-     was the last cream on the site and has been taken across. --page is the
-     supplied Background, unchanged; --card is the supplied violet tint;
-     --raised is the alternate band, derived here.
+  /* Three light grounds, and a fourth below them for one section. --card is
+     the supplied violet tint and --raised is the alternate band derived from
+     it; --page is a cream, and the three of them are no longer one family.
+
+     That is the second reversal here in a day and the pair of them is the
+     point. In the morning all three were taken to one lavender family, the
+     band being the last cream on the site. By evening --page had gone the
+     other way and become a cream itself. The two moves are not contradictory:
+     it was never warmth that was wrong, it was warmth on the ALTERNATE BAND,
+     where 1.04:1 of tone was leaning on temperature to do a job tone should
+     have been doing. Put the warmth on the page instead, under a band that now
+     carries its own 1.56:1, and temperature is free to be what it should
+     always have been — something the separation does not need, sitting on top
+     of a separation that already works.
 
      Note the direction on the band, because it is the reverse of what the name
      suggests: --raised is DARKER than --page, not lighter. "Raised" means the
@@ -207,7 +217,24 @@
      The supplied White has not left the palette — it is still what
      --ink-invert and --on-light mean, which is where it was doing the
      load-bearing work anyway. */
-  --page: #F7F5FC;
+  /* A cream since 2026-09-09, where it was the supplied Background #F7F5FC.
+     That value is still listed at the top of this file as one of the five,
+     because it is what was supplied; this is the one token that now departs
+     from what it was given, and it does so by temperature only.
+
+     hsl(46, 52%, 95%) against the supplied near-white's cool trace of violet:
+     red 13 over blue where the old value had blue 5 over red. It was chosen to
+     land on the supplied value's luminance to five decimal places, 0.92107,
+     which is not a coincidence but the whole method — a 1.0000 ratio between
+     old and new means every contrast figure measured against --page anywhere
+     in either stylesheet is the number it already was. Nothing below this line
+     had to be re-derived, and nothing above it moved.
+
+     The one thing that did change is free: --page is warm and both surfaces
+     over it are cool, so a card and a band now separate from the page by
+     temperature as well as by tone. That is the help the alternate band was
+     denied when it went lavender, arriving from the other side. */
+  --page: #F9F6EC;
   --raised: #CFC0ED;
   /* The card, supplied on 2026-09-09. It sits between the two bands rather
      than under both: 1.12:1 below --page and 1.40:1 above --raised. So it
@@ -228,6 +255,28 @@
      deepened band that gap is wide enough to matter, so treat accent type on
      a band as ruled out rather than merely discouraged. */
   --card: #EDE7F8;
+  /* A deeper cream for one band, added 2026-09-09 for the recognition section
+     and available to any other that wants it (App.css, `.section--cream`).
+
+     --page's own hue and saturation, hsl(46, 52%), taken from 95% lightness to
+     87%. That is 1.14:1 off --page — the same distance a card sits off it, and
+     enough here because this band never has --page on either side of it: it
+     runs between the lavender band above and a primary one below on both pages
+     that use it, so what reads is cream against violet, not cream against
+     cream.
+
+     Everything clears the floor on it without a second value, which is why it
+     has no usage rule the way --raised does: --ink 13.6:1, --ink-soft 6.3:1,
+     --gold-deep 4.5:1. --line is 1.19:1, between the card's 1.22 and the
+     lavender band's 1.15, so the video's border sits where the site's other
+     borders sit.
+
+     One thing to know before putting a card on it. --card is a cool lavender
+     and this is a warm cream, and they are 1.02:1 apart — no tonal step at
+     all. On this band a card is separated by temperature and its border and
+     nothing else. Nothing does that today, since the recognition list is empty
+     and only the clip renders, but the markup for it is right there. */
+  --cream: #EFE7CD;
 
   --shell: 1200px;
   --measure: 60ch;
