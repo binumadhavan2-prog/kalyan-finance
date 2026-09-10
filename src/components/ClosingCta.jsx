@@ -3,23 +3,26 @@ import { useCopy } from '../i18n'
 import Draft from './Draft'
 
 /**
- * The closing call to action, on every page but /contact.
+ * The closing call to action. On Home, Why Kalyan Finance and Loan
+ * Products; /contact is the form itself, and /about dropped it on
+ * 2026-09-10.
  *
  * The last thing on the page and the one section that has to convert, so it
  * carries weight the other bands do not: the bright accent on the primary
  * action — the only button on the site that takes it.
  *
- * Two routes out. The form for people who want to describe a requirement, and
- * a direct mailto for people who would rather just write. The mail button only
- * renders once `contact.email` is filled in — a dead "Email us" button is
- * worse than no button.
+ * One route out. The form, for people who want to describe a requirement. The
+ * raw mailto pill that sat beside it came out on 2026-09-10: a bare address
+ * spelled out next to the primary action pulled weight off it, and /contact
+ * and the footer both still carry the address for people who would rather
+ * just write.
  *
  * The phone / email / location strip that used to sit under the note came out
  * on 2026-09-09. /contact carries the same details, and the footer repeats
  * them on every page.
  */
 export default function ClosingCta() {
-  const { contact, draft } = useCopy()
+  const { draft } = useCopy()
 
   return (
     <section className="section section--dark cta-band">
@@ -41,14 +44,6 @@ export default function ClosingCta() {
           <Link className="btn btn--feature btn--lg" to="/contact">
             <Draft>{draft.ctaButton}</Draft>
           </Link>
-          {contact.email ? (
-            <a
-              className="btn btn-ghost btn--lg btn--wrap"
-              href={`mailto:${contact.email}`}
-            >
-              {contact.email}
-            </a>
-          ) : null}
         </p>
 
         <p className="cta__note">

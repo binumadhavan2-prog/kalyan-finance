@@ -284,29 +284,93 @@
      today, since the recognition list is empty and only the clip renders, but
      the markup for it is right there. */
   --cream: #FAF8F0;
-  /* Sandal, for the repayment calculator, added 2026-09-09. The second warm
-     ground on the site and the only one with any depth to it: hsl(38, 45%, 81%)
-     against --cream's 96% lightness, so where the cream band separates from
-     --page by temperature alone this one separates by both. 1.34:1 off --page
-     above it and 1.17:1 off --raised below it — the second of those is thin as
-     a number and carries because warm tan against lavender is not a tonal
-     comparison.
+  /* Sandal, for the repayment calculator, added 2026-09-09 and lightened the
+     same day. The second warm ground on the site and the only one with any
+     depth to it: hsl(38, 45%, 86%) against --cream's 96% lightness, so where
+     the cream band separates from --page by temperature alone this one
+     separates by both. 1.21:1 off --page above it and 1.29:1 off --raised
+     below it.
 
-     Type clears the floor without a second value: --ink 11.6:1, --ink-soft
-     5.3:1. --gold-deep is 3.9:1 and --accent-deep 3.5:1, so neither is type on
-     this ground; the accent is only ever a control fill here and 3.5:1 is past
+     It came up from 81% lightness, and the direction is worth noting because
+     everything except one figure improved on the way. Lightening a ground
+     lifts every dark thing on it: --ink went 11.5:1 to 12.8:1, --ink-soft
+     5.3:1 to 5.9:1, --accent-deep 3.5:1 to 3.9:1, and the hairline's own
+     ratio held by lightening with it. What it costs is the step down from
+     --page, 1.35:1 to 1.21:1, which is the only number that wanted the band
+     dark. At 1.21:1 with a temperature change under it, that step is still
+     one the eye takes.
+
+     Type clears the floor without a second value: --ink 12.8:1, --ink-soft
+     5.9:1. --gold-deep is 4.3:1 and --accent-deep 3.9:1, so neither is type on
+     this ground; the accent is only ever a control fill here and 3.9:1 is past
      the 3:1 those are held to.
 
      The hairline is the one thing that does not survive the move, and the band
      re-points it rather than living with it — see `.section--sandal` in
      App.css. --line is a lavender mixed for the cool grounds and measures
-     1.01:1 here, which is not a faint divider but no divider at all, and the
+     1.12:1 here, which is not a faint divider but no divider at all, and the
      calculator is built out of bordered boxes. */
-  --sandal: #E4D5B7;
-  /* Its hairline: the sandal's own hue taken down to 66% lightness. 1.40:1 on
-     the band, which puts it with --line's 1.38:1 on --cream rather than at the
-     fainter end the lavender grounds sit at. */
-  --sandal-line: #C9B48A;
+  --sandal: #EBE0CB;
+  /* Its hairline: the sandal's own hue at 70% lightness, up from 66% when the
+     band lightened. 1.42:1 on the band, which is the ratio it was mixed for
+     and holds it with --line's 1.38:1 on --cream rather than at the fainter
+     end the lavender grounds sit at.
+
+     It moved with the band on purpose. A hairline held still under a
+     lightening ground gets stronger, not weaker — this one would have gone to
+     1.57:1 — and the ask was for a lighter ground, not for heavier boxes
+     drawn on it. */
+  --sandal-line: #CFBC96;
+
+  /* The home hero's lavender. It lives here rather than on `.hero` because
+     --banner-ground below is cut from it and the two belong together; the
+     constraint on it is still in App.css at `.hero`, which explains why it can
+     go no darker without the gold strapline turning olive.
+
+     The inner-page banners took this value outright for part of 2026-09-09, so
+     that every page opened on the colour the home page opens on. They now take
+     a deeper cut of it instead — same hue, five points of lightness down — so
+     the site still opens on one colour and the home page has the lighter
+     reading of it.
+
+     1.28:1 off --page. On it: --ink 12.2:1, --primary 9.2:1 for the heading,
+     --hero-ink-soft 4.9:1 for the lede. */
+  --hero-ground: #E1D7F4;
+  /* Its muted ink: the violet hue at 40% lightness, 4.9:1 on the ground above.
+     The banner has its own, a step darker, for its own darker ground. */
+  --hero-ink-soft: #605775;
+  /* The inner-page banner's ground: the hero's lavender taken down a step, from
+     90% lightness to 85% on the same hue and saturation. Asked for on
+     2026-09-09, after the banners had first been matched to the hero exactly —
+     every page still opens on the hero's colour, the four inner ones open on a
+     deeper cut of it.
+
+     It buys separation as well as weight. Against the first band under it,
+     which is a plain --page section on all four pages, it went from 1.28:1 to
+     1.52:1, so the banner has a firmer edge under its heading than it did.
+
+     Where it must not go: --raised is #CFC0ED and this is 1.03:1 off it — the
+     two are all but the same colour. No page puts a raised band against the
+     banner today (the raised ones on Loan Products and Contact are further
+     down), and none should. That is the constraint on this token.
+
+     On it: --ink 10.2:1, --primary 7.8:1 for the heading, --ink-soft 4.7:1 for
+     the eyebrow. The lede needed its own value — see below. */
+  --banner-ground: #D2C3EF;
+  /* The banner's muted ink. --hero-ink-soft is cut for the hero's lighter
+     ground and lands at 4.10:1 on this one, under the floor, which is what a
+     five-point step costs: the ground moved and the token that was closest to
+     the floor went under it first. Same violet hue and saturation, 40%
+     lightness down to 35%. 4.9:1 here, which is where --hero-ink-soft sits on
+     the hero's own ground. */
+  --banner-ink-soft: #544C67;
+  /* Its hairline. --line is mixed for the cool near-white grounds and measures
+     1.07:1 on the hero's lavender and less on this one, which the banner cannot
+     live with the way the hero could: the hero has no bordered box in it, and
+     the banner has the contact details list and the ghost buttons beside it.
+     Same hue, 1.39:1, which puts it with --sandal-line's 1.40 rather than at
+     the faint end. */
+  --banner-line: #B5A3D9;
 
   --shell: 1200px;
   --measure: 60ch;
@@ -328,6 +392,15 @@
   font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Phones give most of the gutter back to the content. The clamp above
+   floors at 1.25rem, so a 375px screen spent 40px of its 375 on margin while
+   every card inside the shell adds its own padding on top of that — the text
+   ended up inset twice over. 0.5rem still keeps it off the bezel, and the
+   clamp is untouched from 30rem up, where there is width to spare. */
+@media (max-width: 30rem) {
+  :root { --gutter: 0.5rem; }
 }
 
 *, *::before, *::after { box-sizing: border-box; }

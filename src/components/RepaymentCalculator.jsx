@@ -20,6 +20,13 @@ import Draft from './Draft'
  * Each figure has a slider beside its box (see CalcField). The sliders are an
  * input method, not a set of published limits: they start unset, and the box
  * next to each one still accepts a figure outside the slider's span.
+ *
+ * The tick marks added on 2026-09-09 put that span on screen as numbers, which
+ * is the one thing about them worth watching. A labelled 10K-to-50L scale can
+ * be read as a lending range, and Kalyan has published none. What keeps it
+ * honest is the Illustrative notice above the tool and the box beside every
+ * slider taking figures past either end. If real limits are ever signed off,
+ * these are the numbers to set to them.
  */
 
 /* Indian digit grouping, and no paise: the figures run to lakhs, where a
@@ -27,6 +34,16 @@ import Draft from './Draft'
 const rupees = new Intl.NumberFormat('en-IN', {
   style: 'currency',
   currency: 'INR',
+  maximumFractionDigits: 0,
+})
+
+/* Tick labels only. Lakh-and-crore shorthand, so the amount scale reads
+   10K / 25L / 50L rather than three figures wide enough to collide. The unit
+   is left off here because every calcAmount label already carries the (Rs)
+   sign, the same way the rate and term ticks are bare numbers under labels
+   that name their units. */
+const compact = new Intl.NumberFormat('en-IN', {
+  notation: 'compact',
   maximumFractionDigits: 0,
 })
 
@@ -54,9 +71,15 @@ const EMPTY = { amount: '', rate: '', years: '' }
  * published, and the notice above the tool says exactly that.
  */
 const BOUNDS = {
-  amount: { min: 10000, max: 5000000, step: 10000 },
-  rate: { min: 0, max: 30, step: 0.1 },
-  years: { min: 1, max: 30, step: 1 },
+  amount: {
+    min: 10000,
+    max: 5000000,
+    step: 10000,
+    ticks: [10000, 2500000, 5000000],
+    tickLabel: (v) => compact.format(v),
+  },
+  rate: { min: 0, max: 30, step: 0.1, ticks: [0, 15, 30], tickLabel: String },
+  years: { min: 1, max: 30, step: 1, ticks: [1, 15, 30], tickLabel: String },
 }
 
 /**
@@ -114,21 +137,52 @@ function CalcField({
         onChange={onChange}
         aria-describedby={hintId}
       />
-      {/* Labelled by the same element as the box rather than carrying a second
-          name for the same figure: the two are announced apart by their roles,
-          spinbutton and slider. */}
-      <input
-        className="field__slider"
-        type="range"
-        aria-labelledby={labelId}
-        aria-describedby={hintId}
-        min={bounds.min}
-        max={bounds.max}
-        step={bounds.step}
-        value={position}
-        onChange={onChange}
-        style={{ '--fill': `${fill}%` }}
-      />
+      {/* The bar is drawn by this wrapper rather than by the input, so that
+          three things can be stacked in the right order: the bar underneath,
+          the stop dots over it, and the thumb over both. The input's own track
+          cannot do that — its thumb paints with it, so dots laid on top of the
+          input would also cover the thumb, and the unset thumb parks on the
+          first dot. --fill moves here with the bar; it still inherits down to
+          the input, which does not read it. */}
+      <span className="field__track" style={{ '--fill': `${fill}%` }}>
+        {/* Dots on the bar, not stops in it: the thumb still lands anywhere
+            the step allows, and the box still takes figures past either end.
+            They are here so the span can be read without dragging to find it,
+            which a bare bar cannot show.
+
+            Before the input in the DOM so the thumb passes over them, and
+            aria-hidden because the slider already announces its own min, max
+            and value — voiced, these would be those numbers a second time. */}
+        <span className="field__ticks" aria-hidden="true">
+          {bounds.ticks.map((tick) => (
+            <span
+              key={tick}
+              className="field__tick"
+              /* Positioned the way --fill is, as a plain percentage of the
+                 span, so a dot and the fill edge agree at every value. */
+              style={{
+                '--at': `${((tick - bounds.min) / (bounds.max - bounds.min)) * 100}%`,
+              }}
+            >
+              <span className="field__tick-label">{bounds.tickLabel(tick)}</span>
+            </span>
+          ))}
+        </span>
+        {/* Labelled by the same element as the box rather than carrying a
+            second name for the same figure: the two are announced apart by
+            their roles, spinbutton and slider. */}
+        <input
+          className="field__slider"
+          type="range"
+          aria-labelledby={labelId}
+          aria-describedby={hintId}
+          min={bounds.min}
+          max={bounds.max}
+          step={bounds.step}
+          value={position}
+          onChange={onChange}
+        />
+      </span>
       {hint ? (
         <span className="field__hint" id={hintId}>
           {hint}
@@ -198,7 +252,7 @@ export default function RepaymentCalculator() {
         {/* Above the tool, not below it: the framing has to be read before the
             figures, the same way the indicative examples are headed. */}
         <p className="notice notice--illustrative">
-          <span className="notice__flag">Illustrative</span>
+          <span className="notice__flag">{ui.illustrative}</span>
           <span>
             <Draft>{draft.calculatorNotice}</Draft>
           </span>
