@@ -255,11 +255,47 @@ export const founder = {
 }
 
 /**
- * Awards, press and recognition. Empty on purpose. Populate with entries of
- * { id, title, issuer, year } once there is something real to list — a
- * fabricated award on a finance site is a serious misrepresentation.
+ * Awards, press and recognition, as cards under the clip. Still empty, and
+ * still for the reason below: a fabricated award on a finance site is a
+ * serious misrepresentation.
+ *
+ * The Tamil Nadu award is NOT here. It is in `recognitionFeature`, because
+ * there is exactly one and a single card in a grid built for several reads as
+ * a stub. Move it in here as { id, title, issuer, year } once a second one
+ * exists, and cut the feature block back to a heading.
  */
 export const recognition = []
+
+/**
+ * Client-supplied on 2026-09-10, wording unchanged, and the one thing on this
+ * page the recognition band has ever had to show. It is a factual claim about
+ * a real award, so it is not in `draft` and renders without the dotted mark.
+ *
+ * Not translated. The Tamil overlay carries no version of this, so /ta shows
+ * the English — which is the same call every other unsupplied translation
+ * takes, and better than a machine one putting words in the client's mouth.
+ */
+export const recognitionFeature = {
+  title: 'National Excellence Council Tamil Nadu Awards 2026',
+  subtitle: 'Recognizing Excellence in Financial Services',
+  /* Split out of the sentence so the markup can weight them without the
+     component having to find a name inside a string. */
+  recipients: 'Mr. Kalyanasundaram and Mrs. Vaishnavi Kalyan',
+  honour:
+    'were honored at the prestigious National Excellence Council Tamil Nadu ' +
+    'Awards 2026.',
+  citation:
+    'The recognition celebrates their excellence in customer-centric ' +
+    'financial services, empowering individuals and businesses through ' +
+    'trusted, transparent and ethical financial solutions.',
+  closing: 'Celebrating excellence, trust, and meaningful impact.',
+  /* The one line here that sells rather than reports. It sits last and quiet,
+     under a rule, so the band reads as an account of the award with an
+     invitation at the end rather than as an advertisement wearing one. */
+  invitation:
+    'Need trusted financial support? Choose Kalyan Finance — solutions built ' +
+    'around you.',
+}
 
 /**
  * A supplied clip for the recognition section. Never autoplayed and only its
@@ -267,6 +303,18 @@ export const recognition = []
  * play — it is large, and most visitors will not watch it.
  */
 export const recognitionVideo = '/recognition.mp4'
+
+/**
+ * The still the clip shows before anyone presses play, taken from the footage
+ * itself: the Tamilnadu Awards 2026 stage. Without it the band opened on a
+ * black rectangle, which said nothing about what the clip is and gave the
+ * section no reason to be pressed.
+ *
+ * It also carries its weight on a metered connection. `preload="metadata"`
+ * fetches none of the 80MB video, so this 105KB frame is the whole cost of
+ * showing the section until someone chooses to watch.
+ */
+export const recognitionPoster = '/recognition-poster.webp'
 
 /**
  * The 6-second brand animation beside the home hero copy. Unlike the
