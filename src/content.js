@@ -548,7 +548,14 @@ export const ui = {
   /* Calculator */
   calcAmount: 'Amount you need (₹)',
   calcRate: 'Annual interest rate (%)',
+  /* Two labels for one field, picked by the unit switch beside it. Both name
+     the unit, so the box is never an unlabelled number. */
   calcYears: 'Over how many years',
+  calcMonths: 'Over how many months',
+  /* The switch itself: a name for the pair, and the two units it offers. */
+  calcTermUnit: 'Enter the term in',
+  calcUnitYears: 'Years',
+  calcUnitMonths: 'Months',
   calcPerMonth: 'a month, for {months} months',
   calcBorrowed: 'Borrowed',
   calcInterest: 'Interest',

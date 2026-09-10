@@ -2528,6 +2528,62 @@
   line-height: 1.45;
 }
 
+/* ---------- Field head, and the term's unit switch ----------
+   The label on one line with whatever control names the unit it is in. Only
+   the term field has one; the row lays out the same with a label alone, so
+   every calculator field can use it.
+
+   Baseline rather than centre, so the label and the button text sit on one
+   line of type instead of the switch floating against the middle of a taller
+   label. It wraps because the Tamil labels are longer than the English ones
+   and a narrow phone has no room for both on a line. */
+.field__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 0.75rem;
+}
+
+/* A pill of two, not a select: there are exactly two units, and both should be
+   readable without opening anything. The border is --line, which .section--sandal
+   re-points to --sandal-line, so the switch is bounded on the calculator's warm
+   ground the same way the number boxes beside it are. */
+.field__units {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.field__unit {
+  appearance: none;
+  border: 0;
+  background: none;
+  border-radius: 999px;
+  padding: 0.125rem 0.625rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+/* The unit in force carries the page's primary, with white on it at 12.7:1.
+   The other stays --ink-soft on the band, 4.7:1 on --sandal — a difference of
+   ground and not only of weight, so which one is chosen survives being read at
+   a glance or in greyscale. */
+.field__unit[aria-pressed='true'] {
+  background: var(--primary);
+  color: var(--ink-invert);
+}
+
+.field__unit:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+
 /* ---------- Slider half of a calculator field ----------
    The track paints its own fill from --fill, written inline by CalcField from
    the current value: the filled part is what has been chosen, the rest is the
