@@ -22,9 +22,12 @@
  *   - `company.name`. A brand mark, and it sits in the masthead lockup beside
  *     the logo. Transliterating it would make the wordmark disagree with the
  *     artwork next to it.
- *   - `founder.name`. content.js is explicit that names are not ours to
- *     invent, and choosing a Tamil spelling of somebody's name is exactly
- *     that. His `role` is translated; the name is his own.
+ *   - Names WERE in this list until 2026-09-10, on the reasoning that
+ *     content.js is explicit that names are not ours to invent and that
+ *     choosing a Tamil spelling of somebody's is exactly that. The client
+ *     asked for them in Tamil on that date, which answers it: the spelling
+ *     is theirs to pick and they have picked it. `founder.name` and the two
+ *     names in `recognitionFeature` are translated now.
  *   - Every figure, email address, URL and image. `company.established`,
  *     `contact.email`, `stats[].value` and the rest are the same in both.
  *   - The artwork itself. `services[].image` still carries English text baked
@@ -115,9 +118,61 @@ export const ta = {
     location: 'சிவகங்கை, தமிழ்நாடு',
   },
 
-  /* The name stays as supplied; see the note at the top of this file. */
+  /*
+   * Tamil since 2026-09-10, at the client's request — see the note at the top
+   * of this file, which this is the exception to.
+   *
+   * The trailing initial is written எஸ், which is how Tamil spells out the
+   * Latin letter S. It is NOT an attempt at the word behind it: content.js
+   * records "Mr. Kalyana Sundaram S" and nobody has said what the S stands
+   * for, so guessing at சு. or சி. would be inventing part of his name to
+   * avoid leaving a letter untranslated.
+   *
+   * The same man is கல்யாணசுந்தரம் in `recognitionFeature`, matching the
+   * award copy, which spells him as one word where this record has two.
+   */
   founder: {
+    name: 'திரு. கல்யாணசுந்தரம் எஸ்.',
     role: 'நிறுவனர்',
+  },
+
+  /*
+   * The award, supplied in English on 2026-09-10.
+   *
+   * The two recipients' names ARE in Tamil here, at the client's own request
+   * on 2026-09-10 — which is the exception to the rule at the top of this
+   * file, not a hole in it. That rule exists because a Tamil spelling of
+   * somebody's name is not ours to pick. It is theirs, and they have picked
+   * it. கல்யாண் is the spelling the nav already uses for "Kalyan".
+   *
+   * Two things do stay in Latin script:
+   *
+   *   - `title`, so it is absent here and falls through. It is the award's
+   *     own name, the way it is printed on the backdrop in the clip beside it.
+   *   - "Kalyan Finance" in the last line, which is `company.name` and a
+   *     brand mark.
+   *
+   * Note that `founder.name` is the same man, spelled "Mr. Kalyana Sundaram S"
+   * in content.js, and the About page still shows that in Latin on /ta.
+   *
+   * The wording reuses the terms already settled elsewhere in this file rather
+   * than picking new ones: சிறப்புத்திறன் from `coreValues`, நிதிச் சேவைகள் from
+   * `company.type`, and the empowerment clause from `mission`.
+   */
+  recognitionFeature: {
+    subtitle: 'நிதிச் சேவைகளில் சிறப்புத்திறனுக்கான அங்கீகாரம்',
+    recipients: 'திரு. கல்யாணசுந்தரம் மற்றும் திருமதி. வைஷ்ணவி கல்யாண்',
+    honour:
+      'ஆகியோர் மதிப்புமிக்க National Excellence Council Tamil Nadu Awards ' +
+      '2026 விழாவில் கௌரவிக்கப்பட்டனர்.',
+    citation:
+      'வாடிக்கையாளர் மையமான நிதிச் சேவைகளில் அவர்கள் காட்டிய சிறப்புத்திறனையும், ' +
+      'நம்பகமான, வெளிப்படையான, நேர்மையான நிதித் தீர்வுகள் மூலம் தனிநபர்களுக்கும் ' +
+      'நிறுவனங்களுக்கும் வலிமை சேர்த்ததையும் இந்த அங்கீகாரம் சிறப்பிக்கிறது.',
+    closing: 'சிறப்புத்திறன், நம்பிக்கை, அர்த்தமுள்ள தாக்கம் — இவற்றைக் கொண்டாடுகிறோம்.',
+    invitation:
+      'நம்பகமான நிதி உதவி தேவையா? Kalyan Finance-ஐத் தேர்ந்தெடுங்கள் — உங்களை ' +
+      'மையமாகக் கொண்ட தீர்வுகள்.',
   },
 
   stats: [

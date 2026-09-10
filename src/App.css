@@ -1979,6 +1979,51 @@
 
 .section--dark .video { border-color: var(--line-invert); }
 
+/* ---------- Recognition ----------
+   Clip beside its citation. Below 56rem they stack, clip first — the same
+   breakpoint the calculator and the About split use, so the page has one width
+   at which its two-column bands become one rather than three.
+
+   The clip takes the larger share. It is the evidence and the citation is the
+   caption, and a 16:9 frame given the smaller half of a 1200px shell has very
+   little left to show. */
+.recognition__feature {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+}
+
+@media (min-width: 56rem) {
+  .recognition__feature {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+/* The citation. Its column is already narrower than the reading measure, so it
+   carries no .prose — and these are only the two lines at the end of it,
+   neither of which is body copy. Left unstyled both read as more of the
+   paragraph above them. */
+
+/* Gold and italic, the same deep gold the strapline takes. It is the client's
+   own flourish on the award rather than a statement of fact, and the italic is
+   what marks it as one. */
+.recognition__closing {
+  font-style: italic;
+  color: var(--gold-deep);
+}
+
+/* The one line in the band that sells rather than reports. Set apart by a rule
+   instead of by size: the award is the news here, and an invitation given the
+   same weight as the citation would argue with it. The margin overrides
+   .stack's 1rem rather than adding to it — same specificity, later rule. */
+.recognition__invitation {
+  margin-block-start: 1.75rem;
+  padding-block-start: 1.25rem;
+  border-top: 1px solid var(--line);
+  font-weight: 600;
+}
+
 /* ---------- Scroll progress ----------
    Sits on the underside of the sticky masthead rather than at the very top
    of the viewport: over the primary it would be a second stripe of brand
