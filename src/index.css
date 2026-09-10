@@ -1,130 +1,143 @@
 /*
- * Design tokens — the supplied purple palette.
+ * Design tokens — the navy palette.
  *
- *   Primary     #3B246B     Accent  #8B5CF6     Background  #F7F5FC
- *   Text        #211A2E     White   #FFFFFF
+ *   Primary     #103256     Accent  #1DAFAB     Background  #FAF8F2
+ *   Text        #111E2C     White   #FFFFFF     Metal       #D4A72C
  *
- * Five colours, so every token below is one of them or is derived from one by
- * a single move: a shade toward black, a tint toward white, or a mix over the
- * ground it sits on. Nothing is invented.
+ * Navy for trust, a teal accent for the things that move, and a gold kept back
+ * for the strapline. Six colours, so every token below is one of them or is
+ * derived from one by a single move: a shade toward black, a tint toward
+ * white, or a mix over the ground it sits on. Nothing is invented.
+ *
+ * It replaced a violet palette of the same shape on 2026-09-10, and the shape
+ * is the thing to understand before changing anything here. Every token was
+ * re-derived against the same job and held to the same floor, so the notes
+ * below are the violet file's notes with new numbers in them — the reasoning
+ * did not have to change, because the structure did not.
  *
  * The layout is unchanged: primary brackets the page — masthead, inner-page
  * banner, statistics band, footer — and everything between them is light.
- * --page is a warmed Background — see its own note. The card and hairline were
- * derived here and are now supplied outright — #EDE7F8 and #DCD0EE, the second
- * pair given on 2026-09-09 — which puts a violet tint where the cream was and
- * takes the hairline up into the same family. The alternate band followed the
- * same day: the last cream on the site is now a lavender too, so all three
- * light grounds are one family, and the band was then taken down past the
- * hairline so that being one family did not cost it its edge. Text is
- * #211A2E, unchanged.
- * White stays in the palette as --ink-invert and --on-light, which is where it
- * was always doing the load-bearing work.
+ * --page is warm and the two surfaces over it, --card and --raised, are blue.
+ * That is deliberate and it is the same trick the violet palette arrived at:
+ * the light grounds separate by temperature as well as by tone, so the step
+ * down from the page to a card is not carried by lightness alone.
  *
- * The accent is the one colour that needs help. #8B5CF6 is light for a violet:
- * a white label on it measures 4.23:1 and it measures 3.92:1 as type on the
- * background, both under the 4.5:1 floor the rest of the palette is held to,
- * and 3.00:1 on the primary — where the old palette's gold sat at 7.4:1. So it
- * keeps its supplied value for decoration, which carries no type, and gets two
- * derived values for the two jobs that do: --accent-deep where it must be read
- * on a light ground or carry a white label, --accent-bright where it must be
- * read on a primary one. Same move the previous palette made on its green.
+ * The accent is the one colour that needs help, and teal needs more of it than
+ * violet did. #1DAFAB is a bright teal: a white label on it measures 2.7:1 and
+ * it measures 2.5:1 as type on the background, both far under the 4.5:1 floor
+ * the rest of the palette is held to. So it keeps its value for decoration,
+ * which carries no type, and gets two derived values for the two jobs that do:
+ * --accent-deep where it must be read on a light ground or carry a white
+ * label, --accent-bright where it must be read on a primary one. Same move the
+ * violet palette made, and the green before it.
+ *
+ * Where teal differs from violet is worth knowing. Violet darkens slowly, so
+ * the supplied value was three points of lightness away from carrying a white
+ * label. Teal darkens fast: --accent-deep sits twelve points below --accent,
+ * and there is no bright teal anywhere that a white label can sit on. A filled
+ * teal button on this site is always a deep one.
  *
  * Because the two grounds are opposite polarities — light page, dark bands —
  * --ink, --ink-soft, --line and --on-light are re-pointed at their invert
  * values inside `.section--dark` (see App.css), so a rule written for the
  * light page keeps working on a dark band without being restated.
  *
- * Measured contrast — on --page: --ink 15.5:1, --ink-soft 7.2:1, --accent-deep
- * 4.7:1. On --raised: --ink 9.9:1, --ink-soft 4.6:1. On --card: --ink 13.9:1,
- * --ink-soft 6.4:1 (--accent-deep is 4.2:1 there and unused — see the note). On
- * --primary: white 12.7:1, --primary-soft 4.6:1, --accent-bright 4.5:1. On
- * --primary-deep: white 15.2:1, --primary-soft 5.5:1, --accent-bright 5.4:1.
- * White on --accent-deep 5.1:1, on --accent-hover 6.1:1; --ink on
- * --accent-bright 6.0:1. Keep replacements above 4.5:1.
+ * Measured contrast — on --page: --ink 15.9:1, --ink-soft 7.0:1, --accent-deep
+ * 4.7:1, --gold-deep 5.3:1. On --raised: --ink 10.3:1, --ink-soft 4.6:1. On
+ * --card: --ink 14.4:1, --ink-soft 6.4:1 (--accent-deep is 4.3:1 there and
+ * unused — see the note). On --primary: white 13.0:1, --primary-soft 5.3:1,
+ * --accent-bright 7.4:1, --gold 5.8:1. On --primary-deep: white 15.4:1,
+ * --primary-soft 6.3:1, --accent-bright 8.7:1. White on --accent-deep 5.0:1,
+ * on --accent-hover 6.7:1; --ink on --accent-bright 9.6:1. Keep replacements
+ * above 4.5:1.
  */
 :root {
-  /* Primary, as supplied. The masthead, the inner-page banner, the statistics
-     band and the footer. */
-  --primary: #3B246B;
+  /* Primary. The masthead, the inner-page banner, the statistics band and the
+     footer. hsl(211, 69%, 20%) — deep enough that white sits on it at 13.0:1,
+     light enough that it still reads as a navy rather than as a black. */
+  --primary: #103256;
   /* --primary at 75%: the step that keeps the banner from dissolving into the
      masthead above it, and the inverted bands from dissolving into the footer
      below them. */
-  --primary-deep: #2c1b50;
-  /* Secondary type on both primary grounds — 4.6:1 on --primary and 5.5:1 on
-     --primary-deep, so one token covers the pair. --primary tinted 55% toward
-     white, which is why it stays in the family rather than going grey. */
-  --primary-soft: #a196b8;
+  --primary-deep: #0C2640;
+  /* Secondary type on both primary grounds — 5.3:1 on --primary and 6.3:1 on
+     --primary-deep, so one token covers the pair. The navy hue held at 22%
+     saturation, which is why it stays in the family rather than going grey. */
+  --primary-soft: #95A8BB;
   /* Hairline for dividers on primary: white at 15% over it, flattened to an
      opaque value so it does not shift over whatever sits behind it. */
-  --primary-line: #584581;
+  --primary-line: #34516F;
 
-  /* Accent, as supplied. Decoration only, and only where nothing has to be
-     read against it: the frame around the hero clip, the card icons, the
-     scroll progress fill, the calculator's slider track and thumb. */
-  --accent: #8B5CF6;
+  /* Accent. Decoration only, and only where nothing has to be read against it:
+     the frame around the hero clip, the card icons, the scroll progress fill,
+     the calculator's slider track and thumb. */
+  --accent: #1DAFAB;
   /* The accent where it has to work as type on a light ground, or carry a
-     white label: --accent at 88%. 4.7:1 on --page, and white on it is 5.1:1 —
-     one value covers the primary button and the hero strapline both. On --card
-     it is 4.2:1 and only ever a fill, never type; see the note there. */
-  --accent-deep: #7d53dd;
-  /* Its hover, a second step down. White on it 6.1:1. */
-  --accent-hover: #6f4ac5;
-  /* The accent where it has to work as type on a primary ground, which the
-     supplied value cannot do at 3.0:1: --accent tinted 25% toward white.
-     4.5:1 on --primary, 5.4:1 on --primary-deep. This is the statistics
-     figures, the active nav link, and the closing CTA's button and rule. */
-  --accent-bright: #a986f8;
+     white label: the same hue and saturation, twelve points of lightness down.
+     4.7:1 on --page, and white on it is 5.0:1 — one value covers the primary
+     button and the hero strapline both. On --card it is 4.3:1 and only ever a
+     fill, never type; see the note there. */
+  --accent-deep: #137C79;
+  /* Its hover, a second step down. White on it 6.7:1. */
+  --accent-hover: #0E6764;
+  /* The accent where it has to work as type on a primary ground. Teal is the
+     easy direction here, because a lighter teal is exactly what a navy ground
+     wants: 7.4:1 on --primary and 8.7:1 on --primary-deep, where the violet
+     palette's equivalent was scraping 4.5:1. This is the statistics figures,
+     the active nav link, and the closing CTA's button and rule.
 
-  /* The one colour outside the supplied five, kept back on 2026-09-09 for the
-     two things that asked for it: the read-position bar under the masthead
-     and the active nav link in the bar above it.
-     It is the previous palette's gold, unchanged, and it reads better on this
-     ground than it did on the last one — 5.7:1 on --primary, 6.7:1 on
-     --primary-deep, where the accent it replaces sits at 3.0:1 and is the same
-     family as the bar it moves across.
-     The company strapline asked for it and now takes it too, in all four
-     places it appears: the masthead lockup, the footer lockup, the home hero
-     and the /about quote band. Three of those are primary grounds and use this
-     value; the hero is the light one and uses --gold-deep below. */
-  --gold: #d4a72c;
-  /* The same gold where it has to be read on a light ground, which the
-     supplied value cannot do — it measures 2.1:1 on --page, which is
-     decoration, not type. Same hue and saturation (44deg, 66%), taken from 50%
-     lightness to 30%: 5.2:1 on --page, 4.7:1 on --card. Reads as a deep gold
-     rather than a bronze because none of the chroma was spent getting there.
+     It has room the old one did not, and the room is spendable. If the teal
+     ever wants to be quieter on the bands, this is the token with slack in
+     it. */
+  --accent-bright: #51D6D2;
+
+  /* The one colour outside the palette's own two families, and it is the gold
+     the violet palette carried, unchanged — navy is the ground it was always
+     waiting for. 5.8:1 on --primary and 6.9:1 on --primary-deep, where on the
+     violet it managed 5.7 and 6.7.
+
+     Two things take it: the read-position bar under the masthead and the
+     active nav link in the bar above it. The company strapline takes it too,
+     in all four places it appears — the masthead lockup, the footer lockup,
+     the home hero and the /about quote band. Three of those are primary
+     grounds and use this value; the hero is the light one and uses --gold-deep
+     below. */
+  --gold: #D4A72C;
+  /* The same gold where it has to be read on a light ground, which the value
+     above cannot do — it measures 2.1:1 on --page, which is decoration, not
+     type. Same hue and saturation (44deg, 66%), taken from 50% lightness to
+     30%: 5.3:1 on --page, 4.8:1 on --card. Reads as a deep gold rather than a
+     bronze because none of the chroma was spent getting there.
 
      Unlike --ink-soft, this is NOT derived against --raised, and the
      difference is deliberate. It has exactly two uses (App.css): the hero
-     strapline, which is on --page, and `.tagline`, which only ever renders
-     inside a `.section--dark` band where it is overridden to --gold outright.
-     It never meets the deepened band. Holding it to the band's floor as well
-     was tried on 2026-09-09 and cost it a third of its lightness for nothing —
-     at that value it had stopped being gold and started being olive.
+     strapline, and `.tagline`, which only ever renders inside a
+     `.section--dark` band where it is overridden to --gold outright. It never
+     meets the deepened band.
 
      So the constraint on this token is a usage rule rather than a number: it
-     measures 3.3:1 on --raised and must not be put there. If a gold strapline
-     is ever wanted on a band section, derive a second value for it rather than
-     dragging this one down to cover both. */
-  --gold-deep: #7f641a;
+     measures 3.4:1 on --raised and must not be put there. It is also 4.45:1 on
+     the hero's own ground, under the floor by a whisker, which is why the hero
+     derives a --hero-gold rather than taking this one. If a gold strapline is
+     ever wanted on a band section, derive a third value for it rather than
+     dragging this one down to cover everything. */
+  --gold-deep: #7F641A;
 
-  /* Text, as supplied, and its muted partner — --ink tinted toward white until
-     it is level with the floor on the DARKEST of the three light grounds,
-     which is --raised: 4.57:1 there, 6.41:1 on --card, 7.16:1 on --page.
+  /* Text, and its muted partner — the navy hue lifted toward grey until it is
+     level with the floor on the DARKEST of the three light grounds, which is
+     --raised: 4.57:1 there, 6.36:1 on --card, 7.03:1 on --page.
 
-     Read that spread before touching this token. It has come down three times
-     on 2026-09-09, from #6c6875, every time because --raised moved under it
-     and never because anyone wanted darker secondary text. On the band it is
-     doing its job at 4.6:1; on --page it is at 7.2:1 against --ink's 15.5:1,
-     which is muted but no longer very. One value is serving three grounds that
-     are now 1.56:1 apart, and it is pinned by the darkest of them.
+     Read that spread before touching this token. One value is serving three
+     grounds that are 1.54:1 apart, and it is pinned by the darkest of them. On
+     the band it is doing its job at 4.6:1; on --page it is at 7.0:1 against
+     --ink's 15.9:1, which is muted but no longer very.
 
-     If --raised goes deeper again this token cannot follow much further
-     without ceasing to read as secondary at all. The move at that point is to
-     stop deriving it globally and give the band its own --ink-soft the way
+     If --raised goes deeper this token cannot follow much further without
+     ceasing to read as secondary at all. The move at that point is to stop
+     deriving it globally and give the band its own --ink-soft the way
      `.section--dark` does, rather than to keep spending the light grounds. */
-  --ink: #211A2E;
-  --ink-soft: #55515B;
+  --ink: #111E2C;
+  --ink-soft: #4C5661;
   --ink-invert: #ffffff;
   --ink-invert-soft: var(--primary-soft);
   /* The label on a chip filled with --ink: the skip link, the notice flag,
@@ -135,242 +148,175 @@
   /* The "very subtle border" the cards are specified with, and the same
      hairline everywhere else the light ground is divided.
 
-     It reads as the primary rather than as grey, which is the point of it —
-     the light half of the page has no other primary in it between the banner
-     and the statistics band.
+     It reads as the navy rather than as grey, which is the point of it — the
+     light half of the page has no other primary in it between the banner and
+     the statistics band. 1.28:1 on --page, 1.16:1 on --card, 1.20:1 on
+     --raised.
 
-     Supplied as #DCD0EE on 2026-09-09, replacing the value derived here. It is
-     lighter than what it replaces and so a fainter line: 1.36:1 on --page,
-     1.22:1 on --card, 1.15:1 on --raised, where the derived value held 1.73 /
-     1.57 / 1.65.
-
-     Note that the last of those three now points the other way. --raised has
-     been taken below this value, so on a band section this is a light line on
-     a dark ground rather than a dark line on a light one. Nothing in the CSS
-     had to change for that; it is only worth knowing that this token is no
-     longer "the dark hairline" in every context, and that its lightness is
-     what fixes how deep --raised is allowed to go. */
-  --line: #DCD0EE;
+     Note that the last of those three points the other way. --raised sits
+     below this value, so on a band section this is a light line on a dark
+     ground rather than a dark line on a light one. Nothing in the CSS has to
+     change for that; it is only worth knowing that this token is not "the dark
+     hairline" in every context, and that its lightness is what fixes how deep
+     --raised is allowed to go. */
+  --line: #D1DFEA;
   /* --primary-line's counterpart on the deeper band: white at 13% over
      --primary-deep, flattened the same way. */
-  --line-invert: #473967;
+  --line-invert: #2C4259;
 
-  /* Three light grounds, and a fourth below them for one section. --card is
-     the supplied violet tint and --raised is the alternate band derived from
-     it; --page is a cream, and the three of them are no longer one family.
-
-     That is the second reversal here in a day and the pair of them is the
-     point. In the morning all three were taken to one lavender family, the
-     band being the last cream on the site. By evening --page had gone the
-     other way and become a cream itself. The two moves are not contradictory:
-     it was never warmth that was wrong, it was warmth on the ALTERNATE BAND,
-     where 1.04:1 of tone was leaning on temperature to do a job tone should
-     have been doing. Put the warmth on the page instead, under a band that now
-     carries its own 1.56:1, and temperature is free to be what it should
-     always have been — something the separation does not need, sitting on top
-     of a separation that already works.
+  /* Three light grounds, and two more below them for one band each. --page is
+     a warm off-white; --card and --raised are blue tints cut from the navy, so
+     both surfaces separate from the page by temperature as well as by tone.
 
      Note the direction on the band, because it is the reverse of what the name
      suggests: --raised is DARKER than --page, not lighter. "Raised" means the
      alternate band, not the higher one.
 
      Read the stack as page → card → band, lightest to darkest, and note that
-     the band is now well BELOW the card. It took three values on 2026-09-09
-     and the path is worth keeping, because two of the three were wrong for
-     reasons that are not visible in a hex.
+     the band is well BELOW the card. That is not a free choice, and the trap
+     it avoids is worth naming: the hairline above sits at its own fixed
+     lightness, and a band descending toward it loses its borders before it
+     gains any presence — at 1.28:1 off --page the band and the hairline would
+     be the same value, and every card edge on a band section would be gone.
+     There is no small step down. Either the band stays above the hairline or
+     it goes past it.
 
-     The first matched the cream's luminance exactly, which kept every measured
-     figure in this file intact and looked like a free swap. It was not. The
-     cream had been separating from --page by temperature as much as by tone —
-     page cool, band warm — with only 1.04:1 of tone underneath. Take the
-     warmth out and put that same 1.04:1 between two tints of one hue and the
-     band stops existing. A palette move that reads as a no-op on screen is the
-     tell.
+     It goes past it. At 1.54:1 off --page the band is a blue the eye reads as
+     a band, and --line comes back as a LIGHTER line on a darker ground at
+     1.20:1. Every border on a band section has reversed polarity; nothing
+     needed rewriting because contrast does not care which way it points, but
+     it is the first thing to check if a border ever looks wrong there.
 
-     The second gave it a real step, 1.18:1, and stopped there because --line
-     was just below it. That is the trap in this palette and it is worth
-     naming: the supplied hairline sits at its own fixed lightness, and a band
-     descending toward it loses its borders before it gains any presence — at
-     1.36:1 off --page the band and the hairline are the same value and every
-     card edge on a band section is gone. There is no small step down. Either
-     the band stays above the hairline or it goes past it.
-
-     It goes past it. At 1.56:1 off --page the band is a lavender the eye reads
-     as a band, and --line comes back as a LIGHTER line on a darker ground —
-     1.15:1, the same figure it had pointing the other way. Every border on a
-     band section has quietly reversed polarity; nothing needed rewriting
-     because contrast does not care which way it points, but it is the first
-     thing to check if a border ever looks wrong there.
-
-     The card is now well clear of the band at 1.40:1 and sits UP off it, while
-     on --page sections it still sits below its ground at 1.12:1. Those two
-     directions are inconsistent and the site does not seem to mind, because a
-     card reads as a surface by having an edge and a step at all, not by which
-     way the step goes. Worth knowing before adding a shadow, which would have
-     to point the same way on both and cannot.
+     The card is clear of the band at 1.39:1 and sits UP off it, while on
+     --page sections it sits below its ground at 1.11:1. Those two directions
+     are inconsistent and the site does not seem to mind, because a card reads
+     as a surface by having an edge and a step at all, not by which way the
+     step goes. Worth knowing before adding a shadow, which would have to point
+     the same way on both and cannot.
 
      The band sets the floor, being much the darkest of the three: --ink-soft
-     and --gold-deep are both derived against it and both moved with it, and
-     both are now close to the point where one token can no longer serve
-     grounds this far apart. See the note at --ink-soft.
+     is derived against it. See the note at --ink-soft. */
+  /* Warm, at hsl(45, 44%, 96.5%). The one ground in the palette not cut from
+     the navy or the teal, and it is warm on purpose: both surfaces over it are
+     cool, so a card and a band separate from the page by temperature as well
+     as by tone. On a navy site that reads as paper under ink rather than as a
+     third blue. */
+  --page: #FAF8F2;
+  --raised: #B8CDE0;
+  /* The card. It sits between the two bands rather than under both: 1.11:1
+     below --page and 1.39:1 above --raised. So it reads as a surface on
+     either, recessed on the page sections and raised on the band ones — see
+     the note above the grounds for why that is allowed to be inconsistent.
 
-     The supplied White has not left the palette — it is still what
-     --ink-invert and --on-light mean, which is where it was doing the
-     load-bearing work anyway. */
-  /* A cream since 2026-09-09, where it was the supplied Background #F7F5FC.
-     That value is still listed at the top of this file as one of the five,
-     because it is what was supplied; this is the one token that now departs
-     from what it was given, and it does so by temperature only.
+     The band sections are the easy ones: a light card on a mid blue ground
+     carries itself, and the border is a detail rather than the whole edge. The
+     page sections are where the card is doing thin work, at 1.11:1 with a
+     1.16:1 hairline around it. If either has to give, it is that pair.
 
-     hsl(46, 52%, 95%) against the supplied near-white's cool trace of violet:
-     red 13 over blue where the old value had blue 5 over red. It was chosen to
-     land on the supplied value's luminance to five decimal places, 0.92107,
-     which is not a coincidence but the whole method — a 1.0000 ratio between
-     old and new means every contrast figure measured against --page anywhere
-     in either stylesheet is the number it already was. Nothing below this line
-     had to be re-derived, and nothing above it moved.
-
-     The one thing that did change is free: --page is warm and both surfaces
-     over it are cool, so a card and a band now separate from the page by
-     temperature as well as by tone. That is the help the alternate band was
-     denied when it went lavender, arriving from the other side. */
-  --page: #F9F6EC;
-  --raised: #CFC0ED;
-  /* The card, supplied on 2026-09-09. It sits between the two bands rather
-     than under both: 1.12:1 below --page and 1.40:1 above --raised. So it
-     reads as a surface on either, recessed on the page sections and raised on
-     the band ones — see the note above the grounds for why that is allowed to
-     be inconsistent.
-
-     The band sections are now the easy ones: a light card on a deep lavender
-     ground carries itself, and the border is a detail rather than the whole
-     edge. The page sections are where the card is doing thin work, at 1.12:1
-     with a 1.22:1 hairline around it. If either has to give, it is that pair.
-
-     --accent-deep measures 4.19:1 here and 2.99:1 on --raised, and is the one
+     --accent-deep measures 4.27:1 here and 3.07:1 on --raised, and is the one
      token that does not clear the floor on either. It is not a failure:
      --accent-deep is only ever type in one place, the hero strapline, which
-     sits on --page at 4.68:1. Everywhere else it is a button fill carrying a
-     white label, where the ground behind it does not enter into it. On the
-     deepened band that gap is wide enough to matter, so treat accent type on
-     a band as ruled out rather than merely discouraged. */
-  --card: #EDE7F8;
-  /* A cream for one band, added 2026-09-09 for the recognition section and
-     available to any other that wants it (App.css, `.section--cream`). Supplied
-     outright at #FAF8F0, where it started as a derived #EFE7CD.
+     sits on the hero's own ground. Everywhere else it is a button fill
+     carrying a white label, where the ground behind it does not enter into it.
+     On the band that gap is wide enough to matter, so treat accent type on a
+     band as ruled out rather than merely discouraged. */
+  --card: #E5EEF5;
+  /* A warm near-white for one band, used by the recognition section and
+     available to any other that wants it (App.css, `.section--cream`).
 
-     It is hsl(48, 50%, 96%) — near enough --page's own hue and saturation, and
-     within one point of its lightness. So this is a warm band rather than a
-     lighter one: 1.02:1 off --page, which is no tonal step at all, against the
-     1.14:1 the derived value had.
+     It is hsl(47, 43%, 96%) — near enough --page's own hue and saturation, and
+     within a point of its lightness. So this is a warm band rather than a
+     lighter one: 1.01:1 off --page, which is no tonal step at all.
 
      That is only workable because the band never has --page on either side of
-     it. On both pages that use it the section above is --raised and the section
-     below is primary — the statistics band on the home page, the closing call
-     to action on the about page — so what reads is cream against violet, not
-     cream against cream, and against --raised it is 1.59:1. Put this beside
-     --page and it will not be a band at all. That is the usage rule, and it is
-     tighter than the one the derived value carried.
+     it. On both pages that use it the section above is --raised and the
+     section below is primary — the statistics band on the home page, the
+     closing call to action on the about page — so what reads is warm against
+     navy, not warm against warm, and against --raised it is 1.52:1. Put this
+     beside --page and it will not be a band at all. That is the usage rule.
 
-     Type is comfortable on it and needs no second value: --ink 15.8:1,
-     --ink-soft 7.3:1, --gold-deep 5.3:1. --line is 1.38:1, a firmer hairline
-     than the lavender grounds give it, so the video's border reads a little
-     more here than elsewhere.
+     Type is comfortable on it and needs no second value: --ink 15.7:1,
+     --ink-soft 7.0:1, --gold-deep 5.2:1. --line is 1.27:1 here.
 
-     One thing to know before putting a card on it. --card is a cool lavender
-     and this is a warm near-white, and they are 1.13:1 apart, so a card does
-     now take a tonal step off this band as well as a temperature one — the
-     reverse of the derived value, where the two were level. Nothing does that
-     today, since the recognition list is empty and only the clip renders, but
-     the markup for it is right there. */
-  --cream: #FAF8F0;
-  /* Sandal, for the repayment calculator, added 2026-09-09 and lightened the
-     same day. The second warm ground on the site and the only one with any
-     depth to it: hsl(38, 45%, 86%) against --cream's 96% lightness, so where
-     the cream band separates from --page by temperature alone this one
-     separates by both. 1.21:1 off --page above it and 1.29:1 off --raised
-     below it.
+     One thing to know before putting a card on it. --card is a cool blue and
+     this is a warm near-white, and they are 1.10:1 apart, so a card takes a
+     tonal step off this band as well as a temperature one. Nothing does that
+     today, since the recognition list is empty and only the clip and its
+     citation render, but the markup for it is right there. */
+  --cream: #F9F7F0;
+  /* Sand, for the repayment calculator. The second warm ground on the site and
+     the only one with any depth to it: hsl(39, 42%, 87%) against --cream's 96%
+     lightness, so where the cream band separates from --page by temperature
+     alone this one separates by both. 1.21:1 off --page above it and 1.27:1
+     off --raised below it.
 
-     It came up from 81% lightness, and the direction is worth noting because
-     everything except one figure improved on the way. Lightening a ground
-     lifts every dark thing on it: --ink went 11.5:1 to 12.8:1, --ink-soft
-     5.3:1 to 5.9:1, --accent-deep 3.5:1 to 3.9:1, and the hairline's own
-     ratio held by lightening with it. What it costs is the step down from
-     --page, 1.35:1 to 1.21:1, which is the only number that wanted the band
-     dark. At 1.21:1 with a temperature change under it, that step is still
-     one the eye takes.
+     It is the counterweight to a page that is otherwise navy and teal. The
+     calculator is the one place a visitor does arithmetic about their own
+     money, and putting that on warm ground rather than on a third blue is the
+     whole reason this token exists.
 
-     Type clears the floor without a second value: --ink 12.8:1, --ink-soft
-     5.9:1. --gold-deep is 4.3:1 and --accent-deep 3.9:1, so neither is type on
+     Type clears the floor without a second value: --ink 13.1:1, --ink-soft
+     5.8:1. --gold-deep is 4.4:1 and --accent-deep 3.9:1, so neither is type on
      this ground; the accent is only ever a control fill here and 3.9:1 is past
      the 3:1 those are held to.
 
      The hairline is the one thing that does not survive the move, and the band
      re-points it rather than living with it — see `.section--sandal` in
-     App.css. --line is a lavender mixed for the cool grounds and measures
-     1.12:1 here, which is not a faint divider but no divider at all, and the
+     App.css. --line is a blue mixed for the cool grounds and measures 1.06:1
+     here, which is not a faint divider but no divider at all, and the
      calculator is built out of bordered boxes. */
-  --sandal: #EBE0CB;
-  /* Its hairline: the sandal's own hue at 70% lightness, up from 66% when the
-     band lightened. 1.42:1 on the band, which is the ratio it was mixed for
-     and holds it with --line's 1.38:1 on --cream rather than at the fainter
-     end the lavender grounds sit at.
+  --sandal: #ECE2D0;
+  /* Its hairline: the sand's own hue at 70% lightness. 1.47:1 on the band,
+     which holds it with --line's 1.27:1 on --cream rather than at the fainter
+     end the cool grounds sit at. */
+  --sandal-line: #CDBB98;
 
-     It moved with the band on purpose. A hairline held still under a
-     lightening ground gets stronger, not weaker — this one would have gone to
-     1.57:1 — and the ask was for a lighter ground, not for heavier boxes
-     drawn on it. */
-  --sandal-line: #CFBC96;
-
-  /* The home hero's lavender. It lives here rather than on `.hero` because
+  /* The home hero's blue. It lives here rather than on `.hero` because
      --banner-ground below is cut from it and the two belong together; the
      constraint on it is still in App.css at `.hero`, which explains why it can
      go no darker without the gold strapline turning olive.
 
-     The inner-page banners took this value outright for part of 2026-09-09, so
-     that every page opened on the colour the home page opens on. They now take
-     a deeper cut of it instead — same hue, five points of lightness down — so
-     the site still opens on one colour and the home page has the lighter
-     reading of it.
+     The inner-page banners take a deeper cut of it — same hue, five points of
+     lightness down — so the site opens on one colour and the home page has the
+     lighter reading of it.
 
-     1.28:1 off --page. On it: --ink 12.2:1, --primary 9.2:1 for the heading,
-     --hero-ink-soft 4.9:1 for the lede. */
-  --hero-ground: #E1D7F4;
-  /* Its muted ink: the violet hue at 40% lightness, 4.9:1 on the ground above.
-     The banner has its own, a step darker, for its own darker ground. */
-  --hero-ink-soft: #605775;
-  /* The inner-page banner's ground: the hero's lavender taken down a step, from
-     90% lightness to 85% on the same hue and saturation. Asked for on
-     2026-09-09, after the banners had first been matched to the hero exactly —
-     every page still opens on the hero's colour, the four inner ones open on a
-     deeper cut of it.
+     1.19:1 off --page. On it: --ink 13.3:1, --primary 10.3:1 for the heading,
+     --hero-ink-soft 4.7:1 for the lede. */
+  --hero-ground: #D7E7F4;
+  /* Its muted ink: the navy hue at 40% lightness and low saturation, 4.7:1 on
+     the ground above. The banner has its own, a step darker, for its own
+     darker ground. */
+  --hero-ink-soft: #546578;
+  /* The inner-page banner's ground: the hero's blue taken down a step, from
+     90% lightness to 85% on the same hue and saturation. Every page opens on
+     the hero's colour; the four inner ones open on a deeper cut of it.
 
      It buys separation as well as weight. Against the first band under it,
-     which is a plain --page section on all four pages, it went from 1.28:1 to
-     1.52:1, so the banner has a firmer edge under its heading than it did.
+     which is a plain --page section on all four pages, it is 1.34:1 where the
+     hero is 1.19:1, so the banner has a firmer edge under its heading.
 
-     Where it must not go: --raised is #CFC0ED and this is 1.03:1 off it — the
-     two are all but the same colour. No page puts a raised band against the
-     banner today (the raised ones on Loan Products and Contact are further
-     down), and none should. That is the constraint on this token.
+     Where it must not go: --raised is #B8CDE0 and this is 1.15:1 off it. That
+     is a real step where the violet palette had 1.03:1 and all but none, so
+     the rule has softened from "never" to "not without looking" — no page puts
+     a raised band against the banner today, and anyone who wants to should
+     check it on screen first.
 
-     On it: --ink 10.2:1, --primary 7.8:1 for the heading, --ink-soft 4.7:1 for
+     On it: --ink 11.8:1, --primary 9.1:1 for the heading, --ink-soft 5.2:1 for
      the eyebrow. The lede needed its own value — see below. */
-  --banner-ground: #D2C3EF;
+  --banner-ground: #C5DBED;
   /* The banner's muted ink. --hero-ink-soft is cut for the hero's lighter
-     ground and lands at 4.10:1 on this one, under the floor, which is what a
+     ground and lands at 4.20:1 on this one, under the floor, which is what a
      five-point step costs: the ground moved and the token that was closest to
-     the floor went under it first. Same violet hue and saturation, 40%
-     lightness down to 35%. 4.9:1 here, which is where --hero-ink-soft sits on
-     the hero's own ground. */
-  --banner-ink-soft: #544C67;
+     the floor went under it first. Same navy hue and saturation, 40% lightness
+     down to 35%. 5.1:1 here. */
+  --banner-ink-soft: #495969;
   /* Its hairline. --line is mixed for the cool near-white grounds and measures
-     1.07:1 on the hero's lavender and less on this one, which the banner cannot
+     1.08:1 on the hero's blue and less on this one, which the banner cannot
      live with the way the hero could: the hero has no bordered box in it, and
      the banner has the contact details list and the ghost buttons beside it.
-     Same hue, 1.39:1, which puts it with --sandal-line's 1.40 rather than at
+     Same hue, 1.42:1, which puts it with --sandal-line's 1.47 rather than at
      the faint end. */
-  --banner-line: #B5A3D9;
+  --banner-line: #9BBAD4;
 
   --shell: 1200px;
   --measure: 60ch;
