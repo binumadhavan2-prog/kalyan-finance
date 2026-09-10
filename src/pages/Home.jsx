@@ -10,7 +10,7 @@ import HeroVideo from '../components/HeroVideo'
 import RepaymentCalculator from '../components/RepaymentCalculator'
 
 export default function Home() {
-  const { company, draft, ui, vision, whyPoints } = useCopy()
+  const { company, draft, ui, vision } = useCopy()
   return (
     <>
       <section className="section hero">
@@ -45,43 +45,10 @@ export default function Home() {
           five products in full, and the hero already links to it. */}
       <RepaymentCalculator />
 
-      {/* A short read of /why-us: the supplied reasons and a way through to
-          the full page, which carries the process and trust sections too.
-
-          Raised rather than plain, because the calculator above it is on
-          --page, and two plain sections in a row lose the alternation the
-          page rhythm runs on. */}
-      <section className="section section--raised">
-        <div className="shell stack-lg">
-          {/* Heading only. The lede under it (draft.whyLede) came out on
-              2026-09-08: the supplied rows below say what differs, and a
-              drafted line promising that they do was a sentence about the
-              list rather than part of it. /why-us still opens with it, where
-              it is the page's own lede and has nothing under it repeating
-              the point. */}
-          <div className="stack prose">
-            <h2 className="heading">
-              <Draft>{draft.whyTitle}</Draft>
-            </h2>
-          </div>
-
-          {/* Terms only, as supplied — the same rows /why-us shows. */}
-          <ul className="valuelist" role="list">
-            {whyPoints.map((point) => (
-              <li className="valuelist__item" key={point}>
-                {point}
-              </li>
-            ))}
-          </ul>
-
-          <p>
-            <Link className="btn btn-ghost" to="/why-us">
-              {ui.howWeWork}
-            </Link>
-          </p>
-        </div>
-      </section>
-
+      {/* The "Why Kalyan Finance" preview that sat here came out on
+          2026-09-10. /why-us carries the same rows in full, and the nav
+          links to it from every page. The calculator is on --page and the
+          core values band is dark, so the cut keeps the alternation. */}
       <CoreValues />
 
       {/* The process, as /why-us carries it. Raised rather than plain: it sits

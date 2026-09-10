@@ -60,7 +60,7 @@
 
 /* Sandal, for the repayment calculator. The one band on the site that re-points
    a token rather than only setting a ground: --line is mixed at the primary's
-   hue for the cool grounds and comes back invisible on a warm tan, at 1.01:1,
+   hue for the cool grounds and comes back invisible on a warm tan, at 1.12:1,
    and this band is built almost entirely out of bordered boxes — the result
    panel, the number fields, the notice. Re-pointing it here is the same move
    `.section--dark` makes for the same reason, so every rule written against
@@ -68,6 +68,9 @@
 .section--sandal {
   background: var(--sandal);
   --line: var(--sandal-line);
+  /* The calculator's slider stop dots ring themselves in the band ground to
+     stay legible on the track. See .field__tick. */
+  --tick-ring: var(--sandal);
 }
 
 .stack > * + * { margin-block-start: 1rem; }
@@ -397,10 +400,10 @@
 .hero {
   position: relative;
   isolation: isolate;
-  /* rgb 225 215 244 — the scrim below writes these channels out longhand,
-     because a gradient stop needs them separately for its alpha. Change one
-     and change the other three. */
-  --hero-ground: #E1D7F4;
+  /* --hero-ground lives on :root since 2026-09-09, because the inner-page
+     banner takes it too. rgb 225 215 244 — the scrim below writes those
+     channels out longhand, because a gradient stop needs them separately for
+     its alpha. Change the token and change the three stops with it. */
   /* One screen, and no more.
 
      Height is still what makes this read as the opening rather than as the
@@ -527,8 +530,10 @@
    lightness on the violet hue. It held that value through the second
    deepening: 4.88:1 on the ground now, where the old #6b6285 would have been
    at 4.10:1 and under. It is no longer the token with the most room here, but
-   it is no longer the one that runs out first either. */
-.hero { --hero-ink-soft: #605775; }
+   it is no longer the one that runs out first either.
+
+   On :root rather than here since 2026-09-09, for the same reason the ground
+   is: the banner's lede takes it as well. */
 
 /* The hero is a light band on this palette, so the lede takes the light
    ground's soft ink rather than the primary one's. --primary-soft is 2.6:1 on
@@ -1143,13 +1148,6 @@
   border-color: var(--accent-bright);
 }
 
-/* `.btn` sets nowrap, which a long address would ride straight out of the
-   viewport on a narrow screen. Only the mail button opts out. */
-.btn--wrap {
-  white-space: normal;
-  word-break: break-word;
-}
-
 /* ---------- Footer ----------
    Primary, closing the page with the same brand colour the masthead opens it
    in. Everything soft inside it moves off the neutral greys and onto
@@ -1429,10 +1427,35 @@
    Loan Products had no banner at all and opened in plain --page, and two
    different opening colours across four inner pages was worse than a flat one.
    All four carry /page-header.webp now, so that reason has lapsed. */
+/*
+ * All of that stood while the banner was a primary band. It is the home hero's
+ * lavender from 2026-09-09, asked for outright so that every page opens on the
+ * colour the home page opens on, and the argument above is now settled the
+ * other way: the banner does not need a step below the sections under it,
+ * because it is no longer the same colour as them.
+ *
+ * A step deeper than the hero's own cut, asked for the same day: the home page
+ * keeps --hero-ground and the four inner pages take --banner-ground, five
+ * points of lightness under it on the same hue. So the site still opens on one
+ * colour, and the page that is the arrival opens on the lighter reading of it.
+ * 1.52:1 off the --page band under it, where the hero's cut was 1.28:1.
+ *
+ * --line comes with it. The site's hairline is mixed for the cool near-white
+ * grounds and disappears on either lavender, and unlike the hero — which has no
+ * bordered box in it — this band carries the contact details list and the ghost
+ * buttons beside it. Re-pointed rather than restated, the way `.section--dark`
+ * and `.section--sandal` do it.
+ */
 .page-head {
   padding-block: clamp(3.5rem, 9vw, 6.5rem);
-  background: var(--primary-deep);
+  background: var(--banner-ground);
+  --line: var(--banner-line);
 }
+
+/* The heading takes the primary, which is what the home hero's does — the
+   masthead sits directly above both, so each page opens as one lockup rather
+   than as brand-then-body. 7.8:1 on the deeper ground. */
+.page-head .heading { color: var(--primary); }
 .page-head__lede { max-width: 52ch; }
 
 /* The home hero's opening, borrowed for a page whose banner is the arrival
@@ -1519,37 +1542,51 @@
   isolation: isolate;
 }
 
+/*
+ * Opaque, and flat, which is a change of kind rather than of colour.
+ *
+ * The scrim was a directional wash of --primary-deep, thinning to the right so
+ * the pattern showed where no type sat over it. The home hero does the same
+ * thing the other way up, in its own lavender, and this band could not simply
+ * be turned over to match.
+ *
+ * The reason is the aside. Behind the hero's thin end is the clip, which paints
+ * its own background and needs nothing from the scrim; behind this one, on
+ * Contact, is the details list — an eyebrow, labels and values, all dark type
+ * on the far side of the band. Dark type on a light scrim is measured against
+ * the darkest pixel under it, and the hero's own note records that there is no
+ * transparency left to spend behind copy on this palette: worst case, the lede
+ * is under the floor by alpha 0.96 and the band would have to hold above that
+ * everywhere to be legible on the right. There is nothing left to thin.
+ *
+ * So the wash is flat and opaque, and the artwork under it no longer shows on
+ * any page. /page-header.webp is still fetched — the four pages still pass
+ * `image`, and the class still stretches it — and it now paints nothing. It is
+ * one line per page to stop that, and worth doing if no light-ground backdrop
+ * is coming to replace it.
+ */
 .page-head--image::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(
-    100deg,
-    rgb(44 27 80 / 0.85) 0%,
-    rgb(44 27 80 / 0.7) 45%,
-    rgb(44 27 80 / 0.5) 100%
-  );
+  background: var(--banner-ground);
 }
 
-/* The default soft is --ink-invert-soft, which over the lit centre at this
-   lighter scrim falls below the floor. White clears 8.5:1 at the thinnest stop,
-   and the near-white lede keeps a step of hierarchy under the heading at 6.8:1.
+/* Both were white and near-white against the old primary scrim. On the light
+   band they take the same pair the home hero's copy takes: the site's soft ink
+   for the eyebrow at 4.7:1, and the banner's own for the lede at 4.9:1, which
+   keeps a step of hierarchy under a heading sitting at 7.8:1. The lede takes
+   --banner-ink-soft and not --hero-ink-soft: the hero's is cut for the lighter
+   ground and is 4.1:1 on this one.
 
-   #e7e5ed rather than the neutral #e8e8ec it was: --primary tinted 88% toward
-   white, so the one near-white on the site that is not White itself still
-   belongs to the palette rather than sitting beside it as a grey. */
-.page-head--image .eyebrow { color: var(--ink-invert); }
+   Still written against `.page-head--image` rather than `.page-head`, because
+   the .eyebrow overrides they beat are two-class selectors and a one-class rule
+   here would lose to them. Every page passes an image, so the pair applies
+   everywhere in practice. */
+.page-head--image .eyebrow { color: var(--ink-soft); }
 .page-head--image .lede,
-.page-head--image .page-head__note { color: #e7e5ed; }
-
-/* Narrow screens put the copy across the middle of the frame, where a
-   directional scrim leaves nothing to sit against. Flatten it to an even wash. */
-@media (max-width: 48rem) {
-  .page-head--image::before {
-    background: rgb(44 27 80 / 0.8);
-  }
-}
+.page-head--image .page-head__note { color: var(--banner-ink-soft); }
 
 /* ---------- Product entries ---------- */
 .product {
@@ -2039,7 +2076,10 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.75rem;
-  max-width: 60ch;
+  /* Full shell width since 2026-09-10, where it was capped at 60ch before.
+     It belongs to the thing under it — the calculator fields, the example
+     cards — and both of those run the full width, so a narrower notice read
+     as a stray box floating over a wider block rather than as its heading. */
   margin: 0;
   padding: clamp(1rem, 3vw, 1.5rem);
   border: 1px solid var(--line);
@@ -2518,14 +2558,49 @@
 
    Outranks `.field input` on class count, which would otherwise hand the
    slider the number box's padding, border and radius. */
-.field .field__slider {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 1.5rem;
+/* The bar itself, and the box the dots and the input are stacked in.
+   Painting it here rather than on the input's own track is what lets the thumb
+   ride over the dots: the input draws its track and thumb as one, so anything
+   laid over the track to reach the dots covers the thumb too — and the unset
+   thumb parks exactly on the first dot. Order is this ::before, then the dots,
+   then the input.
+
+   Tall enough to hold the 1.5rem input and the labels under it. They are
+   absolutely positioned and would otherwise fall through onto the hint. */
+.field__track {
+  position: relative;
+  height: 2.875rem;
   /* .field's own 0.375rem gap puts the thumb almost against the box above it;
      this is the rest of the clearance the round thumb needs. */
   margin-block-start: 0.25rem;
+}
+
+.field__track::before {
+  content: '';
+  position: absolute;
+  /* The input is 1.5rem tall with its 4px track centred, so the bar's centre
+     line is 0.75rem down and everything else here hangs off that figure. */
+  top: 0.75rem;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--gold) var(--fill, 0%),
+    var(--primary-line) var(--fill, 0%)
+  );
+}
+
+.field .field__slider {
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  inset: 0 0 auto 0;
+  width: 100%;
+  height: 1.5rem;
+  margin: 0;
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -2536,24 +2611,16 @@
 /* Both engines need the track and thumb spelled out separately, and neither
    accepts the other's selector in a shared rule — one unknown pseudo-element
    drops the whole block, so these stay split. */
+/* Transparent, but still 4px: the wrapper paints what is seen, and this height
+   is what both engines measure the thumb's own position against. */
 .field__slider::-webkit-slider-runnable-track {
   height: 4px;
-  border-radius: 999px;
-  background: linear-gradient(
-    to right,
-    var(--gold) var(--fill, 0%),
-    var(--primary-line) var(--fill, 0%)
-  );
+  background: transparent;
 }
 
 .field__slider::-moz-range-track {
   height: 4px;
-  border-radius: 999px;
-  background: linear-gradient(
-    to right,
-    var(--gold) var(--fill, 0%),
-    var(--primary-line) var(--fill, 0%)
-  );
+  background: transparent;
 }
 
 /* Chrome centres nothing for you: the thumb hangs off the top of the track
@@ -2579,6 +2646,75 @@
   background: var(--gold);
   box-shadow: 0 1px 4px rgb(0 0 0 / 0.45);
 }
+
+/* ---------- Stop dots on a slider ----------
+   A dot on the bar at each end of the span and once in the middle, with the
+   figure under it, so the scale can be read without dragging the thumb to find
+   it. They mark the bar; they do not divide it, and the thumb still stops
+   anywhere its step allows.
+
+   The row sits inside .field__track, over the bar and under the input, so the
+   thumb passes across the dots rather than beneath them. It has no height of
+   its own — the wrapper reserves the space the labels need — and takes no
+   pointer events, so a drag that starts on a label still reaches the input.
+
+   Dots take --at from the component as a percentage of the span, matching how
+   --fill paints the bar, so a dot and the fill edge agree at every value. */
+.field__ticks {
+  position: absolute;
+  top: 0.75rem;
+  left: 0;
+  right: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.field__tick {
+  position: absolute;
+  top: 0;
+  left: var(--at);
+  width: 0;
+}
+
+.field__tick::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: var(--primary);
+  /* The dot is dark violet and so is the bar it sits on, 1.6:1 apart, so the
+     dot alone would disappear into the unfilled half. What separates them is
+     this ring in the band's own ground, which is light against both halves.
+     Bands re-point --tick-ring the same way they re-point --line. */
+  box-shadow: 0 0 0 2px var(--tick-ring, var(--page));
+}
+
+.field__tick-label {
+  position: absolute;
+  /* Below the thumb, which reaches 0.5625rem past the bar's centre line. */
+  top: 0.6875rem;
+  left: 0;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  line-height: 1;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+/* The end stops sit on 0% and 100%, where a centred dot loses its outer half
+   past the end of the bar and a centred label hangs half its width past it —
+   on the left that clips against the section padding. Both turn inward, which
+   also sets them flush with the ends of the bar they mark. Only the middle
+   stop stays centred on its own position. */
+.field__tick:first-child::before { transform: translate(0, -50%); }
+.field__tick:first-child .field__tick-label { transform: none; }
+
+.field__tick:last-child::before { transform: translate(-100%, -50%); }
+.field__tick:last-child .field__tick-label { transform: translateX(-100%); }
 
 /* The panel the answer lands in. Bordered rather than filled, matching the
    indicative examples: a fill here would make the result read as a third band
@@ -2612,3 +2748,24 @@
 .calc__empty { margin: 0; font-size: 0.9375rem; color: var(--ink-soft); }
 
 .calc__out .terms__value { font-variant-numeric: tabular-nums; }
+
+/* ---------- Phones ----------
+   The bordered blocks inset their text a second time, on top of the shell
+   gutter. Each clamp above floors at its minimum until roughly 800px, so the
+   phone was getting the tablet's padding: 24px a side inside .card and .panel,
+   against a content column already only 359px wide.
+
+   Horizontal is cut harder than vertical. The squeeze is sideways — the
+   vertical rhythm inside a card is what still reads as a card, and taking that
+   down with it would only make the block cramped rather than wider. */
+@media (max-width: 30rem) {
+  .card,
+  .stack-card,
+  .panel,
+  .example,
+  .calc__out {
+    padding: 1.25rem 0.875rem;
+  }
+
+  .notice { padding: 1rem 0.875rem; }
+}

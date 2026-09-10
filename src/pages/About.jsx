@@ -5,7 +5,6 @@ import Missing from '../components/Missing'
 import PageHeader from '../components/PageHeader'
 import CoreValues from '../components/CoreValues'
 import Recognition from '../components/Recognition'
-import ClosingCta from '../components/ClosingCta'
 
 export default function About() {
   const { about, company, draft, founder, mission, services, ui, vision } = useCopy()
@@ -151,9 +150,10 @@ export default function About() {
 
       <CoreValues />
 
+      {/* The closing call to action came out on 2026-09-10. The page already
+          sends people on twice — "See all products" above, and the nav and
+          footer carry /contact on every page. */}
       <Recognition />
-
-      <ClosingCta />
     </>
   )
 }
