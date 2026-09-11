@@ -8,18 +8,20 @@
 
 /* An edge between consecutive light bands.
  *
- * --page and --raised are 1.04:1 apart, which is enough to feel as a change of
- * ground on a page that keeps alternating them but not enough to be a boundary
- * — three light bands in a row read as one long expanse of white. The dark
- * bands need nothing here: primary against the page is its own edge.
+ * --page and --raised are 1.6:1 apart, which on its own is enough to read as a
+ * change of ground rather than as a boundary — three light bands in a row would
+ * otherwise read as one long expanse of warm paper. So this hairline marks
+ * where one light band ends and the next begins. The dark bands need nothing
+ * here: primary against the page is its own edge.
  *
- * That 1.04:1 figure is well out of date. The band was a cream then and
+ * The band earns that 1.6:1 by being the supplied sand at full strength, well
+ * below the near-white page. An earlier palette set the band as a cream that
  * separated from --page by temperature as much as by tone; when the light
- * grounds were rebuilt around one hue the temperature went with it, and the
- * band had to be deepened to earn its edge back. It is 1.54:1 off --page now
- * and carries itself, so this hairline is a refinement rather than the thing
- * holding two bands apart. It stays because the transition still reads better
- * with a line on it, not because the bands would merge without one.
+ * grounds were rebuilt around one warm hue the temperature went with it, and
+ * the band had to be deepened to earn its edge back. It carries itself now, so
+ * this hairline is a refinement rather than the thing holding two bands apart.
+ * It stays because the transition still reads better with a line on it, not
+ * because the bands would merge without one.
  *
  * So the hairline is drawn only where light meets light. Full-bleed rather than
  * inset to the shell: it is the band that is ending, not the column. */
@@ -51,17 +53,17 @@
 
 .section--raised { background: var(--raised); }
 
-/* A warm band rather than the cool one, for a section that wants to sit apart
-   from the alternation instead of taking its turn in it. The recognition
-   section on the home and about pages, which is a clip and a label and would
-   otherwise be --page in both places, between a blue band and a primary
-   one. See --cream in index.css for what it does and does not carry. */
+/* A warm near-white band that sits apart from the alternation instead of taking
+   its turn in it. The recognition section on the home and about pages, which is
+   a clip and a label and would otherwise be --page in both places, between a
+   sand --raised band and a primary one. See --cream in index.css for what it
+   does and does not carry. */
 .section--cream { background: var(--cream); }
 
 /* Sandal, for the repayment calculator. The one band on the site that re-points
-   a token rather than only setting a ground: --line is mixed at the primary's
-   hue for the cool grounds and comes back invisible on a warm sand, at 1.06:1,
-   and this band is built almost entirely out of bordered boxes — the result
+   a token rather than only setting a ground: --line is cut light for the
+   near-white page and comes back all but invisible on the warm sandal ground,
+   at 1.0:1, and this band is built almost entirely out of bordered boxes — the result
    panel, the number fields, the notice. Re-pointing it here is the same move
    `.section--dark` makes for the same reason, so every rule written against
    --line keeps working without being restated. */
@@ -211,10 +213,32 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  background: var(--primary);
-  color: var(--ink-invert);
-  border-bottom: 1px solid var(--primary-line);
+  /* A light navbar on the --sandal ground — the same warm band the calculator
+     uses — off the navy --primary the rest of the dark furniture uses. It is
+     the one dark surface turned light, so the bar's furniture is re-pointed to
+     the light-ground set below (scoped to the bar, not to .masthead, because the
+     mobile-nav panel lives inside .masthead and stays navy). Everything on the
+     bar clears its floor: --ink wordmark 12.2:1, --ink-soft nav links 5.8:1,
+     --gold-deep active link and tagline 5.7:1, the gold CTA pill's navy label
+     4.9:1. The footer, the mobile-nav panel and the scroll-progress track still
+     take --primary and stay navy. */
+  background: var(--sandal);
+  color: var(--ink);
+  border-bottom: 1px solid var(--sandal-line);
 }
+
+/* The bar's furniture on the light ground. Scoped to on-bar elements so the
+   navy mobile-nav dropdown inside .masthead is untouched. */
+.masthead .wordmark__tagline { color: var(--gold-deep); }
+.masthead .navlist a { color: var(--ink-soft); }
+.masthead .navlist a:hover { color: var(--accent-deep); }
+.masthead .navlist a.active { color: var(--gold-deep); }
+.masthead .menu-toggle {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--ink) 30%, transparent);
+}
+.masthead .lang-link { color: var(--ink-soft); border-color: var(--sandal-line); }
+.masthead .lang-link:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
 
 .masthead__inner {
   display: flex;
@@ -238,9 +262,9 @@
   white-space: nowrap;
 }
 
-/* Pure white rather than the inherited value, so the name holds its own
-   against the accent mark beside it instead of sitting back into the primary. */
-.masthead .wordmark { color: var(--ink-invert); }
+/* --ink rather than the inherited value, so the name holds its own against the
+   gold mark beside it on the light sand bar. */
+.masthead .wordmark { color: var(--ink); }
 
 /* Scoped to the masthead on purpose: the footer uses the same class for its
    sign-off, and that one keeps the base size.
@@ -291,9 +315,9 @@
   text-transform: uppercase;
   /* Gold, asked for on 2026-09-09 across all four placements of the strapline.
      Both lockups that use this class — the masthead and the footer — sit on a
-     primary ground, where --gold is 5.8:1. This is the smallest type on the
-     page, so it wants the headroom, and the navy gives it more of one than the
-     violet did. */
+     primary ground, where --gold is 4.9:1. This is the smallest type on the
+     page, so it wants the headroom, and the bright gold on navy clears the
+     floor with room to give. */
   color: var(--gold);
 }
 
@@ -366,9 +390,10 @@
   transition: color 0.15s ease;
 }
 
-/* The accent on hover. The active link below is gold, so the current page
-   stays distinct from whichever link is under the cursor. 4.5:1 on the
-   primary bar. */
+/* The gold on hover — the same bright gold the active link below takes, since
+   the accent and the metal are one family now. The current page is set apart
+   from the link under the cursor by weight rather than by colour (see the
+   active rule). 4.9:1 on the primary bar. */
 .navlist a:hover { color: var(--accent-bright); }
 
 .masthead__nav { display: none; }
@@ -383,24 +408,23 @@
    masthead sits directly on top of it, so the page opens on the brand colour
    and then drops into the light ground the rest of it runs on.
 
-   Its own blue rather than --page, which it used to be. Once the alternate
-   band was given real depth the hero was the last near-white surface on the
-   site and read as the one place the palette had not reached.
+   Its own warm off-white rather than --page, which it used to be. It is a shade
+   below the page, 1.11:1 off it, so the opening reads as its own surface under
+   the masthead rather than as the first --page section.
 
-   1.19:1 off --page. What stops it going darker is worth knowing, because it
-   is not the body copy — --ink is at 13.3:1 here and the heading at 10.3:1,
-   both with room to spare. It is the gold strapline. The
-   gold has to darken to stay above the floor as the ground darkens, and a gold
-   that darkens far enough stops being gold and turns olive; that was tried and
-   reverted on --gold-deep earlier the same day. Two steps below this the
-   strapline is brown. The ground can only go as dark as the gold on it can
-   afford, so this is close to the end of the road unless the strapline gives up
-   the gold or the palette gives it a lighter one. */
+   What stops it going darker is worth knowing, because it is not the body copy
+   — --ink is at 14.0:1 here and the heading at 9.5:1, both with room to spare.
+   It is the gold strapline. The gold has to darken to stay above the floor as
+   the ground darkens, and a gold that darkens far enough stops being gold and
+   turns olive. --hero-gold is already close to the floor at 4.6:1, so the
+   ground can only go as dark as the gold on it can afford — this is close to
+   the end of the road unless the strapline gives up the gold or the palette
+   gives it a lighter one. */
 .hero {
   position: relative;
   isolation: isolate;
   /* --hero-ground lives on :root because the inner-page banner is cut from it.
-     rgb 215 231 244 — the scrim below writes those channels out longhand,
+     rgb 241 233 218 — the scrim below writes those channels out longhand,
      because a gradient stop needs them separately for its alpha. Change the
      token and change the three stops with it. */
   /* One screen, and no more.
@@ -431,6 +455,9 @@
      centre crops the notes; this keeps the portrait in the surviving strip. */
   background:
     var(--hero-ground) url("/hero.webp") center 58% / cover no-repeat;
+  /* --hero-ground longhand for the scrim below (a gradient stop needs the
+     channels separately for its alpha): #F1E9DA is rgb(241 233 218). Change the
+     token and change the three stops with it. */
 }
 
 /*
@@ -450,33 +477,31 @@
   /* Opaque behind the copy, and this one is not a dial to turn by eye either.
      Dark type on a light scrim is measured against the DARKEST part of the
      image rather than the lightest, and the worst case there is a black pixel,
-     which composites --page straight down towards it:
+     which composites --hero-ground straight down towards it:
 
        alpha   --ink     --hero-ink-soft   --hero-gold
-       1.00    13.34:1       4.74:1          4.94:1   <- both stops behind copy
-       0.99    13.10:1       4.65:1          4.85:1
-       0.98    12.76:1       4.53:1          4.73:1
-       0.95    11.93:1       4.24:1          4.42:1
+       1.00    13.97:1       4.71:1          4.59:1   <- both stops behind copy
+       0.99    13.72:1       4.63:1          4.50:1
+       0.98    13.35:1       4.50:1          4.38:1
+       0.95    12.50:1       4.22:1          4.10:1
 
-     The binding token moved back on the navy palette. On the violet ground it
-     was --hero-gold that ran out first; here the gold has room and it is the
-     muted ink nearest the floor again, at 4.74:1, going under between alpha
-     0.98 and 0.95. The answer is the same as it was for a third reason: 1
-     rather than the 0.89 the all-dark palette could afford, and the picture
-     behind the copy column is the price of dark type on a light ground.
+     The binding token is --hero-gold, nearest the floor at 4.59:1 and going
+     under just below alpha 0.99; --hero-ink-soft is a hair above it at 4.71:1.
+     The answer is 1 rather than the 0.89 an earlier all-dark palette could
+     afford, and the picture behind the copy column is the price of dark type on
+     a light ground.
 
-     There is about two hundredths of alpha in hand, which is not enough to
-     spend on anything. Every deepening of the ground comes out of the same
-     place.
+     There is about a hundredth of alpha in hand, which is not enough to spend
+     on anything. Every deepening of the ground comes out of the same place.
 
      The last stop carries no text at all — the clip sits in that column and
      paints its own background — so it stays free to go much thinner, and it is
      the whole of what is left of the photograph. */
   background: linear-gradient(
     to right,
-    rgb(215 231 244 / 1) 0%,
-    rgb(215 231 244 / 1) 45%,
-    rgb(215 231 244 / 0.55) 100%
+    rgb(241 233 218 / 1) 0%,
+    rgb(241 233 218 / 1) 45%,
+    rgb(241 233 218 / 0.55) 100%
   );
 }
 
@@ -485,42 +510,42 @@
    at the same opacity the copy column takes above, which on this palette means
    the photograph does not show on a phone at all. */
 @media (max-width: 61.999rem) {
-  .hero::before { background: rgb(215 231 244 / 1); }
+  .hero::before { background: rgb(241 233 218 / 1); }
 }
 
 /*
  * The hero's own four-part treatment, asked for on 2026-09-09 and re-cut for
- * the navy palette on 2026-09-10: soft blue ground, navy heading, muted
- * blue-gray support, deep teal call to action.
+ * the Premium Classic palette: warm off-white ground, navy heading, muted
+ * blue-gray support, deep gold call to action.
  *
  * Scoped to .hero rather than moved into the tokens. The same tokens carry the
- * rest of the site, where the grounds are the deep band and the card rather
- * than --page and every contrast sum comes out lower — --ink-soft has seven
- * hundredths over the floor on --raised, so re-pointing it globally would take
- * it under. That margin is the same on this palette as it was on the last one,
- * because --ink-soft is derived against the band on both.
+ * rest of the site, where the grounds are the sand band and the card rather
+ * than --page and every contrast sum comes out lower — --ink-soft has about a
+ * seventh of a point over the floor on --raised, so re-pointing it globally
+ * would take it under. That is the same principle on this palette as on the
+ * last, because --ink-soft is derived against the band on both.
  *
  * All four parts are real values. The ground has its own token above rather
- * than inheriting --page, which is just as well: --page is a warm off-white
- * and a hero inheriting it would be the one warm thing at the top of a navy
- * page.
+ * than inheriting --page: it is a shade below --page so the opening reads as
+ * its own surface, and the inner-page banner is cut from it — two reasons the
+ * hero keeps a token of its own even though --page is now close in colour.
  */
 
 /* Navy for the vision statement — the Primary, the colour the masthead
    directly above it is already painted in, so the opening reads as one lockup
-   rather than as brand-then-body. 10.3:1 on the hero's ground, against the
-   13.3:1 --ink was giving: still far clear of the floor, and the drop is the
+   rather than as brand-then-body. 9.5:1 on the hero's ground, against the
+   14.0:1 --ink was giving: still far clear of the floor, and the drop is the
    point. */
 .hero .display--statement { color: var(--primary); }
 
 /* Muted blue-gray for the supporting copy. --ink-soft is the neutral the rest
    of the light page runs on and reads grey beside a navy heading; this is the
-   navy hue at 18% saturation, so it sits between the Primary above it and the
+   navy hue at 20% saturation, so it sits between the Primary above it and the
    ground without becoming a third colour.
 
-   40% lightness on that hue: 4.74:1 on the ground. It is the token nearest the
-   floor on this band and the one the scrim's alpha table is pinned by — see
-   the note on .hero::before above.
+   42% lightness on that hue: 4.71:1 on the ground. It is close to the floor on
+   this band, just above --hero-gold, which is the token the scrim's alpha table
+   is pinned by — see the note on .hero::before above.
 
    On :root rather than here, for the same reason the ground is: the banner's
    lede takes a deeper cut of the same value. */
@@ -532,40 +557,39 @@
 /* The secondary action, and the one thing here that a colour change alone had
    to fix. A ghost button is nothing but its outline, so that outline is a user
    interface boundary and answers to the 3:1 floor rather than to taste. --line
-   is the page's hairline and measures 1.08:1 on this ground — fine for
-   dividing a list, not a control anyone can find. That is a hairline mixed for
-   the near-white grounds meeting a ground that is neither near-white nor its
-   own colour, and it fails here on every palette the site has had.
+   is the page's hairline and measures 1.14:1 on this ground — fine for
+   dividing a list, not a control anyone can find. That is a hairline cut light
+   for the page, and on the hero's slightly deeper ground it is fainter still —
+   it fails here as a control edge on every palette the site has had.
 
-   --accent-deep instead, at 3.97:1: the same teal the filled button beside it
+   --accent-deep instead, at 6.5:1: the same bronze the filled button beside it
    is made of, so the pair reads as one set with the primary action filled and
    the secondary drawn. The label stays --ink and the hover, which floods the
    button with --ink, is untouched. */
 .hero .btn-ghost { border-color: var(--accent-deep); }
 
 /*
- * A brighter teal for the main call to action, where every other filled button
- * on the site takes --accent-deep. :not() keeps it off the ghost button beside
- * it, which is the secondary action and is drawn rather than filled.
+ * A more saturated gold for the main call to action, where every other filled
+ * button on the site takes --accent-deep. :not() keeps it off the ghost button
+ * beside it, which is the secondary action and is drawn rather than filled.
  *
  * The hero's button has always been the one allowed to be more vivid than the
- * rest, and on the violet palette there was room to do it with lightness: the
- * fill went three points up from --accent-deep and stayed over the floor. Teal
- * has no such room. A white label needs the fill at about 28% lightness and
- * there is nothing above that a label can sit on, so the vividness has to come
- * out of saturation instead: 78% against --accent-deep's 73%, at a point of
- * lightness below it. That is #0F7B77, a white label at 5.10:1.
+ * rest, and gold gives the vividness the same way the previous accent did: not
+ * with lightness, which a white label rules out (the fill has to stay dark
+ * enough to carry white), but with saturation. #6B4E04 is the deep bronze at
+ * full saturation, a point of lightness below --accent-deep, and a white label
+ * sits on it at 7.7:1.
  *
  * Next to --accent-deep the difference is small and it is meant to be. This is
  * the last place on the site where a button should be shouting; what it needs
- * is to be the most saturated teal on the page, and it is.
+ * is to be the most saturated gold on the page, and it is.
  *
- * Hover goes to --accent-hover at 6.7:1, which is where the rest of the site's
+ * Hover goes to --accent-hover at 10.2:1, which is where the rest of the site's
  * buttons hover to, so the hero stops being special on that one state. The
  * rule is needed at all only because the selector above outranks `.btn:hover`.
  * The focus ring is unchanged.
  */
-.hero { --hero-cta: #0F7B77; }
+.hero { --hero-cta: #6B4E04; }
 
 .hero .btn:not(.btn-ghost) {
   background: var(--hero-cta);
@@ -602,30 +626,22 @@
 /* The brand line, tucked under the company name as the masthead has it, and
    gold to match the masthead's since 2026-09-09. Deepened rather than the
    supplied gold itself: this is the one of the four straplines that sits on a
-   light ground, and the supplied gold measures 2.1:1 on --page. Same move the
+   light ground, and the supplied gold measures 2.2:1 on --page. Same move the
    palette already makes on its accent, and for the same reason.
 
-   In --hero-gold rather than --gold-deep since the hero ground was deepened
-   later the same day. That leaves `.tagline` below as the only user of
-   --gold-deep, which is why that token is still derived against --page and
-   --card only; it does not clear the floor on --raised either. Keep both off
-   the band. */
-/* Its own gold, and the one token that came through the navy palette at the
-   value it already had. --gold-deep is derived against --page and --card and
-   is 4.45:1 on this ground, under the floor by a hair; this is the same hue
-   and saturation two points of lightness lower, at 4.94:1.
+   In --hero-gold rather than --gold-deep: the hero has room to run a slightly
+   lighter gold than the deep grounds need (see the note below). That leaves
+   `.tagline` and the recognition citation as the users of --gold-deep, which
+   now clears the floor on every light ground, the sand band included (4.6:1 on
+   --raised). */
+/* Its own gold. --gold-deep is derived against the deeper grounds and has room
+   to spare on the hero's warm off-white, so the hero strapline spends some of
+   it: the same hue a few points of lightness up from --gold-deep, #836410, at
+   4.6:1 on the hero ground.
 
-   That it did not have to move is the gold's own doing rather than luck. It is
-   the only colour here cut from neither the navy nor the teal, so the grounds
-   changed underneath it and its own derivation did not, and the margin it
-   needed against a light blue turned out to be the margin it needed against a
-   light lavender.
-
-   Scoped here rather than pushed into --gold-deep, which still has --page and
-   --card to serve and no reason to darken for a ground it never meets. That is
-   the same argument the note on --gold-deep makes in the other direction, and
-   this is the value it anticipated. */
-.hero { --hero-gold: #775D18; }
+   Scoped here rather than pushed into --gold-deep, which serves the sand
+   --raised band and has no reason to lighten for a ground it never meets. */
+.hero { --hero-gold: #836410; }
 
 .hero__tagline {
   font-size: clamp(1.125rem, 2.2vw, 1.5rem);
@@ -702,10 +718,10 @@
   gap: 1rem;
   padding: clamp(1.5rem, 3vw, 2.25rem);
   /* Its own token, and its own value: the bands alternate --page and --raised,
-     and the card is a blue tint cut from the navy. It is a step BELOW --page
+     and the card is a warm tint cut from the sand hue. It is a step BELOW --page
      and well above --raised — recessed on page sections at 1.11:1, raised on
-     band ones at 1.39:1. The band sections carry themselves; the page sections
-     are the thin pair, and the border there is 1.16:1. */
+     band ones at 1.70:1. The band sections carry themselves; the page sections
+     are the thin pair, and the border there is 1.14:1. */
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -719,7 +735,7 @@
 .card:hover {
   transform: translateY(-2px);
   border-color: var(--ink);
-  box-shadow: 0 8px 24px rgb(16 50 86 / 0.12);
+  box-shadow: 0 8px 24px rgb(54 69 79 / 0.12);
 }
 
 /* Touch has no hover, so the lift would stick after a tap. */
@@ -737,12 +753,12 @@
   box-shadow: none;
 }
 
-/* The supplied accent, undeepened: the icon is the one saturated mark
-   on a card that is otherwise ink on white. Decorative — every card states
-   its subject in the title under it — so the accent is free to sit here at
-   3.5:1 on the card, under the floor no piece of type on the site may go.
-   That figure was 4.2:1 while the card was white; the supplied card ground of
-   2026-09-09 took it down, and it is still decoration, so it still stands. */
+/* The accent, the mid-bronze: the icon is the one saturated mark on a card that
+   is otherwise ink on a warm tint. Decorative — every card states its subject
+   in the title under it — so the accent is free to sit here at 3.7:1 on the
+   card, under the floor no piece of type on the site may go. A bright gold
+   would all but vanish on this ground (2:1), which is why the bare accent is a
+   bronze rather than the metal proper — see --accent in index.css. */
 .card__icon {
   width: 1.875rem;
   height: 1.875rem;
@@ -973,7 +989,7 @@
 .section--dark .stat__label { color: var(--ink-invert-soft); }
 
 /* The figures themselves in the accent, on the one band that is primary in the
-   middle of the page. --accent-bright at 5.4:1 on --primary-deep, and the only
+   middle of the page. --accent-bright at 6.3:1 on --primary-deep, and the only
    place the accent carries type at this size. */
 .section--dark .stat__value { color: var(--accent-bright); }
 
@@ -1032,7 +1048,7 @@
 
 /* Visibly unfinished, so placeholder details cannot ship unnoticed. */
 /* No opacity here. It used to carry 0.75, which dropped --ink-soft from its
-   measured 5.4:1 on the page to about 3.3:1 — under the floor, and the chip
+   measured 7.3:1 on the page to about 4.0:1 — under the floor, and the chip
    read as decoration rather than as a fact that is missing. The dashed border
    is what marks it as provisional; the text still has to be readable. */
 .todo {
@@ -1047,9 +1063,10 @@
 .section--dark .todo { color: var(--ink-invert-soft); }
 
 /* The footer is dark but carries no `section--dark`, so it was missing the
-   rule above and its chips sat at the light-background ink — about 2.9:1 once
-   the opacity is applied, dim enough to read as nothing there. Primary takes
-   --primary-soft rather than the neutral, matching the rest of the footer. */
+   rule above and its chips sat at the light-ground --ink-soft — about 1.4:1 on
+   the primary footer, dim enough to read as nothing there. Primary takes
+   --primary-soft rather than the neutral (4.6:1), matching the rest of the
+   footer. */
 .footer .todo { color: var(--primary-soft); }
 
 /* Draft copy keeps a faint dotted underline until the client signs it off.
@@ -1124,7 +1141,7 @@
 
    The label is the literal --ink rather than the band's inverted one: this
    button only ever appears on a dark band, where --ink has been flipped to
-   white, and white on --accent-bright is 2.8:1. The dark ink measures 6.0:1. */
+   white, and white on --accent-bright is 2.4:1. The dark ink measures 7.2:1. */
 .btn--feature,
 .section--dark .btn--feature {
   background: var(--accent-bright);
@@ -1140,14 +1157,20 @@
 }
 
 /* ---------- Footer ----------
-   Primary, closing the page with the same brand colour the masthead opens it
-   in. Everything soft inside it moves off the neutral greys and onto
-   --primary-soft: a neutral #a1a1aa clears the floor on primary at 5.1:1 but
-   reads as a muddy grey against the navy, where --primary-soft is the
-   palette's own soft-on-primary at 5.3:1. */
+   The --sandal ground, closing the page on the same light band the masthead
+   opens it on. It is a dark surface turned light, so the four light-ground
+   tokens are re-pointed for the length of it — the footer has no nested dark
+   panel the way .masthead does, so re-pointing on the block itself is safe and
+   every soft grey, hairline and link inside flips with it. Type clears the
+   floor on --sandal: --ink 12.2:1, --ink-soft (headings, links, sign-off) 5.8:1,
+   --gold-deep (the strapline) 5.7:1. */
 .footer {
-  background: var(--primary);
-  color: var(--ink-invert);
+  background: var(--sandal);
+  color: var(--ink);
+  --ink-invert: var(--ink);
+  --primary-soft: var(--ink-soft);
+  --primary-line: var(--sandal-line);
+  --gold: var(--gold-deep);
   padding-block: clamp(3rem, 6vw, 4.5rem) 2rem;
 }
 
@@ -1245,7 +1268,7 @@
   z-index: 50;
   padding: 0.75rem 1.25rem;
   /* The light chip rather than the --ink one the other chips take: this lands
-     on top of the masthead, which is primary, and --ink on --primary is 1.3:1.
+     on top of the masthead, which is primary, and --ink on --primary is 1.5:1.
      The focus ring is currentColor, so it takes the same swap — primary on a
      white chip would be another dark mark on the primary bar. */
   background: var(--card);
@@ -1261,13 +1284,14 @@
 /* ---------- Active nav state ----------
    Gold, and the only place in the bar that colour appears besides the
    read-position line directly under it.
-   Hover is the accent, so colour separates the current page from the one under
-   the cursor on its own; the weight bump reinforces it, which is why it stays
-   here and why the links around it are left at the inherited 400.
+   Hover is the same gold now — the accent and the metal are one family — so the
+   weight bump is what separates the current page from the link under the
+   cursor, not colour, and that is why it stays here and the links around it are
+   left at the inherited 400.
 
-   5.8:1 on the primary bar and on the mobile panel's --primary. Both rules sit
+   4.9:1 on the primary bar and on the mobile panel's --primary. Both rules sit
    after `.navlist a:hover` at equal specificity, so the current page keeps its
-   gold when you hover it. */
+   weight when you hover it. */
 .navlist a.active,
 .mobile-nav__list a.active { color: var(--gold); font-weight: 500; }
 
@@ -1290,20 +1314,22 @@
    same bar — would put the accent twice in a row where the bar is meant to be
    primary with one thing to press. So the header CTA is gold instead — the
    same gold the current nav link beside it and the read-position line under it
-   carry, which makes the bar one colour story rather than three. Its primary
-   label reads at 5.8:1 on the fill, and the accent stays for the buttons in
-   the page below. */
+   carry, which makes the bar one colour story rather than three. Its label is
+   --ink rather than --primary: the charcoal --primary reads only 4.2:1 on the
+   gold fill, under the floor, where --ink is 7.1:1. The accent stays for the
+   buttons in the page below. */
 .masthead .btn {
   background: var(--gold);
-  color: var(--primary);
+  color: var(--ink);
   border-color: var(--gold);
 }
 
-/* Hollows out to the outline it was already wearing: gold label on gold border,
-   5.8:1 on the primary bar. */
+/* Hollows out to the outline it was already wearing, but the label deepens to
+   --gold-deep so it reads on the light sand bar (bright --gold is 1.7:1 there);
+   5.6:1 on the bar, and the border keeps the bright gold it filled with. */
 .masthead .btn:hover {
   background: transparent;
-  color: var(--gold);
+  color: var(--gold-deep);
 }
 
 /* ---------- Tamil link ----------
@@ -1314,7 +1340,7 @@
    would flatten a ghost into the same white pill as the CTA.
 
    The accent on hover, matching what the nav links do either side of it.
-   4.5:1 on primary for the label, and the border clears the 3:1 floor for a
+   4.9:1 on primary for the label, and the border clears the 3:1 floor for a
    control's own edge. */
 .lang-link {
   display: inline-flex;
@@ -1420,19 +1446,19 @@
    All four carry /page-header.webp now, so that reason has lapsed. */
 /*
  * All of that stood while the banner was a primary band. It is cut from the
- * home hero's blue so that every page opens on the colour the home page opens
- * on, and the argument above is now settled the other way: the banner does not
+ * home hero's warm off-white so that every page opens on the colour the home
+ * page opens on, and the argument above is now settled the other way: the banner does not
  * need a step below the sections under it, because it is no longer the same
  * colour as them.
  *
  * A step deeper than the hero's own cut: the home page keeps --hero-ground and
  * the four inner pages take --banner-ground, five points of lightness under it
  * on the same hue. So the site opens on one colour, and the page that is the
- * arrival opens on the lighter reading of it. 1.34:1 off the --page band under
- * it, where the hero's cut is 1.19:1.
+ * arrival opens on the deeper reading of it. 1.23:1 off the --page band under
+ * it, where the hero's cut is 1.11:1.
  *
- * --line comes with it. The site's hairline is mixed for the cool near-white
- * grounds and disappears on either blue, and unlike the hero — which has no
+ * --line comes with it. The site's hairline is cut light for the near-white
+ * page and disappears on either warm banner ground, and unlike the hero — which has no
  * bordered box in it — this band carries the contact details list and the ghost
  * buttons beside it. Re-pointed rather than restated, the way `.section--dark`
  * and `.section--sandal` do it.
@@ -1445,7 +1471,7 @@
 
 /* The heading takes the primary, which is what the home hero's does — the
    masthead sits directly above both, so each page opens as one lockup rather
-   than as brand-then-body. 7.8:1 on the deeper ground. */
+   than as brand-then-body. 8.6:1 on the deeper ground. */
 .page-head .heading { color: var(--primary); }
 .page-head__lede { max-width: 52ch; }
 
@@ -1495,25 +1521,12 @@
    actually made of. Weighted left, where the copy sits, leaving the pattern
    strongest on the right.
 
-   These stops were lightened to 0.4/0.3/0.22 and put back. The arithmetic that
-   argued for lightening them was sound and is not the reason: /page-header.webp
-   is already a scrimmed image, its brightest pixel is rgb(137 117 80), and white
-   measures 4.45:1 on that bare — so 0.85 is darkening something already dark and
-   the accent does not survive it. The judgement went the other way regardless,
-   and a banner that reads as primary is the intended result rather than a cost.
-
-   Measured against that brightest pixel, the worst case anywhere in the frame.
-   Every figure went up when the scrim moved from --primary to the deeper
-   --primary-deep, so the step cost nothing here:
-
-     stop        white      lede #e7e5ed
-     0%   0.85   13.1:1      10.5:1
-     45%  0.70   10.9:1       8.8:1
-     100% 0.50    8.5:1       6.8:1
-
-   So if these are ever revisited, contrast is not the constraint — there is
-   headroom down to about 0.15 before the lede reaches 4.5:1. What is at stake
-   is only how much of the pattern shows through. */
+   The scrim under this image used to be a directional wash whose stops were
+   tuned for contrast against the artwork. It is flat and opaque now — see
+   .page-head--image::before below — so those stops are gone and the picture no
+   longer shows. What reads on the banner is dark type on the opaque
+   --banner-ground, measured by the eyebrow and lede rules further down, not
+   against the image at all. */
 /* Stretched to the box rather than covered by it.
 
    The banner is far wider than the asset is: /page-header.webp is 1448x609, or
@@ -1538,8 +1551,8 @@
  *
  * The scrim was a directional wash of --primary-deep, thinning to the right so
  * the pattern showed where no type sat over it. The home hero does the same
- * thing the other way up, in its own blue, and this band could not simply be
- * turned over to match.
+ * thing the other way up, in its own warm off-white, and this band could not
+ * simply be turned over to match.
  *
  * The reason is the aside. Behind the hero's thin end is the clip, which paints
  * its own background and needs nothing from the scrim; behind this one, on
@@ -1547,8 +1560,8 @@
  * on the far side of the band. Dark type on a light scrim is measured against
  * the darkest pixel under it, and the hero's own note records that there is no
  * transparency left to spend behind copy on this palette: worst case, the lede
- * is under the floor by alpha 0.96 and the band would have to hold above that
- * everywhere to be legible on the right. There is nothing left to thin.
+ * is under the floor below about alpha 0.98 and the band would have to hold
+ * above that everywhere to be legible on the right. There is nothing left to thin.
  *
  * So the wash is flat and opaque, and the artwork under it no longer shows on
  * any page. /page-header.webp is still fetched — the four pages still pass
@@ -1566,8 +1579,8 @@
 
 /* Both were white and near-white against the old primary scrim. On the light
    band they take the same pair the home hero's copy takes: the site's soft ink
-   for the eyebrow at 5.2:1, and the banner's own for the lede at 5.1:1, which
-   keeps a step of hierarchy under a heading sitting at 9.1:1. The lede takes
+   for the eyebrow at 5.9:1, and the banner's own for the lede at 4.7:1, which
+   keeps a step of hierarchy under a heading sitting at 8.6:1. The lede takes
    --banner-ink-soft and not --hero-ink-soft: the hero's is cut for the lighter
    ground and is 4.2:1 on this one.
 
@@ -1644,7 +1657,7 @@
 /* Pinned to the palette rather than left to the browser, whose defaults range
    from a passable grey to something well under the 4.5:1 floor. `opacity: 1`
    is not redundant: Firefox dims placeholders on its own, which would undo
-   --ink-soft's measured 4.6:1. */
+   --ink-soft's measured 7.3:1 on the input's --page ground. */
 .field input::placeholder,
 .field textarea::placeholder {
   color: var(--ink-soft);
@@ -1812,9 +1825,9 @@
    so the pair below is what actually renders; the light value is here so the
    class keeps working if it is ever moved onto the page ground.
 
-   Onto --page or a card, that is. --gold-deep is 3.3:1 on the deepened
-   --raised and this class carries no override for it — moving a .tagline onto
-   a band section needs a value of its own first. */
+   Onto --page or a card, that is — though --gold-deep now clears the floor on
+   the sand --raised band as well (4.6:1), so a .tagline could move onto a band
+   section without the value of its own it needed on earlier palettes. */
 .tagline {
   font-size: clamp(1.25rem, 2.4vw, 1.75rem);
   font-weight: 600;
@@ -2021,16 +2034,14 @@
    colour, and the home page opens on the hero, where an inked bar
    would vanish.
 
-   Gold, and the one colour on the site that has now survived two palette
-   changes untouched. It is the better read here than the accent: 5.8:1 on the
-   primary track against the accent's 4.8:1, and a fill that is not a shade of
-   the bar it slides along. No type rides on it, and the read position is the
-   one moving thing on the page.
+   Gold, on a --primary track. No type rides on it, and the read position is the
+   one moving thing on the page — a bright gold on navy at 4.9:1, which is not a
+   shade of the bar it slides along.
 
-   It renders on every route, which widens what the fill has to work over: the
-   home page puts it against the blue hero, and the inner pages put it between
-   the primary masthead and the banner, where the track disappears and the gold
-   is the only part of it anyone sees. 5.8:1 covers both, which is why the fill
+   It renders on every route, but the bar carries its own --primary ground
+   wherever it sits: over the home page's warm off-white hero and between the
+   primary masthead and the inner-page banner alike, the fill reads against navy
+   at the same 4.9:1. That one value covers every route, which is why the fill
    needed no second value the way the straplines did. */
 .scroll-progress {
   position: fixed;
@@ -2479,7 +2490,7 @@
 
 /* Every third pill inverts, so the row has some weight in it rather than
    reading as five identical chips. Back to the dark pill the light page always
-   gave it — white on --ink, 15.2:1 — and inside a dark band --ink and
+   gave it — white on --ink, 16.9:1 — and inside a dark band --ink and
    --on-light flip with the ground, so the same rule paints the light chip
    there instead. */
 .pills__slot:nth-child(3n - 1) .pills__pill {
@@ -2605,7 +2616,7 @@
   cursor: pointer;
 }
 
-/* The unit in force carries the page's primary, with white on it at 13.0:1.
+/* The unit in force carries the page's primary, with white on it at 11.5:1.
    The other stays --ink-soft on the band, 5.8:1 on --sandal — a difference of
    ground and not only of weight, so which one is chosen survives being read at
    a glance or in greyscale. */
@@ -2625,29 +2636,22 @@
    span still available. An untouched field sends 0%, so the track is bare and
    the thumb sits at the left rather than implying a figure.
 
-   Gold, and the track stays primary rather than dropping to --line: the
-   hairline is 1.5:1 on the sand band, which is nothing to read a control
-   against.
+   Gold, and the unfilled track stays a primary tint (--primary-line) rather
+   than dropping to --line: the hairline is 1.0:1 on the sand band, which is
+   nothing to read a control against.
 
-   The gold was chosen on the violet palette because the accent could not do
-   the job. The whole point of the fill is to show where the chosen span ends
-   and the remaining one begins, so the comparison that matters is fill against
-   track, and the violet accent managed 1.9:1 there — two halves of one bar,
-   under the 3:1 floor, on the control this page is built around.
+   The whole point of the fill is to show where the chosen span ends and the
+   remaining one begins, so the comparison that matters is fill against track.
+   Gold against the --primary-line remainder is 2.9:1, right at the edge of the
+   3:1 a control boundary wants. The gold is also the same mark the read-position
+   bar under the masthead makes — gold on a primary ground — so the site has one
+   idiom for "how far along are you" rather than two.
 
-   That reason has lapsed on the navy. Teal on a navy track is 4.8:1 and would
-   carry the bar perfectly well. The gold stays anyway, because it is no longer
-   only a fix: it is the same mark the read-position bar under the masthead
-   makes, gold on primary, and the site now has one idiom for "how far along
-   are you" rather than two. Gold is 5.8:1 on the track, so it is still the
-   better of the two readings as well as the more consistent one.
-
-   The thumb is the same colour on the same ring, 5.8:1. What it gives up is
-   the ground: gold is 1.8:1 on the sand band, so the thumb does not clear 3:1
-   on its own and leans on its 2px --primary ring at 10.1:1 to bound it. That
-   is what a boundary is for and it is the trade worth making — a thumb is
-   found by its outline, and a fill has nothing but the track to be read
-   against.
+   The thumb is the same gold on a 2px --primary ring. What it gives up is the
+   ground: gold is 1.7:1 on the sand band, so the thumb does not clear 3:1 on
+   its own and leans on that ring, 8.3:1 on the band, to bound it. That is what
+   a boundary is for and it is the trade worth making — a thumb is found by its
+   outline, and a fill has nothing but the track to be read against.
 
    Outranks `.field input` on class count, which would otherwise hand the
    slider the number box's padding, border and radius. */
@@ -2779,8 +2783,8 @@
   height: 0.375rem;
   border-radius: 50%;
   background: var(--primary);
-  /* The dot is dark navy and so is the bar it sits on, 1.6:1 apart, so the
-     dot alone would disappear into the unfilled half. What separates them is
+  /* The dot is dark navy and so is the unfilled half of the bar it sits on,
+     1.7:1 apart, so the dot alone would disappear into it. What separates them is
      this ring in the band's own ground, which is light against both halves.
      Bands re-point --tick-ring the same way they re-point --line. */
   box-shadow: 0 0 0 2px var(--tick-ring, var(--page));

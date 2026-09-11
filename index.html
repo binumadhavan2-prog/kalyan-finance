@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Kalyan Finance - business finance, personal finance assistance and short-term financial support for individuals and businesses." />
     <title>Kalyan Finance</title>
-    <meta name="theme-color" content="#103256" />
+    <meta name="theme-color" content="#36454F" />
 
     <!-- The splash covers the gap before the bundle runs, so its markup, styles
          and images all have to be here rather than in the app. -->
@@ -38,7 +38,7 @@
            coded because index.css has not loaded at this point. Keep them in
            step with :root. */
         background: #111E2C;
-        --accent: #1DAFAB;
+        --accent: #D4A11A;
         --settle: 1.75s; /* the moment the crown lands */
         animation:
           splash-settle 0.9s ease-out 1.7s both,
@@ -85,10 +85,10 @@
         pointer-events: none;
         background: radial-gradient(
           circle,
-          rgba(166, 232, 229, 0.55) 0%,
-          rgba(29, 175, 171, 0.28) 22%,
-          rgba(29, 175, 171, 0.08) 42%,
-          rgba(29, 175, 171, 0) 68%
+          rgba(240, 214, 140, 0.55) 0%,
+          rgba(212, 161, 26, 0.28) 22%,
+          rgba(212, 161, 26, 0.08) 42%,
+          rgba(212, 161, 26, 0) 68%
         );
         animation-name: splash-glow;
         animation-duration: 1.5s;
@@ -117,9 +117,9 @@
         pointer-events: none;
         background: radial-gradient(
           ellipse at center,
-          rgba(29, 175, 171, 0.5) 0%,
-          rgba(29, 175, 171, 0.1) 42%,
-          rgba(29, 175, 171, 0) 70%
+          rgba(212, 161, 26, 0.5) 0%,
+          rgba(212, 161, 26, 0.1) 42%,
+          rgba(212, 161, 26, 0) 70%
         );
         filter: blur(3px);
         animation-name: splash-floor;
@@ -143,8 +143,8 @@
         height: var(--s, 3px);
         margin-left: var(--x, 0);
         border-radius: 50%;
-        background: #D9F5F4;
-        box-shadow: 0 0 8px 2px rgba(29, 175, 171, 0.85);
+        background: #F7EBC6;
+        box-shadow: 0 0 8px 2px rgba(212, 161, 26, 0.85);
         animation-name: splash-spark;
         animation-duration: 1.6s;
         animation-timing-function: ease-out;
@@ -173,7 +173,7 @@
         font-size: clamp(1.125rem, 4vw, 1.5rem);
         font-weight: 400;
         line-height: 1;
-        color: #95A8BB;
+        color: #A5B2BB;
         animation-delay: 1.35s;
       }
 
@@ -193,7 +193,7 @@
          screen the splash clears into is already that colour at the top. */
       @keyframes splash-settle {
         from { background-color: #111E2C; }
-        to { background-color: #103256; }
+        to { background-color: #36454F; }
       }
 
       @keyframes splash-glow {
@@ -204,8 +204,8 @@
 
       @keyframes splash-lit {
         0%   { filter: none; }
-        20%  { filter: drop-shadow(0 0 22px rgba(166, 232, 229, 0.95)); }
-        100% { filter: drop-shadow(0 0 12px rgba(29, 175, 171, 0.6)); }
+        20%  { filter: drop-shadow(0 0 22px rgba(240, 214, 140, 0.95)); }
+        100% { filter: drop-shadow(0 0 12px rgba(212, 161, 26, 0.6)); }
       }
 
       @keyframes splash-floor {
@@ -233,7 +233,7 @@
          the screen clears almost at once. */
       @media (prefers-reduced-motion: reduce) {
         #splash {
-          background: #103256;
+          background: #36454F;
           animation: splash-out 0.4s ease 0.6s both;
         }
 
@@ -252,7 +252,7 @@
 
         #splash .splash__mark {
           animation: none;
-          filter: drop-shadow(0 0 12px rgba(29, 175, 171, 0.6));
+          filter: drop-shadow(0 0 12px rgba(212, 161, 26, 0.6));
         }
 
         #splash .splash__floor {
