@@ -280,9 +280,10 @@ export const recognitionPoster = '/recognition-poster.webp'
  * page the recognition band has ever had to show. It is a factual claim about
  * a real award, so it is not in `draft` and renders without the dotted mark.
  *
- * Not translated. The Tamil overlay carries no version of this, so /ta shows
- * the English — which is the same call every other unsupplied translation
- * takes, and better than a machine one putting words in the client's mouth.
+ * The prose is translated in content.ta.js; `title` (the awarding body's own
+ * name) and `recipients` (two people's names) are held back there and fall
+ * through to this English, the same call `founder.name` and `company.name`
+ * take — an official designation and personal names are not ours to respell.
  */
 export const recognitionFeature = {
   title: 'National Excellence Council Tamil Nadu Awards 2026',
