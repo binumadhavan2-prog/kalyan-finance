@@ -2,12 +2,47 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- Play the brand splash once per browser session, not on every load. A
+         deep link, a refresh, or a bounce through 404.html is a fresh document
+         load, and a 3.5s intro on each of those reads as the page hanging —
+         worst of all on the 404 page, which you reach precisely by such a load.
+         Runs before <body> is parsed, so the splash never flashes when skipped. -->
+    <script>
+      try {
+        if (sessionStorage.getItem('kf-splashed')) {
+          document.documentElement.classList.add('no-splash')
+        } else {
+          sessionStorage.setItem('kf-splashed', '1')
+        }
+      } catch (e) {
+        /* Storage blocked: fall through and just play the splash. */
+      }
+    </script>
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Kalyan Finance - business finance, personal finance assistance and short-term financial support for individuals and businesses." />
     <title>Kalyan Finance</title>
     <meta name="theme-color" content="#1e2c58" />
+
+    <!-- Restores a deep link that public/404.html encoded into the query string
+         before the router mounts, so /kalyan-finance/about survives a direct hit
+         or a refresh on GitHub Pages. Paired with public/404.html. -->
+    <script>
+      ;(function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search
+            .slice(1)
+            .split('&')
+            .map(function (s) {
+              return s.replace(/~and~/g, '&')
+            })
+            .join('?')
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash)
+        }
+      })(window.location)
+    </script>
 
     <!-- The splash covers the gap before the bundle runs, so its markup, styles
          and images all have to be here rather than in the app. -->
@@ -25,6 +60,12 @@
          Dismissal is CSS, not script. If the bundle fails or JS is off, a
          JS-driven splash would sit there covering a working site forever; this
          one always clears itself, and main.jsx only removes the dead node. */
+      /* Second and later loads in a session skip the intro (see the head
+         script): the content is shown at once instead of behind a 3.5s splash. */
+      html.no-splash #splash {
+        display: none !important;
+      }
+
       #splash {
         position: fixed;
         inset: 0;

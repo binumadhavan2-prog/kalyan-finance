@@ -31,6 +31,11 @@
  */
 export const markDraftCopy = false
 
+/* Public-directory asset paths below are wrapped so they resolve under the
+   deploy's base URL (a GitHub Pages project page serves under /<repo>/). See
+   src/asset.js. */
+import { asset } from './asset.js'
+
 /** Client-supplied company facts, wording unchanged. */
 export const company = {
   name: 'Kalyan Finance',
@@ -111,7 +116,7 @@ export const services = [
      * decorative and carries no `alt` — there is no wording in it a reader
      * would otherwise miss.
      */
-    image: { src: '/product-business.webp', width: 1024, height: 559 },
+    image: { src: asset('/product-business.webp'), width: 1024, height: 559 },
   },
   {
     id: 'personal',
@@ -126,7 +131,7 @@ export const services = [
        SAVINGS) are props in a scene, not a banner's own copy, and the first of
        them only restates the h2 above it. That is the illustration case, so it
        stays decorative. */
-    image: { src: '/product-personal.webp', width: 1024, height: 559 },
+    image: { src: asset('/product-personal.webp'), width: 1024, height: 559 },
   },
   {
     id: 'short-term',
@@ -139,7 +144,7 @@ export const services = [
      * baked into a picture is also invisible to a screen reader, hence `alt`.
      */
     image: {
-      src: '/product-short-term.webp',
+      src: asset('/product-short-term.webp'),
       width: 1536,
       height: 1024,
       wide: true,
@@ -155,7 +160,7 @@ export const services = [
     icon: 'heart',
     /** Client-supplied on 2026-09-05. A finished banner, like short-term. */
     image: {
-      src: '/product-customer-focused.webp',
+      src: asset('/product-customer-focused.webp'),
       width: 1536,
       height: 1024,
       wide: true,
@@ -173,7 +178,7 @@ export const services = [
     icon: 'sliders',
     /** Client-supplied on 2026-09-05. A finished banner, 2:1 rather than 3:2. */
     image: {
-      src: '/product-tailored.webp',
+      src: asset('/product-tailored.webp'),
       width: 1774,
       height: 887,
       wide: true,
@@ -251,7 +256,7 @@ export const founder = {
   name: 'Mr. Kalyana Sundaram S',
   role: 'Founder',
   bio: null,
-  photo: '/founder.png',
+  photo: asset('/founder.png'),
 }
 
 /**
@@ -266,14 +271,14 @@ export const recognition = []
  * metadata is preloaded, so the file is not pulled down until someone presses
  * play — it is large, and most visitors will not watch it.
  */
-export const recognitionVideo = '/recognition.mp4'
+export const recognitionVideo = asset('/recognition.mp4')
 
 /**
  * A still for the recognition clip. With no first frame fetched the band opens
  * on a black rectangle; the poster stands in until someone presses play, and
  * costs a hundredth of what the clip would.
  */
-export const recognitionPoster = '/recognition-poster.webp'
+export const recognitionPoster = asset('/recognition-poster.webp')
 
 /**
  * Client-supplied on 2026-09-10, wording unchanged, and the one thing on this
@@ -317,7 +322,7 @@ export const recognitionFeature = {
  * "PHONE - TO BE SUPPLIED" placeholder, matching the null in `contact`. Replace
  * the number in `video/edit.jsx` and re-render before this ships.
  */
-export const heroVideo = '/kalyan-finance-6s.mp4'
+export const heroVideo = asset('/kalyan-finance-6s.mp4')
 
 /** Figures for the stats band. Left null on purpose; see the note above. */
 export const stats = [
@@ -575,6 +580,7 @@ export const ui = {
   address: 'Address',
   hours: 'Hours',
   whereWeAre: 'Where we are',
+  viewOnMap: 'View on Google Maps',
   amount: 'Amount',
   tenure: 'Tenure',
   repayment: 'Repayment',

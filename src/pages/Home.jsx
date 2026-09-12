@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useCopy } from '../i18n'
+import { asset } from '../asset'
 import Draft from '../components/Draft'
 import CoreValues from '../components/CoreValues'
 import StepList from '../components/StepList'
@@ -16,7 +17,10 @@ export default function Home() {
     <>
       <ScrollProgress />
 
-      <section className="section section--dark hero">
+      <section
+        className="section section--dark hero"
+        style={{ '--hero-image': `url("${asset('/hero.webp')}")` }}
+      >
         <div className="shell hero__grid">
           <div className="stack-lg">
             <div className="stack">

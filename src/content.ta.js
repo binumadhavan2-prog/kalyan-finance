@@ -212,6 +212,7 @@ export const ta = {
     address: 'முகவரி',
     hours: 'நேரம்',
     whereWeAre: 'நாங்கள் இருக்கும் இடம்',
+    viewOnMap: 'கூகுள் மேப்ஸில் பார்க்கவும்',
     amount: 'தொகை',
     tenure: 'காலம்',
     repayment: 'திருப்பிச் செலுத்துதல்',
