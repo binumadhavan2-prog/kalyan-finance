@@ -71,6 +71,29 @@ export const ta = {
       'நிறுவனங்களுக்கும் சரியான நேரத்தில் நிதி உதவி அளிக்கிறோம்.',
   },
 
+  /* The award band. The prose is translated; two things are held back on
+     purpose and fall through to the English:
+       - `title`, the awarding body's own name. An official designation, not
+         ours to respell — the honour sentence below carries it in English
+         inside the Tamil the same way.
+       - `recipients`, two people's names. content.js is explicit that names are
+         not ours to invent, and choosing a Tamil spelling of a name is exactly
+         that — the same call `founder.name` takes. */
+  recognitionFeature: {
+    subtitle: 'நிதிச் சேவைகளில் சிறப்பை அங்கீகரித்தல்',
+    honour:
+      'மதிப்புமிக்க National Excellence Council Tamil Nadu Awards 2026 ' +
+      'விழாவில் கௌரவிக்கப்பட்டனர்.',
+    citation:
+      'வாடிக்கையாளர் மைய நிதிச் சேவைகளில் அவர்களது சிறப்பை இந்த அங்கீகாரம் ' +
+      'கொண்டாடுகிறது — நம்பகமான, வெளிப்படையான, நேர்மையான நிதித் தீர்வுகள் ' +
+      'மூலம் தனிநபர்களுக்கும் நிறுவனங்களுக்கும் வலு சேர்க்கிறது.',
+    closing: 'சிறப்பு, நம்பிக்கை, அர்த்தமுள்ள தாக்கம் — இவற்றைக் கொண்டாடுகிறோம்.',
+    invitation:
+      'நம்பகமான நிதி உதவி தேவையா? கல்யாண் ஃபைனான்ஸைத் தேர்ந்தெடுங்கள் — ' +
+      'உங்களைச் சுற்றி வடிவமைக்கப்பட்ட தீர்வுகள்.',
+  },
+
   /* Overlaid onto the English list by `id`, so a service added in English and
      not yet translated still renders — in English — rather than vanishing. */
   services: [
@@ -200,6 +223,10 @@ export const ta = {
     calcAmount: 'உங்களுக்குத் தேவையான தொகை (₹)',
     calcRate: 'ஆண்டு வட்டி விகிதம் (%)',
     calcYears: 'எத்தனை ஆண்டுகளுக்கு',
+    calcMonths: 'எத்தனை மாதங்களுக்கு',
+    calcTermUnit: 'காலத்தை இதில் உள்ளிடுங்கள்',
+    calcUnitYears: 'ஆண்டுகள்',
+    calcUnitMonths: 'மாதங்கள்',
     calcPerMonth: 'மாதம் ஒன்றுக்கு, {months} மாதங்களுக்கு',
     calcBorrowed: 'கடன் தொகை',
     calcInterest: 'வட்டி',

@@ -243,7 +243,7 @@ export default function RepaymentCalculator() {
         {/* Above the tool, not below it: the framing has to be read before the
             figures, the same way the indicative examples are headed. */}
         <p className="notice notice--illustrative">
-          <span className="notice__flag">Illustrative</span>
+          <span className="notice__flag">{ui.illustrative}</span>
           <span>
             <Draft>{draft.calculatorNotice}</Draft>
           </span>
