@@ -27,7 +27,6 @@ export default function ClosingCta() {
   /* Built here rather than at module load: the labels are language state. */
   const channels = [
     { key: 'phone', label: ui.phone, href: (v) => `tel:${v.replace(/\s/g, '')}` },
-    { key: 'email', label: ui.email, href: (v) => `mailto:${v}` },
     { key: 'location', label: ui.whereWeAre, href: null },
   ]
   return (
@@ -50,14 +49,6 @@ export default function ClosingCta() {
           <Link className="btn btn--gold btn--lg" to="/contact">
             <Draft>{draft.ctaButton}</Draft>
           </Link>
-          {contact.email ? (
-            <a
-              className="btn btn-ghost btn--lg btn--wrap"
-              href={`mailto:${contact.email}`}
-            >
-              {contact.email}
-            </a>
-          ) : null}
         </p>
 
         <p className="cta__note">

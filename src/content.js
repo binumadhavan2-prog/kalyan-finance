@@ -269,6 +269,44 @@ export const recognition = []
 export const recognitionVideo = '/recognition.mp4'
 
 /**
+ * A still for the recognition clip. With no first frame fetched the band opens
+ * on a black rectangle; the poster stands in until someone presses play, and
+ * costs a hundredth of what the clip would.
+ */
+export const recognitionPoster = '/recognition-poster.webp'
+
+/**
+ * Client-supplied on 2026-09-10, wording unchanged, and the one thing on this
+ * page the recognition band has ever had to show. It is a factual claim about
+ * a real award, so it is not in `draft` and renders without the dotted mark.
+ *
+ * Not translated. The Tamil overlay carries no version of this, so /ta shows
+ * the English — which is the same call every other unsupplied translation
+ * takes, and better than a machine one putting words in the client's mouth.
+ */
+export const recognitionFeature = {
+  title: 'National Excellence Council Tamil Nadu Awards 2026',
+  subtitle: 'Recognizing Excellence in Financial Services',
+  /* Split out of the sentence so the markup can weight them without the
+     component having to find a name inside a string. */
+  recipients: 'Mr. Kalyanasundaram and Mrs. Vaishnavi Kalyan',
+  honour:
+    'were honored at the prestigious National Excellence Council Tamil Nadu ' +
+    'Awards 2026.',
+  citation:
+    'The recognition celebrates their excellence in customer-centric ' +
+    'financial services, empowering individuals and businesses through ' +
+    'trusted, transparent and ethical financial solutions.',
+  closing: 'Celebrating excellence, trust, and meaningful impact.',
+  /* The one line here that sells rather than reports. It sits last and quiet,
+     under a rule, so the band reads as an account of the award with an
+     invitation at the end rather than as an advertisement wearing one. */
+  invitation:
+    'Need trusted financial support? Choose Kalyan Finance — solutions built ' +
+    'around you.',
+}
+
+/**
  * The 6-second brand animation beside the home hero copy. Unlike the
  * recognition clip this one autoplays, which is only defensible because it is
  * under a megabyte and silent — it carries no audio track at all, so there is
