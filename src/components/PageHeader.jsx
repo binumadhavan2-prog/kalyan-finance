@@ -1,4 +1,5 @@
 import Draft from './Draft'
+import { asset } from '../asset'
 
 /**
  * The banner the inner pages open with, so they share a silhouette with the
@@ -65,7 +66,7 @@ export default function PageHeader({
         (image ? ' page-head--image' : '') +
         (fill ? ' page-head--fill' : '')
       }
-      style={image ? { backgroundImage: `url("${image}")` } : undefined}
+      style={image ? { backgroundImage: `url("${asset(image)}")` } : undefined}
     >
       {/* The copy is its own .stack inside the shell rather than being the
           shell, so the shell is free to become a two-column grid when there is

@@ -17,15 +17,17 @@
  * just after it on a slow bundle. Kept because it is the same two layers the
  * splash uses, so turning it back on is one prop.
  */
+import { asset } from '../asset'
+
 export default function Wordmark({ className = 'wordmark__mark', animated = false }) {
   if (!animated) {
-    return <img className={className} src="/logo.png" alt="" width="512" height="512" />
+    return <img className={className} src={asset('/logo.png')} alt="" width="512" height="512" />
   }
 
   return (
     <span className={`${className} wordmark__mark--layered`} aria-hidden="true">
-      <img className="wordmark__shield" src="/logo-shield.png" alt="" width="512" height="512" />
-      <img className="wordmark__crown" src="/logo-crown.png" alt="" width="512" height="512" />
+      <img className="wordmark__shield" src={asset('/logo-shield.png')} alt="" width="512" height="512" />
+      <img className="wordmark__crown" src={asset('/logo-crown.png')} alt="" width="512" height="512" />
     </span>
   )
 }

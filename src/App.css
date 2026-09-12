@@ -353,8 +353,10 @@
      picture's 2:1, so `cover` fills the width and throws away height — and the
      currency, which is the subject worth seeing, sits below the middle. Dead
      centre crops the notes; this keeps the portrait in the surviving strip. */
+  /* --hero-image is set inline in Home.jsx so the path resolves under the
+     deploy's base URL; Vite does not rewrite a root-absolute url() here. */
   background:
-    var(--navy) url("/hero.webp") center 58% / cover no-repeat;
+    var(--navy) var(--hero-image, none) center 58% / cover no-repeat;
 }
 
 /*
