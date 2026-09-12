@@ -44,7 +44,32 @@ function monthlyRepayment(principal, annualRate, months) {
   return (principal * r * growth) / (growth - 1)
 }
 
-const EMPTY = { amount: '', rate: '', years: '' }
+const EMPTY = { amount: '', rate: '', term: '' }
+
+/* The two units the term can be entered in. Years first: it is the unit the
+   field asked for on its own until now, so the tool opens where it always did
+   and months are the thing you switch to. */
+const TERM_UNITS = ['years', 'months']
+
+/**
+ * The same term, read in the other unit.
+ *
+ * Switching unit re-expresses what has been entered rather than clearing it —
+ * someone who has swept to five years and then wants to say thirty months is
+ * starting from five, not from empty.
+ *
+ * Months come out whole, and years to the nearest half, which is as fine as
+ * the year slider goes. So the conversion is lossy in one direction: seven
+ * months reads as half a year and comes back as six. That is the field's own
+ * granularity rather than a rounding bug, and it is why the month side exists
+ * — a term that has to be exact to the month is entered in months.
+ */
+function convertTerm(value, to) {
+  if (value === '' || !Number.isFinite(Number(value))) return value
+  const n = Number(value)
+  if (to === 'months') return String(Math.round(n * 12))
+  return String(Math.round((n / 12) * 2) / 2)
+}
 
 /*
  * Slider bounds. These are the span the control sweeps, and nothing more —
@@ -56,7 +81,14 @@ const EMPTY = { amount: '', rate: '', years: '' }
 const BOUNDS = {
   amount: { min: 10000, max: 5000000, step: 10000 },
   rate: { min: 0, max: 30, step: 0.1 },
-  years: { min: 1, max: 30, step: 1 },
+  /* Two faces of one field, picked by the switch beside its label. They meet at
+     the top — 360 months is the year slider's thirty — and part at the bottom,
+     where months run down to six against the year slider's one: a term shorter
+     than a year is the case the year slider cannot express. The year slider
+     steps in halves so a term converted from months has somewhere to land
+     (thirty months is two and a half years). */
+  years: { min: 1, max: 30, step: 0.5 },
+  months: { min: 6, max: 360, step: 1 },
 }
 
 /**
@@ -74,6 +106,7 @@ const BOUNDS = {
 function CalcField({
   id,
   label,
+  unit,
   value,
   onChange,
   bounds,
@@ -99,9 +132,16 @@ function CalcField({
 
   return (
     <p className="field">
-      <label htmlFor={id} id={labelId}>
-        {label}
-      </label>
+      {/* Label and unit switch on one line. The switch is a sibling of the
+          <label> rather than a child of it: a label may not contain a control,
+          and one that did would fire its own buttons every time the field name
+          was clicked. */}
+      <span className="field__head">
+        <label htmlFor={id} id={labelId}>
+          {label}
+        </label>
+        {unit}
+      </span>
       {/* No max: the slider covers the common span, the box takes anything. */}
       <input
         id={id}
@@ -141,15 +181,22 @@ function CalcField({
 export default function RepaymentCalculator() {
   const { draft, ui } = useCopy()
   const [values, setValues] = useState(EMPTY)
+  const [termUnit, setTermUnit] = useState('years')
   const id = useId()
 
   function update(field) {
     return (event) => setValues((v) => ({ ...v, [field]: event.target.value }))
   }
 
+  function switchTermUnit(next) {
+    if (next === termUnit) return
+    setTermUnit(next)
+    setValues((v) => ({ ...v, term: convertTerm(v.term, next) }))
+  }
+
   const amount = Number(values.amount)
   const rate = Number(values.rate)
-  const years = Number(values.years)
+  const term = Number(values.term)
 
   /* Every field has to be a usable number before anything is shown. Number('')
      is 0, so the blank form would otherwise compute a confident zero rather
@@ -157,15 +204,18 @@ export default function RepaymentCalculator() {
   const ready =
     values.amount !== '' &&
     values.rate !== '' &&
-    values.years !== '' &&
+    values.term !== '' &&
     Number.isFinite(amount) &&
     Number.isFinite(rate) &&
-    Number.isFinite(years) &&
+    Number.isFinite(term) &&
     amount > 0 &&
     rate >= 0 &&
-    years > 0
+    term > 0
 
-  const months = years * 12
+  /* Months are the unit the arithmetic and the result line both run in, so the
+     term is converted once, here, and rounded. A part-month is not a thing a
+     repayment schedule has. */
+  const months = Math.round(termUnit === 'months' ? term : term * 12)
   const monthly = ready ? monthlyRepayment(amount, rate, months) : null
   const total = ready ? monthly * months : null
   const interest = ready ? total - amount : null
@@ -228,15 +278,40 @@ export default function RepaymentCalculator() {
               hint={<Draft>{draft.calculatorRateHint}</Draft>}
             />
 
+            {/* One field, two units. The label names the unit in force, so the
+                box is never a bare number whose meaning is only on the switch
+                beside it. */}
             <CalcField
-              id={`${id}-years`}
-              label={ui.calcYears}
-              value={values.years}
-              onChange={update('years')}
-              bounds={BOUNDS.years}
+              id={`${id}-term`}
+              label={termUnit === 'months' ? ui.calcMonths : ui.calcYears}
+              unit={
+                <span
+                  className="field__units"
+                  role="group"
+                  aria-label={ui.calcTermUnit}
+                >
+                  {TERM_UNITS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className="field__unit"
+                      /* aria-pressed rather than a radio group: these are two
+                         states of one control, and the pressed one is the unit
+                         the field is currently in. */
+                      aria-pressed={termUnit === option}
+                      onClick={() => switchTermUnit(option)}
+                    >
+                      {option === 'months' ? ui.calcUnitMonths : ui.calcUnitYears}
+                    </button>
+                  ))}
+                </span>
+              }
+              value={values.term}
+              onChange={update('term')}
+              bounds={termUnit === 'months' ? BOUNDS.months : BOUNDS.years}
               step="1"
               inputMode="numeric"
-              placeholder="5"
+              placeholder={termUnit === 'months' ? '60' : '5'}
             />
           </div>
 

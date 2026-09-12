@@ -2252,6 +2252,53 @@
   line-height: 1.45;
 }
 
+/* ---------- Term field: label and unit switch on one line ---------- */
+.field__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 0.75rem;
+}
+
+/* A pill of two, not a select: there are exactly two units, and both should be
+   readable without opening anything. Bounded by --line, the same hairline the
+   number boxes beside it take on the navy ground. */
+.field__units {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.field__unit {
+  appearance: none;
+  border: 0;
+  background: none;
+  border-radius: 999px;
+  padding: 0.125rem 0.625rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+/* The unit in force carries the brand gold with navy on it — the same light-on
+   gold / navy-on-gold idiom the site's filled buttons use, so the chosen unit
+   reads as pressed at a glance and in greyscale. The other stays --ink-soft on
+   the navy band. */
+.field__unit[aria-pressed='true'] {
+  background: var(--gold);
+  color: var(--on-light);
+}
+
+.field__unit:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+
 /* ---------- Slider half of a calculator field ----------
    The track paints its own fill from --fill, written inline by CalcField from
    the current value: the filled part is what has been chosen, the rest is the
