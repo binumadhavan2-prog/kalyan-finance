@@ -1987,10 +1987,13 @@
  * Three things give it back, none of which drops anything a reader needs:
  */
 
-/* 1. The strapline comes out of the bar. It is the widest thing in the lockup
-      and the only part of it that is not the company's name — and it still
-      appears in the footer of every page, where it has a line to itself. */
-:lang(ta) .masthead .wordmark__tagline { display: none; }
+/* 1. The strapline stays in the bar but steps down a shade. It is the widest
+      thing in the lockup, and at the default 0.6875rem the Tamil line pushed the
+      row past --shell in the 80–85rem band where the full nav is still up; at
+      0.625rem — a single pixel smaller — the lockup gives back the ~17px that
+      overflowed and the bar holds. Below 48rem it is hidden for every language
+      by the base rule, and it has its own line in the footer besides. */
+:lang(ta) .masthead .wordmark__tagline { font-size: 0.625rem; }
 
 /* 2. The row closes up: a smaller gap between the links, and the label size
       steps down to the size the Menu button and the bar's other controls
