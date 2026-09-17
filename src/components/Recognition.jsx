@@ -41,7 +41,9 @@ export default function Recognition() {
 
           <div className="stack recognition__citation">
             <p className="lede">
-              <strong>{recognitionFeature.recipients}</strong>{' '}
+              <strong className="recognition__recipients">
+                {recognitionFeature.recipients}
+              </strong>{' '}
               {recognitionFeature.honour}
             </p>
             <p>{recognitionFeature.citation}</p>

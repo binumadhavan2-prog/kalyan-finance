@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { useCopy } from '../i18n'
+import { COPY, useCopy, useLanguage } from '../i18n'
 import { useSamePageTop } from '../useSamePageTop'
 import Wordmark from './Wordmark'
 import LanguageToggle from './LanguageToggle'
 
 export default function SiteHeader() {
   const { company, navLinks, ui } = useCopy()
+  const [lang] = useLanguage()
   const [open, setOpen] = useState(false)
   const close = () => setOpen(false)
   /* The masthead is sticky, so every one of these links is there to be clicked
@@ -59,7 +60,28 @@ export default function SiteHeader() {
             toTop('/contact')
           }}
         >
-          {ui.getInTouch}
+          {/* Both languages' wording reserves the button's width, so the CTA
+              keeps one size across a switch and does not drag the toggle beside
+              it. Only the active-language label shows; the other holds its
+              width. aria-hidden because the visible label is enough. */}
+          <span className="swap">
+            <span
+              className="swap__opt"
+              lang="en"
+              aria-hidden={lang !== 'en'}
+              data-active={lang === 'en'}
+            >
+              {COPY.en.ui.getInTouch}
+            </span>
+            <span
+              className="swap__opt"
+              lang="ta"
+              aria-hidden={lang !== 'ta'}
+              data-active={lang === 'ta'}
+            >
+              {COPY.ta.ui.getInTouch}
+            </span>
+          </span>
         </Link>
 
         <button
