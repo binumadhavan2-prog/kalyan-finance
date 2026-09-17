@@ -228,7 +228,8 @@ export const indicativeExamples = {
 
 /** Client-supplied where filled in; the rest is not yet confirmed. */
 export const contact = {
-  phone: null,
+  /** Supplied by the client on 2026-09-17. */
+  phone: '87786 57171',
   /** Confirmed by the client on 2026-09-05. */
   email: 'skalyansundaram24289@gmail.com',
   /** Town and state are known; the full postal address is not. */
