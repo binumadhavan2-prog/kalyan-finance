@@ -296,7 +296,7 @@ export const recognitionFeature = {
   subtitle: 'Recognizing Excellence in Financial Services',
   /* Split out of the sentence so the markup can weight them without the
      component having to find a name inside a string. */
-  recipients: 'Mr. Kalyanasundaram and Mrs. Vaishnavi Kalyan',
+  recipients: 'Mr. Kalyanasundaram and Mrs. Vaishnavi Kalyanasundaram',
   honour:
     'were honored at the prestigious National Excellence Council Tamil Nadu ' +
     'Awards 2026.',
