@@ -11,7 +11,8 @@ import Missing from './Missing'
  * weight on a mobile connection.
  */
 export default function Recognition() {
-  const { draft, recognition, recognitionVideo } = useCopy()
+  const { draft, recognition, recognitionFeature, recognitionPoster, recognitionVideo } =
+    useCopy()
   return (
     <section className="section">
       <div className="shell stack-lg">
@@ -19,17 +20,39 @@ export default function Recognition() {
           <p className="eyebrow">
             <Draft>{draft.recognitionTitle}</Draft>
           </p>
+          <h2 className="heading">{recognitionFeature.title}</h2>
+          <p className="lede">{recognitionFeature.subtitle}</p>
         </div>
 
-        {recognitionVideo ? (
-          <video
-            className="video"
-            src={recognitionVideo}
-            controls
-            playsInline
-            preload="metadata"
-          />
-        ) : null}
+        {/* Clip and citation side by side, the clip first. Below 56rem they
+            stack in that order, which is the order they are read in: the still
+            says an award is being given, the words say which and to whom. */}
+        <div className="recognition__feature">
+          {recognitionVideo ? (
+            <video
+              className="video"
+              src={recognitionVideo}
+              poster={recognitionPoster}
+              controls
+              playsInline
+              preload="metadata"
+            />
+          ) : null}
+
+          <div className="stack recognition__citation">
+            <p className="lede">
+              <strong className="recognition__recipients">
+                {recognitionFeature.recipients}
+              </strong>{' '}
+              {recognitionFeature.honour}
+            </p>
+            <p>{recognitionFeature.citation}</p>
+            <p className="recognition__closing">{recognitionFeature.closing}</p>
+            <p className="recognition__invitation">
+              {recognitionFeature.invitation}
+            </p>
+          </div>
+        </div>
 
         {recognition.length > 0 ? (
           <ul className="grid" role="list">

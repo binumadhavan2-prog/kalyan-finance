@@ -223,7 +223,8 @@ export const indicativeExamples = {
 
 /** Client-supplied where filled in; the rest is not yet confirmed. */
 export const contact = {
-  phone: null,
+  /** Supplied by the client on 2026-09-17. */
+  phone: '87786 57171',
   /** Confirmed by the client on 2026-09-05. */
   email: 'skalyansundaram24289@gmail.com',
   /** Town and state are known; the full postal address is not. */
@@ -269,14 +270,56 @@ export const recognition = []
 export const recognitionVideo = '/recognition.mp4'
 
 /**
+ * The still shown in the recognition video's frame before it is played — a
+ * frame from the award ceremony itself. With `preload="metadata"` the clip is
+ * not fetched until someone presses play, so without a poster the frame would
+ * sit empty; this fills it with the moment the section is about.
+ */
+export const recognitionPoster = '/recognition-poster.webp'
+
+/**
+ * Client-supplied on 2026-09-10, wording unchanged, and the one thing on this
+ * page the recognition band has ever had to show. It is a factual claim about
+ * a real award, so it is not in `draft` and renders without the dotted mark.
+ *
+ * The prose is translated in content.ta.js; `title` (the awarding body's own
+ * name) and `recipients` (two people's names) are held back there and fall
+ * through to this English, the same call `founder.name` and `company.name`
+ * take — an official designation and personal names are not ours to respell.
+ */
+export const recognitionFeature = {
+  title: 'National Excellence Council Tamil Nadu Awards 2026',
+  subtitle: 'Recognizing Excellence in Financial Services',
+  /* Split out of the sentence so the markup can weight them without the
+     component having to find a name inside a string. */
+  recipients: 'Mr. Kalyanasundaram and Mrs. Vaishnavi Kalyanasundaram',
+  honour:
+    'were honored at the prestigious National Excellence Council Tamil Nadu ' +
+    'Awards 2026.',
+  citation:
+    'The recognition celebrates their excellence in customer-centric ' +
+    'financial services, empowering individuals and businesses through ' +
+    'trusted, transparent and ethical financial solutions.',
+  closing: 'Celebrating excellence, trust, and meaningful impact.',
+  /* The one line here that sells rather than reports. It sits last and quiet,
+     under a rule, so the band reads as an account of the award with an
+     invitation at the end rather than as an advertisement wearing one. */
+  invitation:
+    'Need trusted financial support? Choose Kalyan Finance — solutions built ' +
+    'around you.',
+}
+
+/**
  * The 6-second brand animation beside the home hero copy. Unlike the
  * recognition clip this one autoplays, which is only defensible because it is
  * under a megabyte and silent — it carries no audio track at all, so there is
  * nothing to unmute and nothing to interrupt.
  *
- * It renders one unconfirmed fact: the contact card shows a visible
- * "PHONE - TO BE SUPPLIED" placeholder, matching the null in `contact`. Replace
- * the number in `video/edit.jsx` and re-render before this ships.
+ * The contact card shows the phone number 87786 57171 (supplied by the client
+ * on 2026-09-17, matching `contact.phone`). It was overlaid onto the rendered
+ * mp4 with ffmpeg over the old "PHONE - TO BE SUPPLIED" placeholder; the source
+ * `video/edit.jsx` still carries that placeholder, so re-rendering from it needs
+ * the number put in first.
  */
 export const heroVideo = '/kalyan-finance-6s.mp4'
 
