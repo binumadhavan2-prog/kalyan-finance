@@ -34,16 +34,6 @@ export default function Contact() {
   const townMapUrl = contact.location
     ? `https://www.google.com/maps?q=${encodeURIComponent(contact.location)}&output=embed`
     : null
-
-  /* A plain, always-working link to the same place, on the official
-     maps.google.com/?api=1 share form. The embed above needs no key and is
-     what most people see, but it renders blank where a browser or network
-     blocks Google's iframe — so the location is never only reachable through it.
-     Prefers the town; a real office address in `contact.address` wins. */
-  const mapPlace = contact.address ?? contact.location
-  const mapLink = mapPlace
-    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapPlace)}`
-    : null
   return (
     <>
       {/* No eyebrow: draft.contactTitle is itself 'Contact us', so passing one
@@ -164,17 +154,6 @@ export default function Contact() {
               <Missing>Location not supplied</Missing>
             </div>
           )}
-          {/* Always offered, not only as a fallback: the embed can render blank
-              where a browser or network blocks Google's iframe, and this link
-              opens the same place in a full Google Maps tab regardless. */}
-          {mapLink ? (
-            <p>
-              <a className="btn btn-ghost" href={mapLink} rel="noreferrer noopener" target="_blank">
-                {ui.viewOnMap}
-                {mapPlace ? ` — ${mapPlace}` : ''}
-              </a>
-            </p>
-          ) : null}
         </div>
       </section>
     </>

@@ -32,17 +32,7 @@ export default function LanguageToggle({ className, onClick }) {
         onClick?.()
       }}
     >
-      {/* Both names occupy the control so its width is constant across the
-          switch; only the target-language one shows. The button's accessible
-          name comes from aria-label above, so this is presentation only. */}
-      <span className="swap" aria-hidden="true">
-        <span className="swap__opt" lang="en" data-active={next === 'en'}>
-          {LANGUAGES.en}
-        </span>
-        <span className="swap__opt" lang="ta" data-active={next === 'ta'}>
-          {LANGUAGES.ta}
-        </span>
-      </span>
+      {LANGUAGES[next]}
     </button>
   )
 }

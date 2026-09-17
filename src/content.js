@@ -31,11 +31,6 @@
  */
 export const markDraftCopy = false
 
-/* Public-directory asset paths below are wrapped so they resolve under the
-   deploy's base URL (a GitHub Pages project page serves under /<repo>/). See
-   src/asset.js. */
-import { asset } from './asset.js'
-
 /** Client-supplied company facts, wording unchanged. */
 export const company = {
   name: 'Kalyan Finance',
@@ -116,7 +111,7 @@ export const services = [
      * decorative and carries no `alt` — there is no wording in it a reader
      * would otherwise miss.
      */
-    image: { src: asset('/product-business.webp'), width: 1024, height: 559 },
+    image: { src: '/product-business.webp', width: 1024, height: 559 },
   },
   {
     id: 'personal',
@@ -131,7 +126,7 @@ export const services = [
        SAVINGS) are props in a scene, not a banner's own copy, and the first of
        them only restates the h2 above it. That is the illustration case, so it
        stays decorative. */
-    image: { src: asset('/product-personal.webp'), width: 1024, height: 559 },
+    image: { src: '/product-personal.webp', width: 1024, height: 559 },
   },
   {
     id: 'short-term',
@@ -144,12 +139,12 @@ export const services = [
      * baked into a picture is also invisible to a screen reader, hence `alt`.
      */
     image: {
-      src: asset('/product-short-term.webp'),
+      src: '/product-short-term.webp',
       width: 1536,
       height: 1024,
       wide: true,
       alt:
-        'Short Term Financial Support from Kalyan Finance — quick financial ' +
+        'Short Term Financial Support from Kalyan Finance. Quick financial ' +
         'solutions for your immediate needs: quick approval, flexible tenure ' +
         'and a hassle-free process.',
     },
@@ -160,12 +155,12 @@ export const services = [
     icon: 'heart',
     /** Client-supplied on 2026-09-05. A finished banner, like short-term. */
     image: {
-      src: asset('/product-customer-focused.webp'),
+      src: '/product-customer-focused.webp',
       width: 1536,
       height: 1024,
       wide: true,
       alt:
-        'Customer-Focused Financial Solutions from Kalyan Finance — tailored ' +
+        'Customer-Focused Financial Solutions from Kalyan Finance. Tailored ' +
         'financial solutions designed around your needs, helping you manage ' +
         "today's requirements with confidence and plan for tomorrow: flexible " +
         'financial options, a quick and simple process, transparent terms, ' +
@@ -178,13 +173,13 @@ export const services = [
     icon: 'sliders',
     /** Client-supplied on 2026-09-05. A finished banner, 2:1 rather than 3:2. */
     image: {
-      src: asset('/product-tailored.webp'),
+      src: '/product-tailored.webp',
       width: 1774,
       height: 887,
       wide: true,
       alt:
         'Tailored Financial Support for Individuals and Businesses from ' +
-        'Kalyan Finance — personalized solutions, flexible financial support, ' +
+        'Kalyan Finance. Personalized solutions, flexible financial support, ' +
         'empowering growth and trusted partnership.',
     },
   },
@@ -257,7 +252,7 @@ export const founder = {
   name: 'Mr. Kalyana Sundaram S',
   role: 'Founder',
   bio: null,
-  photo: asset('/founder.png'),
+  photo: '/founder.png',
 }
 
 /**
@@ -272,14 +267,15 @@ export const recognition = []
  * metadata is preloaded, so the file is not pulled down until someone presses
  * play — it is large, and most visitors will not watch it.
  */
-export const recognitionVideo = asset('/recognition.mp4')
+export const recognitionVideo = '/recognition.mp4'
 
 /**
- * A still for the recognition clip. With no first frame fetched the band opens
- * on a black rectangle; the poster stands in until someone presses play, and
- * costs a hundredth of what the clip would.
+ * The still shown in the recognition video's frame before it is played — a
+ * frame from the award ceremony itself. With `preload="metadata"` the clip is
+ * not fetched until someone presses play, so without a poster the frame would
+ * sit empty; this fills it with the moment the section is about.
  */
-export const recognitionPoster = asset('/recognition-poster.webp')
+export const recognitionPoster = '/recognition-poster.webp'
 
 /**
  * Client-supplied on 2026-09-10, wording unchanged, and the one thing on this
@@ -319,11 +315,13 @@ export const recognitionFeature = {
  * under a megabyte and silent — it carries no audio track at all, so there is
  * nothing to unmute and nothing to interrupt.
  *
- * It renders one unconfirmed fact: the contact card shows a visible
- * "PHONE - TO BE SUPPLIED" placeholder, matching the null in `contact`. Replace
- * the number in `video/edit.jsx` and re-render before this ships.
+ * The contact card shows the phone number 87786 57171 (supplied by the client
+ * on 2026-09-17, matching `contact.phone`). It was overlaid onto the rendered
+ * mp4 with ffmpeg over the old "PHONE - TO BE SUPPLIED" placeholder; the source
+ * `video/edit.jsx` still carries that placeholder, so re-rendering from it needs
+ * the number put in first.
  */
-export const heroVideo = asset('/kalyan-finance-6s.mp4')
+export const heroVideo = '/kalyan-finance-6s.mp4'
 
 /** Figures for the stats band. Left null on purpose; see the note above. */
 export const stats = [
@@ -358,7 +356,7 @@ export const draft = {
   /* Sits under the buttons. Deliberately about effort and obligation rather
      than speed: a response time is a promise, and nobody has given us one. */
   ctaNote:
-    'No documents needed to start — just tell us roughly what you are looking for.',
+    'No documents needed to start. Just tell us roughly what you are looking for.',
 
   /* ---------- Loan products ---------- */
   productsTitle: 'Loan products',
@@ -368,7 +366,7 @@ export const draft = {
     business:
       'Funding for working capital, equipment and growth, structured around how the business actually earns.',
     personal:
-      'Help arranging personal borrowing, with the trade-offs explained before you commit.',
+      'Help arranging personal borrowing, with the tradeoffs explained before you commit.',
     'short-term':
       'Bridging a defined gap, with a clear repayment date agreed at the outset.',
     'customer-focused':
@@ -396,7 +394,7 @@ export const draft = {
      substance is not optional: the rate is the visitor's own figure, and the
      result has to be marked as arithmetic rather than as a quotation. */
   calculatorNotice:
-    'Illustrative only. This works out the arithmetic on the figures you enter — it is not a quotation, not an offer, and not a decision. Kalyan Finance has not published rates, so the rate here is yours to supply. Any actual terms are confirmed for your circumstances in writing.',
+    'Illustrative only. This works out the arithmetic on the figures you enter. It is not a quotation, not an offer, and not a decision. Kalyan Finance has not published rates, so the rate here is yours to supply. Any actual terms are confirmed for your circumstances in writing.',
   calculatorRateHint:
     'We have not published rates, so enter the one you want to test.',
   calculatorEmpty:
@@ -581,7 +579,6 @@ export const ui = {
   address: 'Address',
   hours: 'Hours',
   whereWeAre: 'Where we are',
-  viewOnMap: 'View on Google Maps',
   amount: 'Amount',
   tenure: 'Tenure',
   repayment: 'Repayment',
@@ -594,14 +591,7 @@ export const ui = {
   /* Calculator */
   calcAmount: 'Amount you need (₹)',
   calcRate: 'Annual interest rate (%)',
-  /* Two labels for one field, picked by the unit switch beside it. Both name
-     the unit, so the box is never an unlabelled number. */
   calcYears: 'Over how many years',
-  calcMonths: 'Over how many months',
-  /* The switch itself: a name for the pair, and the two units it offers. */
-  calcTermUnit: 'Enter the term in',
-  calcUnitYears: 'Years',
-  calcUnitMonths: 'Months',
   calcPerMonth: 'a month, for {months} months',
   calcBorrowed: 'Borrowed',
   calcInterest: 'Interest',
@@ -618,9 +608,9 @@ export const ui = {
   formMessagePlaceholder: 'What you need, and roughly when',
   formSend: 'Send enquiry',
   formSending: 'Sending…',
-  formSent: 'Thank you — we will come back to you.',
+  formSent: 'Thank you. We will come back to you.',
   formFailed: 'That did not send. Please try again or call us.',
-  formNoEndpoint: 'Form is not connected yet — no destination configured',
+  formNoEndpoint: 'Form is not connected yet, no destination configured',
   errName: 'Please tell us your name.',
   errContact: 'Please give us either an email address or a phone number.',
   errEmail: 'That does not look like an email address.',

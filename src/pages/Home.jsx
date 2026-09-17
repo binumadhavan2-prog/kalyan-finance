@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { useCopy } from '../i18n'
-import { asset } from '../asset'
 import Draft from '../components/Draft'
 import CoreValues from '../components/CoreValues'
 import StepList from '../components/StepList'
@@ -12,15 +11,12 @@ import ScrollProgress from '../components/ScrollProgress'
 import RepaymentCalculator from '../components/RepaymentCalculator'
 
 export default function Home() {
-  const { company, draft, ui, vision } = useCopy()
+  const { company, draft, ui, vision, whyPoints } = useCopy()
   return (
     <>
       <ScrollProgress />
 
-      <section
-        className="section section--dark hero"
-        style={{ '--hero-image': `url("${asset('/hero.webp')}")` }}
-      >
+      <section className="section hero">
         <div className="shell hero__grid">
           <div className="stack-lg">
             <div className="stack">
@@ -47,8 +43,47 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Put numbers to it, then straight into the values. */}
+      {/* Straight from the hero into the numbers. The products preview that
+          used to sit here came out on 2026-09-09; /loan-products carries the
+          five products in full, and the hero already links to it. */}
       <RepaymentCalculator />
+
+      {/* A short read of /why-us: the supplied reasons and a way through to
+          the full page, which carries the process and trust sections too.
+
+          Raised rather than plain, because the calculator above it is on
+          --page, and two plain sections in a row lose the alternation the
+          page rhythm runs on. */}
+      <section className="section section--raised">
+        <div className="shell stack-lg">
+          {/* Heading only. The lede under it (draft.whyLede) came out on
+              2026-09-08: the supplied rows below say what differs, and a
+              drafted line promising that they do was a sentence about the
+              list rather than part of it. /why-us still opens with it, where
+              it is the page's own lede and has nothing under it repeating
+              the point. */}
+          <div className="stack prose">
+            <h2 className="heading">
+              <Draft>{draft.whyTitle}</Draft>
+            </h2>
+          </div>
+
+          {/* Terms only, as supplied — the same rows /why-us shows. */}
+          <ul className="valuelist" role="list">
+            {whyPoints.map((point) => (
+              <li className="valuelist__item" key={point}>
+                {point}
+              </li>
+            ))}
+          </ul>
+
+          <p>
+            <Link className="btn btn-ghost" to="/why-us">
+              {ui.howWeWork}
+            </Link>
+          </p>
+        </div>
+      </section>
 
       <CoreValues />
 
