@@ -14,7 +14,7 @@ const CARD_BG   = "#212f63";
 
 // Client facts. Anything not supplied stays visibly pending — never invented.
 const CONTACT = {
-  phone: "PHONE - TO BE SUPPLIED",
+  phone: "87786 57171",
   email: "skalyansundaram24289@gmail.com",
 };
 
