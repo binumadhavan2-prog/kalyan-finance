@@ -512,8 +512,10 @@
   .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
-/* 16/9 is the render's own aspect, so `contain` never letterboxes here; it is
-   there to keep the frame honest if the clip is ever re-cut at another size. */
+/* The render is 16/9, but the 5px border eats into the box so the content area
+   is no longer exactly 16/9 — `contain` then letterboxed a thin `--primary`
+   strip between the clip and the border. `cover` fills the frame edge to edge;
+   the overflow it crops is sub-pixel at this size and never touches the card. */
 .hero__video {
   display: block;
   width: 100%;
@@ -521,7 +523,7 @@
   border-radius: var(--radius);
   border: 5px solid var(--accent);
   background: var(--primary);
-  object-fit: contain;
+  object-fit: cover;
 }
 
 /* ---------- Card grids ---------- */
@@ -2357,3 +2359,46 @@
 .calc__empty { margin: 0; font-size: 0.9375rem; color: var(--ink-soft); }
 
 .calc__out .terms__value { font-variant-numeric: tabular-nums; }
+
+/* ---------- Recognition feature ----------
+   One award, built around rather than dropped into the empty card grid: the
+   clip and its citation side by side, the clip first.
+
+   The clip takes the larger share. It is the evidence and the citation is the
+   caption, and a 16:9 frame given the smaller half of a 1200px shell has very
+   little left to show. */
+.recognition__feature {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+}
+
+@media (min-width: 56rem) {
+  .recognition__feature {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+/* The award recipients' names, lifted into the palette's gold so the two people
+   the recognition is about carry the accent rather than the surrounding copy. */
+.recognition__recipients {
+  color: var(--gold);
+}
+
+/* Gold and italic — the client's own flourish on the award rather than a
+   statement of fact, and the italic is what marks it as one. */
+.recognition__closing {
+  font-style: italic;
+  color: var(--gold);
+}
+
+/* The one line in the band that sells rather than reports. Set apart by a rule
+   instead of by size: the award is the news here, and an invitation given the
+   same weight as the citation would argue with it. */
+.recognition__invitation {
+  margin-block-start: 1.75rem;
+  padding-block-start: 1.25rem;
+  border-top: 1px solid var(--line);
+  font-weight: 600;
+}

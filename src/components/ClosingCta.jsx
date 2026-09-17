@@ -9,17 +9,17 @@ import Draft from './Draft'
  * carries weight the other bands do not: the bright accent on the primary
  * action — the only button on the site that takes it.
  *
- * Two routes out. The form for people who want to describe a requirement, and
- * a direct mailto for people who would rather just write. The mail button only
- * renders once `contact.email` is filled in — a dead "Email us" button is
- * worse than no button.
+ * One route out: the form, for people who want to describe a requirement. The
+ * direct mailto button that used to sit beside it was removed on 2026-09-17 —
+ * /contact carries the email and the footer repeats it on every page, so the
+ * band leads with the single primary action rather than offering two.
  *
  * The phone / email / location strip that used to sit under the note came out
  * on 2026-09-09. /contact carries the same details, and the footer repeats
  * them on every page.
  */
 export default function ClosingCta() {
-  const { contact, draft } = useCopy()
+  const { draft } = useCopy()
 
   return (
     <section className="section section--dark cta-band">
@@ -41,14 +41,6 @@ export default function ClosingCta() {
           <Link className="btn btn--feature btn--lg" to="/contact">
             <Draft>{draft.ctaButton}</Draft>
           </Link>
-          {contact.email ? (
-            <a
-              className="btn btn-ghost btn--lg btn--wrap"
-              href={`mailto:${contact.email}`}
-            >
-              {contact.email}
-            </a>
-          ) : null}
         </p>
 
         <p className="cta__note">
