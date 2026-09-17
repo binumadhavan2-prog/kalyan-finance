@@ -174,6 +174,13 @@
      usable width. The gap is the only part of that able to yield. */
   gap: clamp(0.75rem, 4vw, 2rem);
   min-height: var(--masthead-h);
+  /* The bar runs wider than the 1200px content shell: a smaller side gutter and
+     a higher cap pull the lockup toward the left edge and hand the nav, toggle
+     and CTA the room they were short of — most visibly for the longer Tamil
+     labels. Applied to both languages so the wordmark sits in the same place in
+     each and a switch moves nothing. */
+  --gutter: clamp(1rem, 2.5vw, 1.5rem);
+  --shell: 1340px;
 }
 
 .wordmark {
@@ -1231,10 +1238,22 @@
   .menu-toggle, .mobile-nav { display: none; }
 }
 
-/* With the link list hidden, space-between strands the CTA in the middle of
-   the bar. Push it right so it sits beside the Menu button. */
-@media (max-width: 67.99rem) {
+/* Trailing controls (language toggle, CTA, Menu) ride the right as one group.
+   Exactly one auto margin does the pushing — on the first of them shown at this
+   width — so none is stranded mid-bar once the nav is in the menu.
+
+   ≥48rem with the nav hidden (every language below 68rem): the toggle leads. */
+@media (min-width: 48rem) and (max-width: 67.99rem) {
+  .masthead__inner .lang-link { margin-inline-start: auto; }
+}
+
+/* Below 48rem the toggle is hidden, so the CTA leads (30–48rem) or, below that
+   where the CTA is dropped too, the Menu button does. */
+@media (max-width: 47.99rem) {
   .masthead__cta { margin-inline-start: auto; }
+}
+@media (max-width: 30rem) {
+  .menu-toggle { margin-inline-start: auto; }
 }
 
 @media (max-width: 30rem) {
@@ -2044,49 +2063,56 @@
       by the base rule, and it has its own line in the footer besides. */
 :lang(ta) .masthead .wordmark__tagline { font-size: 0.625rem; }
 
-/* 2. The row closes up: a smaller gap between the links, and the label size
-      steps down to the size the Menu button and the bar's other controls
-      already use. */
+/* 2. The row closes up so the whole bar — lockup, nav, toggle AND the CTA —
+      fits inside the 1200px shell cap in Tamil, which it is about 200px short of
+      at the untightened sizes. The links take a smaller label and a tighter gap,
+      the bar's own flex gap narrows, and the CTA takes a little less padding.
+      Together these buy back the ~200px, so nothing has to drop and the toggle
+      and CTA keep their place across a language switch. */
 :lang(ta) .navlist {
-  gap: clamp(0.875rem, 2vw, 1.5rem);
-  font-size: 0.875rem;
+  gap: clamp(0.5rem, 1.1vw, 0.875rem);
+  font-size: 0.75rem;
+}
+:lang(ta) .masthead__inner {
+  gap: clamp(0.375rem, 1vw, 0.75rem);
+}
+/* One line in the bar. The extra class outweighs the site-wide
+   `:lang(ta) .btn { white-space: normal }` (equal specificity, defined later),
+   which would otherwise wrap this long label into a two-line pill that breaks
+   the row's rhythm. Kept compact so the whole label fits on that line. */
+:lang(ta) .masthead__inner .masthead__cta {
+  white-space: nowrap;
+  padding: 0.5rem 0.8125rem;
+  font-size: 0.75rem;
 }
 
-/* 3. The desktop nav waits for a wider window. 68rem gives a 992px shell, and
-      the five Tamil labels cannot sit in that beside a lockup and a button at
-      any size worth reading. 80rem gives 1184px, which they can. Below it the
-      bar uses the mobile menu that is already built — the same one every phone
-      gets, so this needs no new markup and loses no link. */
+/* 3. The desktop nav returns at 80rem — the same inline navbar the English bar
+      shows. 68rem gives only a 992px shell, too tight for five Tamil labels
+      beside the lockup; 80rem gives 1184px, which holds them. Below 80rem the
+      bar uses the mobile menu every phone already gets, so no new markup and no
+      lost link.
+
+      Written as :not([hidden]) on the panel rather than a plain `display:block`,
+      because the panel is always in the DOM and SiteHeader closes it with the
+      `hidden` attribute — any author `display` beats the UA rule `hidden` relies
+      on, and a plain block would pin the menu open. */
 @media (max-width: 79.99rem) {
   :lang(ta) .masthead__nav { display: none; }
   :lang(ta) .menu-toggle { display: inline-flex; }
-  :lang(ta) .masthead__cta { margin-inline-start: auto; }
-
-  /* The 68rem rule hides the toggle and the panel together, so bringing the
-     button back without the panel would have left it opening nothing between
-     68 and 80rem.
-
-     Written as :not([hidden]) rather than a plain `display: block`, because the
-     panel is always in the DOM and SiteHeader closes it with the `hidden`
-     attribute — and any author `display` beats the UA rule that `hidden` relies
-     on. A plain block here would have pinned the menu open. */
   :lang(ta) .mobile-nav:not([hidden]) { display: block; }
 }
 
-/* And above it, the bar still cannot hold both the nav and the button.
-
-   Budget at the 1200px cap, which is the widest the shell ever gets, so no
-   window size escapes this: lockup 322 + five labels 583 + their gaps 96 +
-   button 229 + 64 of flex gap = 1318 against 1200. Moving the breakpoint does
-   not help — past about 1300px the viewport grows and the shell does not.
-
-   So the button goes, and it is the right thing to lose: it reads "தொடர்பு
-   கொள்ளுங்கள்" and the nav two items along reads "தொடர்பு கொள்ள", the same
-   destination in the same bar. Without it the row asks for 1057. The English
-   bar keeps its button — the English labels are short enough to leave room. */
-@media (min-width: 80rem) {
-  :lang(ta) .masthead__cta { display: none; }
+/* While the nav is still in the menu (Tamil holds it there up to 80rem, past
+   the 68rem the base trailing-controls rule covers), the toggle keeps leading
+   the trailing group so it and the CTA stay together on the right. */
+@media (min-width: 68rem) and (max-width: 79.99rem) {
+  :lang(ta) .masthead__inner .lang-link { margin-inline-start: auto; }
 }
+
+/* At 80rem and up the inline nav is back beside the toggle and the CTA — the
+   full English bar, in Tamil — because the tightening in step 2 pulls the row
+   back inside the shell cap. So the CTA no longer has to drop, and switching
+   language leaves both it and the toggle where they were. */
 
 /* Long labels are allowed to wrap here rather than ride out of the row. The
    English set fits on one line at every width, which is why nowrap was safe. */
