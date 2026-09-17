@@ -5,6 +5,7 @@ import Missing from '../components/Missing'
 import PageHeader from '../components/PageHeader'
 import CoreValues from '../components/CoreValues'
 import Recognition from '../components/Recognition'
+import ClosingCta from '../components/ClosingCta'
 
 export default function About() {
   const { about, company, draft, founder, mission, services, ui, vision } = useCopy()
@@ -151,6 +152,8 @@ export default function About() {
       <CoreValues />
 
       <Recognition />
+
+      <ClosingCta />
     </>
   )
 }

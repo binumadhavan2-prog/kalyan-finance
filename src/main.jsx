@@ -8,8 +8,6 @@ import { removeSplash } from './splash'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* basename tracks Vite's base, so the router's paths sit under the same
-        /<repo>/ prefix the assets do. It is '/' on a root deploy. */}
     <HashRouter>
       <LanguageProvider>
         <App />
